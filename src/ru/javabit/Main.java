@@ -1,5 +1,7 @@
 package ru.javabit;
 
+import ru.javabit.gameField.GameField;
+
 public class Main {
 
     Game game;
@@ -56,5 +58,26 @@ public class Main {
     (абстрактный класс). Тем самым все классы, которые у вас отвечают за логику работы программы станут тем,
      что называется Моделью в паттерне Model-View-Controller. https://ru.wikipedia.org/wiki/Model-View-Controlle...
     */
+
+
+
+
+
+
+    //class Game {
+
+    //    Game(){
+    //        GameField gameField = GameField.getInstance(10, 10);
+    //    }
+
+
+    //}
+
+
+
+
+
+
+
 
 }

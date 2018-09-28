@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GameField {
 
-    private GameField gameField;
+    private static GameField gameField;
     private GameFieldGrid gameFieldGrid;
 
     private int columnNum = 10;
@@ -20,7 +20,7 @@ public class GameField {
         return gameFieldGrid;
     }
 
-    public GameField getInstance(int rowNum, int columnNum){
+    public static GameField getInstance(int rowNum, int columnNum){
         if(gameField == null){
             gameField = new GameField(rowNum, columnNum);
         }
