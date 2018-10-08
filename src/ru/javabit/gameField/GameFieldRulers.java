@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GameFieldRulers {
 
-    private char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+    private char[] alphabet = "aabcdefghijklmnopqrstuvwxyz".toCharArray();
     private ArrayList<String> fieldRowsSkins = new ArrayList<>();
     private ArrayList<String> fieldColsSkins = new ArrayList<>();
 
@@ -13,10 +13,11 @@ public class GameFieldRulers {
         fieldColsSkins = new ArrayList<>();
         setFieldColsSkins(colNum);
         setFieldRowsSkins(rowNum);
+        //System.out.println("setFieldRowsSkins"+fieldRowsSkins.get(5));
     }
 
     public void setFieldRowsSkins(int colNum) {
-        for(int i =0; i < colNum+1; i++){
+        for(int i =0; i < colNum; i++){
             fieldColsSkins.add(String.valueOf(alphabet[i]));
         }
     }

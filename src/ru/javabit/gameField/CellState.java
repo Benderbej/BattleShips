@@ -2,7 +2,7 @@ package ru.javabit.gameField;
 
 public enum CellState {
 
-    FreeWater("^"), ShipPart("O"), WaterAttacked("v"), ShipDamaged("&"), Reserved("!");
+    FreeWater("^"), ShipPart("O"), WaterAttacked("v"), ShipDamaged("&"), Reserved("#");
 
     private String skin;
 

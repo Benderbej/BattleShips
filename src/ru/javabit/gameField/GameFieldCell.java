@@ -8,6 +8,7 @@ public class GameFieldCell extends FieldCell {
         super(x, y);
         CellState state = CellState.FreeWater;
         this.state = state;
+        this.setSkin(this.state.getSkin());
     }
 
     public CellState getState() {
@@ -18,8 +19,5 @@ public class GameFieldCell extends FieldCell {
         this.state = state;
     }
 
-    public String getSkin() {
-        return state.getSkin();
-    }
 
 }

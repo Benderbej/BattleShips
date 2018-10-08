@@ -4,18 +4,14 @@ import ru.javabit.gameField.GameField;
 
 public class Main {
 
-    Game game;
-
     public static void main(String[] args) {
 	// write your code here
 
-        //game = new Game();
+        new Game();
 
     }
 
     /*
-
-
     Написать программу (начальный прототип Морского Боя), которая будет:
 
 1. Приветствовать игрока (выводя сообщения консоль).
@@ -72,12 +68,5 @@ public class Main {
 
 
     //}
-
-
-
-
-
-
-
 
 }

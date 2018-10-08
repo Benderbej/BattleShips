@@ -6,23 +6,27 @@ public class GameFieldRenderer implements GameFieldRenderable {
 
     //private ArrayList<FieldCell> cellsList;
     private FieldCell[][] cellsArr;
-    private final String FIELDHEADER = "***=========(-8=8-)=========***";
-    private final String FIELDFOOTER = "***========^^^^^^^^^^=======***";
+    private final String FIELDHEADER = "***^^^^^^^^^(-+o^^o+-)^^^^^^^^^***";
+    private final String FIELDFOOTER = "***=========^^^^^^^^^^=========***";
+
+    public GameFieldRenderer (GameField gameField){
+        this.cellsArr = gameField.getGameFieldGrid().getCellsArr();
+    }
 
     public void renderGameField(){
         renderHeader();
         for (FieldCell[] arr : cellsArr) {
             String line = "";
             for(FieldCell cell : arr){
-                line += cell.getSkin();
-                renderLine(line);
+                line += "["+cell.getSkin()+"]";
             }
+            renderLine(line);
         }
         renderFooter();
     }
 
     private void renderLine(String line){
-        System.out.print("       ");
+        //System.out.print("       ");
         System.out.println(line);
     }
 
