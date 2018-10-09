@@ -112,7 +112,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         }
 
         System.out.println("cells size"+cells.size());
-        fieldCell = cells.get(getRandomInt(2));
+        fieldCell = cells.get(getRandomInt(1));
         placeShipCell(ship, fieldCell);
 
     }
@@ -129,25 +129,50 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     private ArrayList<FieldCell> getVerticalCells(Ship ship){//похожий код, можно подумать о рефакторинге
         int x = ship.cells.get(0).getX();
+        System.out.println("x="+x);
         ArrayList<FieldCell> possibleCellsList = new ArrayList<>(2);
         int minY = getMinYCell(ship.cells);
         int maxY = getMaxYCell(ship.cells);
-        FieldCell minYFieldCell = fieldCells[x][minY-1];
-        if((minY > 1)&&((minYFieldCell.getSkin() == CellState.Reserved.getSkin()) && (minYFieldCell.getSkin() == CellState.ShipPart.getSkin()))){possibleCellsList.add(minYFieldCell);}
-        FieldCell maxYFieldCell = fieldCells[x][maxY+1];
-        if((maxY < 11)&&((maxYFieldCell.getSkin() == CellState.Reserved.getSkin()) && (maxYFieldCell.getSkin() == CellState.ShipPart.getSkin()))){possibleCellsList.add(maxYFieldCell);}
+
+        if(minY > 2) {
+            FieldCell minYFieldCell = fieldCells[x][minY - 1];
+            if ((minYFieldCell.getSkin() != CellState.Reserved.getSkin()) && (minYFieldCell.getSkin() != CellState.ShipPart.getSkin())) {
+                System.out.println("minY > 1");
+                possibleCellsList.add(minYFieldCell);
+            }
+        }
+        if (maxY < 10) {
+            FieldCell maxYFieldCell = fieldCells[x][maxY + 1];
+            if ((maxYFieldCell.getSkin() != CellState.Reserved.getSkin()) && (maxYFieldCell.getSkin() != CellState.ShipPart.getSkin())) {
+                System.out.println("maxY < 11");
+                possibleCellsList.add(maxYFieldCell);
+            }
+        }
         return possibleCellsList;
     }
 
     private ArrayList<FieldCell> getHorizontalCells(Ship ship){//похожий код, можно подумать о рефакторинге
-        int y = ship.cells.get(0).getY();
-        ArrayList<FieldCell> possibleCellsList = new ArrayList<>(2);
-        int minX = getMinXCell(ship.cells);
-        int maxX = getMaxXCell(ship.cells);
-        FieldCell minXFieldCell = fieldCells[minX-1][y];
-        if((minX > 1)&&((minXFieldCell.getSkin() == CellState.Reserved.getSkin()) && (minXFieldCell.getSkin() == CellState.ShipPart.getSkin()))){possibleCellsList.add(minXFieldCell);}
-        FieldCell maxXFieldCell = fieldCells[maxX+1][y];
-        if((maxX < 11)&&((maxXFieldCell.getSkin() == CellState.Reserved.getSkin()) && (maxXFieldCell.getSkin() == CellState.ShipPart.getSkin()))){possibleCellsList.add(maxXFieldCell);}
+            int y = ship.cells.get(0).getY();
+            System.out.println("y=" + y);
+            ArrayList<FieldCell> possibleCellsList = new ArrayList<>(2);
+            int minX = getMinXCell(ship.cells);
+            int maxX = getMaxXCell(ship.cells);
+            int minY = 6;
+
+            if (minX > 2) {
+                FieldCell minXFieldCell = fieldCells[minX - 1][y];
+                if ((minXFieldCell.getSkin() != CellState.Reserved.getSkin()) && (minXFieldCell.getSkin() != CellState.ShipPart.getSkin())) {
+                    System.out.println("minX > 1");
+                    possibleCellsList.add(minXFieldCell);
+                }
+            }
+            if (maxX < 10) {
+                FieldCell maxXFieldCell = fieldCells[maxX + 1][y];
+                if ((maxXFieldCell.getSkin() != CellState.Reserved.getSkin()) && (maxXFieldCell.getSkin() != CellState.ShipPart.getSkin())) {
+                    System.out.println("maxX < 11");
+                    possibleCellsList.add(maxXFieldCell);
+                }
+            }
         return possibleCellsList;
     }
 
