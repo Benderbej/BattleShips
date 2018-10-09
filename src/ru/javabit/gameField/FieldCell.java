@@ -11,8 +11,6 @@ public abstract class FieldCell {
         this.y = y;
     }
 
-
-
     public int getX() {
         return x;
     }

@@ -16,6 +16,11 @@ public abstract class Ship {
         this.cells = new ArrayList<>(size);
     }
 
+
+
+
+
+
     abstract void placeToGameField();
 
 }
