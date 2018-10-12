@@ -2,7 +2,7 @@ package ru.javabit;
 
 import ru.javabit.Report.Report;
 import ru.javabit.gameField.GameField;
-import ru.javabit.gameField.GameFieldRenderer;
+import ru.javabit.view.GameFieldRenderer;
 import ru.javabit.ship.Fleet;
 import ru.javabit.ship.FleetAutoDisposal;
 

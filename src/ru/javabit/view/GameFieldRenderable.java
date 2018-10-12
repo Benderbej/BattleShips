@@ -1,4 +1,4 @@
-package ru.javabit.gameField;
+package ru.javabit.view;
 
 public interface GameFieldRenderable {
     void renderGameField();

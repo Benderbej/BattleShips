@@ -1,6 +1,7 @@
 package ru.javabit.ship;
 
 import ru.javabit.gameField.*;
+import ru.javabit.view.CellState;
 
 import java.util.ArrayList;
 import java.util.Random;

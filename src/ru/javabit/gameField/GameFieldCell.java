@@ -1,5 +1,7 @@
 package ru.javabit.gameField;
 
+import ru.javabit.view.CellState;
+
 public class GameFieldCell extends FieldCell {
 
     private CellState state;

@@ -1,6 +1,8 @@
-package ru.javabit.gameField;
+package ru.javabit.view;
 
-import java.util.ArrayList;
+import ru.javabit.gameField.FieldCell;
+import ru.javabit.gameField.GameField;
+import ru.javabit.view.GameFieldRenderable;
 
 public class GameFieldRenderer implements GameFieldRenderable {
 

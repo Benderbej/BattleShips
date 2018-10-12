@@ -1,4 +1,4 @@
-package ru.javabit.gameField;
+package ru.javabit.view;
 
 public enum CellState {
 
