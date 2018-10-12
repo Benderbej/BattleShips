@@ -3,7 +3,7 @@ package ru.javabit.gameField;
 public class MetaFieldCell extends FieldCell {
 
     MetaFieldCell(int x, int y, String skin) {
-        super(x, y);
+        super(new FieldCellCoordinate(x,y));
         this.setSkin(skin);
     }
 
