@@ -60,13 +60,4 @@ public class Main {
 
 
 
-    //class Game {
-
-    //    Game(){
-    //        GameField gameField = GameField.getInstance(10, 10);
-    //    }
-
-
-    //}
-
 }

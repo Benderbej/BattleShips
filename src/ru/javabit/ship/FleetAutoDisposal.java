@@ -18,31 +18,8 @@ public class FleetAutoDisposal implements FleetDisposable {
         this.fleet = fleet;
         this.gameField = gameField;
         this.fieldCells = gameField.getGameFieldGrid().getCellsArr();
-        //getRandomPisitiveInt();
-
-        FieldCell fieldCell = getRandomPositiveCell();
-
-        //System.out.println(">>"+fieldCell.getSkin() + "<<");
-        //fieldCell.setSkin("@");
-        //System.out.println(">>"+fieldCell.getSkin() + "<<");
-        //ArrayList<FieldCell> fieldCells = findPossiblePositionsForCell(fieldCell);
-        //System.out.println(""+ fieldCells.size());
-        //printPossiblePositionsForCell(fieldCells);
-
-        Ship ship = fleet.shipList.get(0);
-        placeShip(ship);
-        Ship ship2 = fleet.shipList.get(1);
-        placeShip(ship2);
-        //Ship ship4 = fleet.shipList.get(4);
-        //placeShip(ship4);
-        Ship ship8 = fleet.shipList.get(8);
-        placeShip(ship8);
-
-
-        //есть проблема в алгоритме, бывает, что случайная начальная точка построения корабля не гарантирует возможность его построения, необходимо доработать алгоритм
-        //2 есть также проблема, почему-то иногда строит корабли вплотную, когда они выстроены в одну линию, необходимо проанализировать соответствующие методы(те что проверяют на Cellstate.Reserved
-        //возможно рандом попадает в корабль сразу... и надо его перекидывать
-
+        disposeFleet(fleet.shipList);
+        makeAllReservedCellsFreewater();
     }
 
     private ArrayList<FieldCell> disposeShip(int size){
@@ -51,15 +28,15 @@ public class FleetAutoDisposal implements FleetDisposable {
         return cells;
     }
 
-    public void disposeFleet(ArrayList<FieldCell> shipCells){
-        for (FieldCell cell : shipCells) {
-
+    public void disposeFleet(ArrayList<Ship> shipList){
+        for (Ship ship : shipList) {
+            placeShip(ship);
         }
     }
 
     private void placeShip(Ship ship){
         FieldCell fieldCell = placeStartShipCell(ship);
-        System.out.println(" "+fieldCell.getX()+" "+fieldCell.getY());
+        //System.out.println(" "+fieldCell.getX()+" "+fieldCell.getY());
         placeSecondShipCell(ship, fieldCell);
         if (ship.size > 2) {
             for (int i = 0; i < ship.size; i++) {
@@ -82,40 +59,65 @@ public class FleetAutoDisposal implements FleetDisposable {
     }
 
     private FieldCell placeStartShipCell(Ship ship){
-        System.out.println("placeStartShipCell()");
         FieldCell startShipCell = getRandomPositiveCell();
-
         while(checkIfCellOccupied(startShipCell)) {
-            System.out.println("!!!occupyied!");
             startShipCell = getRandomPositiveCell();
         }
-        System.out.println("not occupyied!");
         placeShipCell(ship, startShipCell);
         return startShipCell;
     }
 
     private void placeSecondShipCell(Ship ship, FieldCell startShipCell){
         ArrayList<FieldCell> fieldCells = findPossiblePositionsForCell(startShipCell);
-        FieldCell secondShipCell = getFromPossiblePosotionsList(fieldCells);
-        System.out.println(" startShipCell.getX()="+startShipCell.getX() + " startShipCell.getY()="+startShipCell.getY()+" secondShipCell.getX()="+secondShipCell.getX()+" secondShipCell.getY="+secondShipCell.getY());
-        if(startShipCell.getX() == secondShipCell.getX()){ship.shipPosition = ShipPosition.Vertical;}
-        if(startShipCell.getY() == secondShipCell.getY()){ship.shipPosition = ShipPosition.Horizontal;}
-        placeShipCell(ship, startShipCell);
+        //System.out.println("cells size"+fieldCells.size());
+        if(fieldCells.size()>0) {
+            FieldCell secondShipCell = getFromPossiblePosotionsList(fieldCells);
+            //System.out.println(" startShipCell.getX()="+startShipCell.getX() + " startShipCell.getY()="+startShipCell.getY()+" secondShipCell.getX()="+secondShipCell.getX()+" secondShipCell.getY="+secondShipCell.getY());
+            if(startShipCell.getX() == secondShipCell.getX()){ship.shipPosition = ShipPosition.Vertical;}
+            if(startShipCell.getY() == secondShipCell.getY()){ship.shipPosition = ShipPosition.Horizontal;}
+            placeShipCell(ship, startShipCell);
+        } else {
+            rebuildCurrentShip(ship);
+        }
+
+
     }
 
     private void placeOtherShipCell(Ship ship){
         ArrayList<FieldCell> cells = null;
-        FieldCell fieldCell;
+        FieldCell fieldCell = null;
         if (ship.shipPosition == ShipPosition.Vertical){
             cells = getVerticalCells(ship);
         }
         if (ship.shipPosition == ShipPosition.Horizontal){
             cells = getHorizontalCells(ship);
         }
-        System.out.println("cells size"+cells.size());
-        fieldCell = cells.get(getRandomInt(1));
+        //System.out.println("cells size"+cells.size());
+        if(cells.size()>1){
+            fieldCell = cells.get(getRandomInt(cells.size()));
+        }
+        if(cells.size()==1){
+            fieldCell = cells.get(getRandomInt(1));
+        }
+        if(cells.size()==0){
+            //System.out.println("NO CELLS!");
+            rebuildCurrentShip(ship);
+            return;
+        }
+
+
+        //fieldCell = cells.get(getRandomInt(1));
+        //fieldCell = cells.get(0);
+
         placeShipCell(ship, fieldCell);
 
+    }
+
+    private void rebuildCurrentShip(Ship ship){
+        //System.out.println("rebuildship");
+        ship.shipPosition = null;
+        ship.cells = new ArrayList<FieldCell>(ship.size);
+        placeShip(ship);
     }
 
     private int getRandomPositiveInt(){
@@ -224,9 +226,7 @@ public class FleetAutoDisposal implements FleetDisposable {
     private ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell){//find vertical and horizontal neighbors ad add it ti list if in bounds
         ArrayList<FieldCell> possibleCellsList = new ArrayList<>(5);
         FieldCell fieldCell1 = getNeighborCell(fieldCell, -1, 0);
-        System.out.println(" "+ fieldCell1.getX() + " " + fieldCell1.getY());
         if(!fieldCellIsZero(fieldCell1)){possibleCellsList.add(fieldCell1);}
-        System.out.println(" "+ fieldCell1.getX() + " " + fieldCell1.getY());
         FieldCell fieldCell2 = getNeighborCell(fieldCell, 0, -1);
         if(!fieldCellIsZero(fieldCell2)){possibleCellsList.add(fieldCell2);}
         FieldCell fieldCell3 = getNeighborCell(fieldCell, +1, 0);
@@ -280,12 +280,12 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     private boolean checkIfCellOccupied(FieldCell fieldCell){
         boolean b;
-        System.out.println("skin="+fieldCell.getSkin());
+        //System.out.println("skin="+fieldCell.getSkin());
         if ((fieldCell.getSkin() == CellState.Reserved.getSkin()) || (fieldCell.getSkin() == CellState.ShipPart.getSkin())){b = true;} else {b = false;}
         return b;
     }
 
-    private void makeAllPaddingCellsFreewater(){
+    private void makeAllReservedCellsFreewater(){//makeAllPaddingCellsFreewater
         for (FieldCell[] fieldCellArr: fieldCells) {
             for (FieldCell fieldCell : fieldCellArr) {
                 if (fieldCell.getSkin() == CellState.Reserved.getSkin()){fieldCell.setSkin(CellState.FreeWater.getSkin());}

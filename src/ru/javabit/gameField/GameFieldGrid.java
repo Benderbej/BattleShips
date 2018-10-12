@@ -36,7 +36,6 @@ public class GameFieldGrid {
                 }
             }
         }
-        System.out.println("jj");
     }
 
     public FieldCell[][] getCellsArr() {

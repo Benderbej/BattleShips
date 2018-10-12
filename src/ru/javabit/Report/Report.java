@@ -1,6 +1,6 @@
 package ru.javabit.Report;
 
-enum Report {
+public enum Report {
 
     Greeting("Приветствуем! Добро пожаловать в игру BattleShips!"), Finishing(" Спасибо за игру!"), AskingNAme(" Можно поинтересоваться как вас зовут?");
 
@@ -8,6 +8,10 @@ enum Report {
 
     Report(String text){
         this.text = text;
+    }
+
+    public String getText() {
+        return text;
     }
 
 }

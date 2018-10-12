@@ -6,6 +6,6 @@ import java.util.ArrayList;
 
 public interface FleetDisposable {
 
-    void disposeFleet(ArrayList<FieldCell> shipCells);
+    void disposeFleet(ArrayList<Ship> shipList);
 
 }
