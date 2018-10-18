@@ -36,7 +36,7 @@ public class FleetAutoDisposal implements FleetDisposable {
     }
 
     private void placeShip(Ship ship){
-        FieldCell fieldCell = placeStartShipCell(ship);
+        GameFieldCell fieldCell = placeStartShipCell(ship);
         //System.out.println(" "+fieldCell.getX()+" "+fieldCell.getY());
         placeSecondShipCell(ship, fieldCell);
         if (ship.size > 2) {
@@ -53,14 +53,14 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     }
 
-    private void placeShipCell(Ship ship, FieldCell fieldCell){
+    private void placeShipCell(Ship ship, GameFieldCell fieldCell){
         ship.cells.add(fieldCell);
         setCellOccupied(fieldCell);
         //fieldCell.setSkin(CellState.ShipPart.getSkin());
     }
 
-    private FieldCell placeStartShipCell(Ship ship){
-        FieldCell startShipCell = getRandomPositiveCell();
+    private GameFieldCell placeStartShipCell(Ship ship){
+        GameFieldCell startShipCell = getRandomPositiveCell();
         while(checkIfCellOccupied(startShipCell)) {
             startShipCell = getRandomPositiveCell();
         }
@@ -68,7 +68,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         return startShipCell;
     }
 
-    private void placeSecondShipCell(Ship ship, FieldCell startShipCell){
+    private void placeSecondShipCell(Ship ship, GameFieldCell startShipCell){
         ArrayList<FieldCell> fieldCells = findPossiblePositionsForCell(startShipCell);
         //System.out.println("cells size"+fieldCells.size());
         if(fieldCells.size()>0) {
@@ -86,7 +86,7 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     private void placeOtherShipCell(Ship ship){
         ArrayList<FieldCell> cells = null;
-        FieldCell fieldCell = null;
+        GameFieldCell fieldCell = null;
         if (ship.shipPosition == ShipPosition.Vertical){
             cells = getVerticalCells(ship);
         }
@@ -95,10 +95,10 @@ public class FleetAutoDisposal implements FleetDisposable {
         }
         //System.out.println("cells size"+cells.size());
         if(cells.size()>1){
-            fieldCell = cells.get(getRandomInt(cells.size()));
+            fieldCell = (GameFieldCell) cells.get(getRandomInt(cells.size()));
         }
         if(cells.size()==1){
-            fieldCell = cells.get(getRandomInt(1));
+            fieldCell = (GameFieldCell) cells.get(getRandomInt(1));
         }
         if(cells.size()==0){
             //System.out.println("NO CELLS!");
@@ -138,14 +138,14 @@ public class FleetAutoDisposal implements FleetDisposable {
         int maxY = getMaxYCell(ship.cells);
 
         if(minY > 2) {
-            FieldCell minYFieldCell = fieldCells[x][minY - 1];
-            if ((minYFieldCell.getSkin() != CellState.Reserved.getSkin()) && (minYFieldCell.getSkin() != CellState.ShipPart.getSkin())) {
+            GameFieldCell minYFieldCell = (GameFieldCell) fieldCells[x][minY - 1];
+            if(!checkIfCellOccupied(minYFieldCell)){
                 possibleCellsList.add(minYFieldCell);
             }
         }
         if (maxY < 10) {
-            FieldCell maxYFieldCell = fieldCells[x][maxY + 1];
-            if ((maxYFieldCell.getSkin() != CellState.Reserved.getSkin()) && (maxYFieldCell.getSkin() != CellState.ShipPart.getSkin())) {
+            GameFieldCell maxYFieldCell = (GameFieldCell) fieldCells[x][maxY + 1];
+            if(!checkIfCellOccupied(maxYFieldCell)){
                 possibleCellsList.add(maxYFieldCell);
             }
         }
@@ -159,14 +159,14 @@ public class FleetAutoDisposal implements FleetDisposable {
             int maxX = getMaxXCell(ship.cells);
 
             if (minX > 2) {
-                FieldCell minXFieldCell = fieldCells[minX - 1][y];
-                if ((minXFieldCell.getSkin() != CellState.Reserved.getSkin()) && (minXFieldCell.getSkin() != CellState.ShipPart.getSkin())) {
+                GameFieldCell minXFieldCell = (GameFieldCell) fieldCells[minX - 1][y];
+                if(!checkIfCellOccupied(minXFieldCell)){
                     possibleCellsList.add(minXFieldCell);
                 }
             }
             if (maxX < 10) {
-                FieldCell maxXFieldCell = fieldCells[maxX + 1][y];
-                if ((maxXFieldCell.getSkin() != CellState.Reserved.getSkin()) && (maxXFieldCell.getSkin() != CellState.ShipPart.getSkin())) {
+                GameFieldCell maxXFieldCell = (GameFieldCell) fieldCells[maxX + 1][y];
+                if(!checkIfCellOccupied(maxXFieldCell)){
                     possibleCellsList.add(maxXFieldCell);
                 }
             }
@@ -202,10 +202,10 @@ public class FleetAutoDisposal implements FleetDisposable {
         return y;
     }
 
-    private FieldCell getRandomPositiveCell(){
+    private GameFieldCell getRandomPositiveCell(){
         int x = getRandomPositiveInt();
         int y = getRandomPositiveInt();
-        FieldCell cell = fieldCells[x][y];
+        GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
         return cell;
     }
 
@@ -216,12 +216,12 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     }
 
-    private void setCellOccupied(FieldCell fieldCell){
-        fieldCell.setSkin(CellState.ShipPart.getSkin());
+    private void setCellOccupied(GameFieldCell fieldCell){
+        fieldCell.setState(CellState.ShipPart);
     }
 
-    private void setCellReserved(FieldCell fieldCell){
-        fieldCell.setSkin(CellState.Reserved.getSkin());
+    private void setCellReserved(GameFieldCell fieldCell){
+        fieldCell.setState(CellState.Reserved);
     }
 
     private ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell){//find vertical and horizontal neighbors ad add it ti list if in bounds
@@ -252,8 +252,8 @@ public class FleetAutoDisposal implements FleetDisposable {
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
         int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
         if((0 < x && x < 11)&&(0 < y && y < 11)){
-            FieldCell cell = fieldCells[x][y];
-            if((cell.getSkin() != CellState.Reserved.getSkin()) && (cell.getSkin() != CellState.ShipPart.getSkin())) {//повтор есть в getVerticalCells и getHorizontalCells
+            GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
+            if((cell.getState() != CellState.Reserved) && (cell.getState() != CellState.ShipPart)) {//повтор есть в getVerticalCells и getHorizontalCells
                 return cell;
             }
         }
@@ -262,11 +262,6 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     private boolean fieldCellIsZero(FieldCell fieldCell){
         if(fieldCell.equals(fieldCells[0][0])){return true;} else {return false;}
-    }
-
-    private ArrayList<FieldCell> findPossiblePositionsForCellGroup(FieldCell fieldCell){
-        //if(fieldCell.){}
-        return null;
     }
 
     private ArrayList<FieldCell> reserveFieldCells(FieldCell fieldCell){//reserve cells ares from occupying it by another ships(do it after replacing the ship)
@@ -279,17 +274,20 @@ public class FleetAutoDisposal implements FleetDisposable {
         return b;
     }
 
-    private boolean checkIfCellOccupied(FieldCell fieldCell){
+    private boolean checkIfCellOccupied(GameFieldCell fieldCell){
         boolean b;
-        //System.out.println("skin="+fieldCell.getSkin());
-        if ((fieldCell.getSkin() == CellState.Reserved.getSkin()) || (fieldCell.getSkin() == CellState.ShipPart.getSkin())){b = true;} else {b = false;}
+        if ((fieldCell.getState() == CellState.Reserved) || (fieldCell.getState() == CellState.ShipPart)){b = true;} else {b = false;}
         return b;
     }
 
     private void makeAllReservedCellsFreewater(){//makeAllPaddingCellsFreewater
         for (FieldCell[] fieldCellArr: fieldCells) {
             for (FieldCell fieldCell : fieldCellArr) {
-                if (fieldCell.getSkin() == CellState.Reserved.getSkin()){fieldCell.setSkin(CellState.FreeWater.getSkin());}
+                if(fieldCell instanceof GameFieldCell) {
+                    if (((GameFieldCell) fieldCell).getState() == CellState.Reserved) {
+                        ((GameFieldCell) fieldCell).setState(CellState.FreeWater);
+                    }
+                }
             }
         }
     }
@@ -328,8 +326,9 @@ public class FleetAutoDisposal implements FleetDisposable {
     private void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
         for(FieldCellCoordinate coordinate : resFieldCellCoords){
             if((0 < coordinate.getX() && coordinate.getX() < 11)&&(0 < coordinate.getY() && coordinate.getY() < 11)){
-                if(fieldCells[coordinate.getX()][coordinate.getY()].getSkin()!=CellState.ShipPart.getSkin()){
-                    fieldCells[coordinate.getX()][coordinate.getY()].setSkin(CellState.Reserved.getSkin());
+                GameFieldCell gameFieldCell = (GameFieldCell) fieldCells[coordinate.getX()][coordinate.getY()];
+                if(gameFieldCell.getState()!=CellState.ShipPart){
+                    gameFieldCell.setState(CellState.Reserved);
                 }
             }
         }
