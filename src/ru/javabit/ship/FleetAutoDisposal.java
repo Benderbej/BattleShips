@@ -74,8 +74,8 @@ public class FleetAutoDisposal implements FleetDisposable {
         if(fieldCells.size()>0) {
             FieldCell secondShipCell = getFromPossiblePosotionsList(fieldCells);
             //System.out.println(" startShipCell.getX()="+startShipCell.getX() + " startShipCell.getY()="+startShipCell.getY()+" secondShipCell.getX()="+secondShipCell.getX()+" secondShipCell.getY="+secondShipCell.getY());
-            if(startShipCell.getX() == secondShipCell.getX()){ship.shipPosition = ShipPosition.Vertical;}
-            if(startShipCell.getY() == secondShipCell.getY()){ship.shipPosition = ShipPosition.Horizontal;}
+            if(startShipCell.getFieldCellCoordinate().getX() == secondShipCell.getFieldCellCoordinate().getX()){ship.shipPosition = ShipPosition.Vertical;}
+            if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){ship.shipPosition = ShipPosition.Horizontal;}
             placeShipCell(ship, startShipCell);
         } else {
             rebuildCurrentShip(ship);
@@ -132,7 +132,7 @@ public class FleetAutoDisposal implements FleetDisposable {
     }
 
     private ArrayList<FieldCell> getVerticalCells(Ship ship){//похожий код, можно подумать о рефакторинге
-        int x = ship.cells.get(0).getX();
+        int x = ship.cells.get(0).getFieldCellCoordinate().getX();
         ArrayList<FieldCell> possibleCellsList = new ArrayList<>(2);
         int minY = getMinYCell(ship.cells);
         int maxY = getMaxYCell(ship.cells);
@@ -153,7 +153,7 @@ public class FleetAutoDisposal implements FleetDisposable {
     }
 
     private ArrayList<FieldCell> getHorizontalCells(Ship ship){//похожий код, можно подумать о рефакторинге
-            int y = ship.cells.get(0).getY();
+            int y = ship.cells.get(0).getFieldCellCoordinate().getY();
             ArrayList<FieldCell> possibleCellsList = new ArrayList<>(2);
             int minX = getMinXCell(ship.cells);
             int maxX = getMaxXCell(ship.cells);
@@ -176,28 +176,28 @@ public class FleetAutoDisposal implements FleetDisposable {
     private int getMinXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
         int  x = 11;
         for (FieldCell cell: cells) {
-            if (cell.getX() < x){x = cell.getX();}
+            if (cell.getFieldCellCoordinate().getX() < x){x = cell.getFieldCellCoordinate().getX();}
         }
         return x;
     }
     private int getMaxXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
         int  x = 0;
         for (FieldCell cell: cells) {
-            if (cell.getX() > x){x = cell.getX();}
+            if (cell.getFieldCellCoordinate().getX() > x){x = cell.getFieldCellCoordinate().getX();}
         }
         return x;
     }
     private int getMinYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
         int  y = 11;
         for (FieldCell cell: cells) {
-            if (cell.getY() < y){y = cell.getY();}
+            if (cell.getFieldCellCoordinate().getY() < y){y = cell.getFieldCellCoordinate().getY();}
         }
         return y;
     }
     private int getMaxYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
         int  y = 0;
         for (FieldCell cell: cells) {
-            if (cell.getY() > y){y = cell.getY();}
+            if (cell.getFieldCellCoordinate().getY() > y){y = cell.getFieldCellCoordinate().getY();}
         }
         return y;
     }
@@ -239,7 +239,7 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     private void printPossiblePositionsForCell(ArrayList<FieldCell> possibleCellsList){
         for (FieldCell cell: possibleCellsList) {
-            System.out.println("PossiblePosition: x="+ cell.getX()+" y="+cell.getY());
+            System.out.println("PossiblePosition: x="+ cell.getFieldCellCoordinate().getX()+" y="+cell.getFieldCellCoordinate().getY());
         }
     }
 
@@ -249,8 +249,8 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     private FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
 
-        int x=fieldCell.getX()+deltaX;
-        int y=fieldCell.getY()+deltaY;
+        int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
+        int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
         if((0 < x && x < 11)&&(0 < y && y < 11)){
             FieldCell cell = fieldCells[x][y];
             if((cell.getSkin() != CellState.Reserved.getSkin()) && (cell.getSkin() != CellState.ShipPart.getSkin())) {//повтор есть в getVerticalCells и getHorizontalCells
@@ -299,7 +299,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         if(ship.shipPosition == ShipPosition.Horizontal){
             int maxX = getMaxXCell(ship.cells);
             int minX = getMinXCell(ship.cells);
-            int y = ship.cells.get(0).getY();
+            int y = ship.cells.get(0).getFieldCellCoordinate().getY();
             int startX = minX-1;
             int finX = maxX+1;
             resFieldCellCoords.add(new FieldCellCoordinate(0,0));
@@ -312,7 +312,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         if(ship.shipPosition == ShipPosition.Vertical){
             int maxY = getMaxYCell(ship.cells);
             int minY = getMinYCell(ship.cells);
-            int x = ship.cells.get(0).getX();
+            int x = ship.cells.get(0).getFieldCellCoordinate().getX();
             int startY = minY-1;
             int finY = maxY+1;
             resFieldCellCoords.add(new FieldCellCoordinate(0,0));

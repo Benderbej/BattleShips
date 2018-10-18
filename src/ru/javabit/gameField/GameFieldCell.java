@@ -1,6 +1,12 @@
 package ru.javabit.gameField;
 
 import ru.javabit.view.CellState;
+/**
+ * клетка игрового поля на которой может быть размещен корабль
+ * имеет поле состояние state, от вида этого состяние зависит внешний вид клетки skin, поэтому переопределен getSkin в
+ */
+
+
 
 public class GameFieldCell extends FieldCell {
 
@@ -13,13 +19,17 @@ public class GameFieldCell extends FieldCell {
         this.setSkin(this.state.getSkin());
     }
 
+    @Override
+    public String getSkin() {
+        return state.getSkin();
+    }
+
     public CellState getState() {
         return state;
     }
 
     public void setState(CellState state) {
         this.state = state;
-
     }
 
 

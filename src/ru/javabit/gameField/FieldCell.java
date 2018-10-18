@@ -2,27 +2,23 @@ package ru.javabit.gameField;
 
 public abstract class FieldCell  {
 
+    /**
+     * класс абстрактный так как обязывает нас выбрать либо gameFieldCell реализацию, либо MetaFieldCell реализацию
+     * клетка FieldCell - это условная клетка на разлинованном игровом поле, включающая в себя также клетки в столбце и строке координат(Meta), так как
+     * и те и другие клетки(meta и game) должны друг с другом соотносится на игровом поле, и те и другие имеют координаты(это как бы реальные координаты разметки, не обязательно игровые координаты)
+     * координата реализована в виде отдельного класса так как представляет отдельную абстрактную сущность
+     * так же есть локальная переменная skin отвечающая за отображение клетки игрового поля
+     *
+     * клетки сравниватся по координатам, другие параметры не важны, сравнение нужно для последующей реализации логики игры, когда твое игровое поле с кораблями соперника соответствует игровому полю врага,
+     * и когда нужно сравнить клетки этих полей, чтобы а4 на одном оле было равно  а4 на другом.
+     */
+
     private FieldCellCoordinate fieldCellCoordinate;
-    private int x;//real coordinates, include column row name cells (0-10)
-    private int y;//real coordinates, include column row name cells (0-10)
     private String skin;//лучше бы было здесь хранить Enum State и оттуда брать skin, точнее создать класс FieldState и хранить его экземпляр в экземпляре FieldState, а Enum оставить для скинов итд
 
-    //FieldCell (int x, int y){
-    //    this.x = x;
-    //    this.y = y;
-    //}
 
     FieldCell (FieldCellCoordinate fieldCellCoordinate) {
-        this.x = fieldCellCoordinate.getX();
-        this.y = fieldCellCoordinate.getY();
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+        this.fieldCellCoordinate = fieldCellCoordinate;
     }
 
     public String getSkin() {
@@ -33,13 +29,18 @@ public abstract class FieldCell  {
         this.skin = skin;
     }
 
+    public FieldCellCoordinate getFieldCellCoordinate() {
+        return fieldCellCoordinate;
+    }
+
     @Override
     public boolean equals(Object obj) {
         FieldCell fieldCell = (FieldCell) obj;
-        if ((fieldCell.getX() == this.getX())&&(fieldCell.getY() == this.getY())){
+        if ((fieldCell.fieldCellCoordinate == this.fieldCellCoordinate)){
             return true;
         } else {
             return false;
         }
     }
+
 }
