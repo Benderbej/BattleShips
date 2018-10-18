@@ -45,7 +45,7 @@ public class FleetAutoDisposal implements FleetDisposable {
             }
         }
         //предусмотреть алгоритм, если корабль не влезает(добавили пару клеток а третья никак не лезет) пробовать строить корабль заново а клетки текущего стирать
-        maskReservedArea(ship, buildReservedArea(ship));
+        maskReservedArea(buildReservedArea(ship));
 
     }
 
@@ -325,7 +325,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         return resFieldCellCoords;
     }
 
-    private void maskReservedArea(Ship ship, ArrayList<FieldCellCoordinate> resFieldCellCoords) {
+    private void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
         for(FieldCellCoordinate coordinate : resFieldCellCoords){
             if((0 < coordinate.getX() && coordinate.getX() < 11)&&(0 < coordinate.getY() && coordinate.getY() < 11)){
                 if(fieldCells[coordinate.getX()][coordinate.getY()].getSkin()!=CellState.ShipPart.getSkin()){

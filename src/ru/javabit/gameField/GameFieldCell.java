@@ -19,10 +19,10 @@ public class GameFieldCell extends FieldCell {
         this.setSkin(this.state.getSkin());
     }
 
-    @Override
-    public String getSkin() {
-        return state.getSkin();
-    }
+    //@Override
+    //public String getSkin() {
+    //    return state.getSkin();
+    //}
 
     public CellState getState() {
         return state;
