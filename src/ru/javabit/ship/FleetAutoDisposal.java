@@ -10,9 +10,12 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     private FieldCell disposeCell;
     private Fleet fleet;
-    private GameField gameField;
-    private FieldCell[][] fieldCells;
-    private Random r = new Random();
+    public static GameField gameField;//player's gamefield
+    public static FieldCell[][] fieldCells;//player's gamefield
+    private GameField enemiesGameField;//enemy's gamefield
+    private static FieldCell[][] enemiesFieldCells;//enemy's gamefield
+
+    private static Random r = new Random();
 
 
     public FleetAutoDisposal(Fleet fleet, GameField gameField){
@@ -31,7 +34,8 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     public void disposeFleet(ArrayList<Ship> shipList){
         for (Ship ship : shipList) {
-            placeShip(ship);
+            ship.placeShip();
+            //placeShip(ship);
         }
     }
 
@@ -80,8 +84,6 @@ public class FleetAutoDisposal implements FleetDisposable {
         } else {
             rebuildCurrentShip(ship);
         }
-
-
     }
 
     private void placeOtherShipCell(Ship ship){
@@ -121,12 +123,12 @@ public class FleetAutoDisposal implements FleetDisposable {
         placeShip(ship);
     }
 
-    private int getRandomPositiveInt(){
+    public static int getRandomPositiveInt(){
         int index = r.nextInt(gameField.getGameFieldGrid().getCellsArr().length -1)+1;
         return index;
     }
 
-    private int getRandomInt(int size){//довольно общий метод, сделать статическим?
+    public static int getRandomInt(int size){//довольно общий метод, сделать статическим?
         int id = r.nextInt(size);
         return id;
     }
@@ -173,28 +175,28 @@ public class FleetAutoDisposal implements FleetDisposable {
         return possibleCellsList;
     }
 
-    private int getMinXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+    public static int getMinXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
         int  x = 11;
         for (FieldCell cell: cells) {
             if (cell.getFieldCellCoordinate().getX() < x){x = cell.getFieldCellCoordinate().getX();}
         }
         return x;
     }
-    private int getMaxXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+    public static int getMaxXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
         int  x = 0;
         for (FieldCell cell: cells) {
             if (cell.getFieldCellCoordinate().getX() > x){x = cell.getFieldCellCoordinate().getX();}
         }
         return x;
     }
-    private int getMinYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+    public static int getMinYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
         int  y = 11;
         for (FieldCell cell: cells) {
             if (cell.getFieldCellCoordinate().getY() < y){y = cell.getFieldCellCoordinate().getY();}
         }
         return y;
     }
-    private int getMaxYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+    public static int getMaxYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
         int  y = 0;
         for (FieldCell cell: cells) {
             if (cell.getFieldCellCoordinate().getY() > y){y = cell.getFieldCellCoordinate().getY();}
@@ -202,7 +204,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         return y;
     }
 
-    private GameFieldCell getRandomPositiveCell(){
+    public static GameFieldCell getRandomPositiveCell(){
         int x = getRandomPositiveInt();
         int y = getRandomPositiveInt();
         GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
@@ -216,7 +218,7 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     }
 
-    private void setCellOccupied(GameFieldCell fieldCell){
+    public static void setCellOccupied(GameFieldCell fieldCell){
         fieldCell.setState(CellState.ShipPart);
     }
 
@@ -224,7 +226,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         fieldCell.setState(CellState.Reserved);
     }
 
-    private ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell){//find vertical and horizontal neighbors ad add it ti list if in bounds
+    public static ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell){//find vertical and horizontal neighbors ad add it ti list if in bounds
         ArrayList<FieldCell> possibleCellsList = new ArrayList<>(5);
         FieldCell fieldCell1 = getNeighborCell(fieldCell, -1, 0);
         if(!fieldCellIsZero(fieldCell1)){possibleCellsList.add(fieldCell1);}
@@ -243,11 +245,11 @@ public class FleetAutoDisposal implements FleetDisposable {
         }
     }
 
-    private FieldCell getFromPossiblePosotionsList(ArrayList<FieldCell> possiblePosotionsList){
+    public static FieldCell getFromPossiblePosotionsList(ArrayList<FieldCell> possiblePosotionsList){
         return possiblePosotionsList.get(r.nextInt(possiblePosotionsList.size()));
     }
 
-    private FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
+    private static FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
 
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
         int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
@@ -260,7 +262,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         return fieldCells[0][0];
     }
 
-    private boolean fieldCellIsZero(FieldCell fieldCell){
+    private static boolean fieldCellIsZero(FieldCell fieldCell){
         if(fieldCell.equals(fieldCells[0][0])){return true;} else {return false;}
     }
 
@@ -274,7 +276,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         return b;
     }
 
-    private boolean checkIfCellOccupied(GameFieldCell fieldCell){
+    public static boolean checkIfCellOccupied(GameFieldCell fieldCell){
         boolean b;
         if ((fieldCell.getState() == CellState.Reserved) || (fieldCell.getState() == CellState.ShipPart)){b = true;} else {b = false;}
         return b;
@@ -323,7 +325,7 @@ public class FleetAutoDisposal implements FleetDisposable {
         return resFieldCellCoords;
     }
 
-    private void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
+    public static void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
         for(FieldCellCoordinate coordinate : resFieldCellCoords){
             if((0 < coordinate.getX() && coordinate.getX() < 11)&&(0 < coordinate.getY() && coordinate.getY() < 11)){
                 GameFieldCell gameFieldCell = (GameFieldCell) fieldCells[coordinate.getX()][coordinate.getY()];

@@ -1,5 +1,7 @@
 package ru.javabit.ship;
 
+import ru.javabit.gameField.GameFieldCell;
+
 public class Boat extends Ship {
 
     Boat(){
@@ -7,8 +9,4 @@ public class Boat extends Ship {
         this.shipPosition = ShipPosition.Unar;
     }
 
-    @Override
-    void placeToGameField() {
-
-    }
 }

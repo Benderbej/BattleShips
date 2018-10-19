@@ -6,8 +6,4 @@ public class BattleCruiser extends Ship {
         super(4, "BattleCruiser");
     }
 
-    @Override
-    void placeToGameField() {
-
-    }
 }

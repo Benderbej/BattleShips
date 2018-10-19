@@ -6,8 +6,4 @@ public class Cruiser extends Ship {
         super(3, "Cruiser");
     }
 
-    @Override
-    void placeToGameField() {
-
-    }
 }

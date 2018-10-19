@@ -6,8 +6,4 @@ public class Destroyer extends Ship {
         super(2, "Destroyer");
     }
 
-    @Override
-    void placeToGameField() {
-
-    }
 }
