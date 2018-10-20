@@ -41,5 +41,4 @@ public class GameFieldCell extends FieldCell {
     public static void setCellOccupied(GameFieldCell fieldCell){
         fieldCell.setState(CellState.ShipPart);
     }
-
 }

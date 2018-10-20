@@ -21,7 +21,6 @@ public abstract class Ship {
     private void placeShipCell(GameFieldCell fieldCell){
         cells.add(fieldCell);
         GameFieldCell.setCellOccupied(fieldCell);
-        //fieldCell.setSkin(CellState.ShipPart.getSkin());
     }
 
     GameFieldCell placeStartShipCell(){
@@ -35,10 +34,8 @@ public abstract class Ship {
 
     void placeSecondShipCell(GameFieldCell startShipCell){
         ArrayList<FieldCell> fieldCells = FleetAutoDisposal.findPossiblePositionsForCell(startShipCell);
-        //System.out.println("cells size"+fieldCells.size());
         if(fieldCells.size()>0) {
             FieldCell secondShipCell = FleetAutoDisposal.getFromPossiblePosotionsList(fieldCells);
-            //System.out.println(" startShipCell.getX()="+startShipCell.getX() + " startShipCell.getY()="+startShipCell.getY()+" secondShipCell.getX()="+secondShipCell.getX()+" secondShipCell.getY="+secondShipCell.getY());
             if(startShipCell.getFieldCellCoordinate().getX() == secondShipCell.getFieldCellCoordinate().getX()){shipPosition = ShipPosition.Vertical;}
             if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){shipPosition = ShipPosition.Horizontal;}
             placeShipCell(startShipCell);
@@ -56,7 +53,6 @@ public abstract class Ship {
         if (shipPosition == ShipPosition.Horizontal){
             cells = getHorizontalCells();
         }
-        //System.out.println("cells size"+cells.size());
         if(cells.size()>1){
             fieldCell = (GameFieldCell) cells.get(FleetAutoDisposal.getRandomInt(cells.size()));
         }
@@ -64,7 +60,6 @@ public abstract class Ship {
             fieldCell = (GameFieldCell) cells.get(FleetAutoDisposal.getRandomInt(1));
         }
         if(cells.size()==0){
-            //System.out.println("NO CELLS!");
             rebuildCurrentShip();
             return;
         }
@@ -147,15 +142,7 @@ public abstract class Ship {
     }
 
     private void rebuildCurrentShip(){
-        //System.out.println("rebuildship");
-        //this.shipPosition = null;
         this.cells = new ArrayList<FieldCell>(size);
-
         placeShip();
     }
-
-
-
-    //abstract void placeShip();
-
 }

@@ -6,9 +6,8 @@ public class GameField {
 
     private static GameField gameField;
     private GameFieldGrid gameFieldGrid;
-
-    //private int columnNum = 11;
-    //private int rowNum = 11;
+    private int columnNum = 11;
+    private int rowNum = 11;
 
     private GameField(){}
 
@@ -27,4 +26,11 @@ public class GameField {
         return gameField;
     }
 
+    public int getColumnNum() {
+        return columnNum;
+    }
+
+    public int getRowNum() {
+        return rowNum;
+    }
 }

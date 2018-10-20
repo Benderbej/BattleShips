@@ -8,7 +8,6 @@ import java.util.Random;
 
 public class FleetAutoDisposal implements FleetDisposable {
 
-    private FieldCell disposeCell;
     private Fleet fleet;
     public static GameField gameField;//player's gamefield
     public static FieldCell[][] fieldCells;//player's gamefield
@@ -70,7 +69,7 @@ public class FleetAutoDisposal implements FleetDisposable {
 
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
         int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
-        if(checkNotOutOfBounds(x,y,11,11)){
+        if(checkNotOutOfBounds(x,y,gameField.getColumnNum(),gameField.getRowNum())){
             GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
             if((cell.getState() != CellState.Reserved) && (cell.getState() != CellState.ShipPart)) {//повтор есть в getVerticalCells и getHorizontalCells
                 return cell;
@@ -102,7 +101,7 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     public static void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
         for(FieldCellCoordinate coordinate : resFieldCellCoords){
-            if(checkNotOutOfBounds(coordinate.getX(), coordinate.getY(), 11, 11)) {
+            if(checkNotOutOfBounds(coordinate.getX(), coordinate.getY(), gameField.getColumnNum(), gameField.getRowNum())) {
                 GameFieldCell gameFieldCell = (GameFieldCell) fieldCells[coordinate.getX()][coordinate.getY()];
                 if(gameFieldCell.getState()!=CellState.ShipPart){
                     gameFieldCell.setState(CellState.Reserved);
