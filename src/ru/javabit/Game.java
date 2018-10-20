@@ -1,6 +1,6 @@
 package ru.javabit;
 
-import ru.javabit.Report.Report;
+import ru.javabit.report.Report;
 import ru.javabit.gameField.GameField;
 import ru.javabit.view.GameFieldRenderer;
 import ru.javabit.ship.Fleet;

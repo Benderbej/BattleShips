@@ -33,5 +33,13 @@ public class GameFieldCell extends FieldCell {
         this.setSkin(state.getSkin());
     }
 
+    public static boolean checkIfCellOccupied(GameFieldCell fieldCell){
+        if ((fieldCell.getState() == CellState.Reserved) || (fieldCell.getState() == CellState.ShipPart)){return true;}
+        return false;
+    }
+
+    public static void setCellOccupied(GameFieldCell fieldCell){
+        fieldCell.setState(CellState.ShipPart);
+    }
 
 }

@@ -1,5 +1,7 @@
 package ru.javabit.gameField;
 
+import java.util.ArrayList;
+
 public abstract class FieldCell  {
 
     /**
@@ -31,6 +33,35 @@ public abstract class FieldCell  {
 
     public FieldCellCoordinate getFieldCellCoordinate() {
         return fieldCellCoordinate;
+    }
+
+    public static int getMinXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+        int  x = 11;
+        for (FieldCell cell: cells) {
+            if (cell.getFieldCellCoordinate().getX() < x){x = cell.getFieldCellCoordinate().getX();}
+        }
+        return x;
+    }
+    public static int getMaxXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+        int  x = 0;
+        for (FieldCell cell: cells) {
+            if (cell.getFieldCellCoordinate().getX() > x){x = cell.getFieldCellCoordinate().getX();}
+        }
+        return x;
+    }
+    public static int getMinYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+        int  y = 11;
+        for (FieldCell cell: cells) {
+            if (cell.getFieldCellCoordinate().getY() < y){y = cell.getFieldCellCoordinate().getY();}
+        }
+        return y;
+    }
+    public static int getMaxYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+        int  y = 0;
+        for (FieldCell cell: cells) {
+            if (cell.getFieldCellCoordinate().getY() > y){y = cell.getFieldCellCoordinate().getY();}
+        }
+        return y;
     }
 
     @Override

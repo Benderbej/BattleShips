@@ -1,4 +1,4 @@
-package ru.javabit.Report;
+package ru.javabit.report;
 
 public enum Report {
 

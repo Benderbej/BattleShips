@@ -9,4 +9,9 @@ public class Boat extends Ship {
         this.shipPosition = ShipPosition.Unar;
     }
 
+    @Override
+    public void placeShip() {
+        placeStartShipCell();
+        FleetAutoDisposal.maskReservedArea(buildReservedArea());
+    }
 }
