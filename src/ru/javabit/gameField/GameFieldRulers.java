@@ -38,10 +38,6 @@ public class GameFieldRulers {
         return fieldColsSkin;
     }
 
-
-
-
-
     public ArrayList<String> getFieldRowsSkins() {
         return fieldRowsSkins;
     }
