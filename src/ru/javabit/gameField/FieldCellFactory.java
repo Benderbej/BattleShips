@@ -12,6 +12,4 @@ public class FieldCellFactory {
         MetaFieldCell cell = new MetaFieldCell(x, y, skin);
         return cell;
     }
-
-
 }

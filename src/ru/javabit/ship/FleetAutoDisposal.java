@@ -11,7 +11,6 @@ public class FleetAutoDisposal implements FleetDisposable {
     private Fleet fleet;
     public static GameField gameField;//player's gamefield
     public static FieldCell[][] fieldCells;//player's gamefield
-    private GameField enemiesGameField;//enemy's gamefield
     private static FieldCell[][] enemiesFieldCells;//enemy's gamefield
 
     private static Random r = new Random();
@@ -20,7 +19,7 @@ public class FleetAutoDisposal implements FleetDisposable {
     public FleetAutoDisposal(Fleet fleet, GameField gameField){
         this.fleet = fleet;
         this.gameField = gameField;
-        this.fieldCells = gameField.getGameFieldGrid().getCellsArr();
+        this.fieldCells = gameField.getPlayerFieldGrid().getCellsArr();
         disposeFleet(fleet.shipList);
         makeAllReservedCellsFreewater();
     }
@@ -32,7 +31,7 @@ public class FleetAutoDisposal implements FleetDisposable {
     }
 
     public static int getRandomPositiveInt(){
-        int index = r.nextInt(gameField.getGameFieldGrid().getCellsArr().length -1)+1;
+        int index = r.nextInt(gameField.getPlayerFieldGrid().getCellsArr().length -1)+1;
         return index;
     }
 

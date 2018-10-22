@@ -12,7 +12,7 @@ public class GameFieldRenderer implements GameFieldRenderable {
     private final String FIELDFOOTER = "***=========^^^^^^^^^^=========***";
 
     public GameFieldRenderer (GameField gameField){
-        this.cellsArr = gameField.getGameFieldGrid().getCellsArr();
+        this.cellsArr = gameField.getPlayerFieldGrid().getCellsArr();
     }
 
     public void renderGameField(){

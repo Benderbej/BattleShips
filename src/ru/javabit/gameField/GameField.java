@@ -4,26 +4,22 @@ import java.util.ArrayList;
 
 public class GameField {
 
-    private static GameField gameField;
-    private GameFieldGrid gameFieldGrid;
+    private GameFieldGrid playerFieldGrid;
+    private GameFieldGrid enemyFieldGrid;
     private int columnNum = 11;
     private int rowNum = 11;
 
-    private GameField(){}
-
-    private GameField(int rowNum, int columnNum){
-        this.gameFieldGrid = new GameFieldGrid(rowNum, columnNum);
+    public GameField(int rowNum, int columnNum){
+        this.playerFieldGrid = new GameFieldGrid(rowNum, columnNum);
+        this.enemyFieldGrid = new GameFieldGrid(rowNum, columnNum);
     }
 
-    public GameFieldGrid getGameFieldGrid() {
-        return gameFieldGrid;
+    public GameFieldGrid getPlayerFieldGrid() {
+        return playerFieldGrid;
     }
 
-    public static GameField getInstance(int rowNum, int columnNum){
-        if(gameField == null){
-            gameField = new GameField(rowNum, columnNum);
-        }
-        return gameField;
+    public GameFieldGrid getEnemyFieldGrid() {
+        return enemyFieldGrid;
     }
 
     public int getColumnNum() {
