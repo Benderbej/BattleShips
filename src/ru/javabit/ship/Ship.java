@@ -24,18 +24,18 @@ public abstract class Ship {
     }
 
     GameFieldCell placeStartShipCell(){
-        GameFieldCell startShipCell = FleetAutoDisposal.getRandomPositiveCell();
+        GameFieldCell startShipCell = FleetAutoDisposer.getRandomPositiveCell();
         while(GameFieldCell.checkIfCellOccupied(startShipCell)) {
-            startShipCell = FleetAutoDisposal.getRandomPositiveCell();
+            startShipCell = FleetAutoDisposer.getRandomPositiveCell();
         }
         placeShipCell(startShipCell);
         return startShipCell;
     }
 
     void placeSecondShipCell(GameFieldCell startShipCell){
-        ArrayList<FieldCell> fieldCells = FleetAutoDisposal.findPossiblePositionsForCell(startShipCell);
+        ArrayList<FieldCell> fieldCells = FleetAutoDisposer.findPossiblePositionsForCell(startShipCell);
         if(fieldCells.size()>0) {
-            FieldCell secondShipCell = FleetAutoDisposal.getFromPossiblePosotionsList(fieldCells);
+            FieldCell secondShipCell = FleetAutoDisposer.getFromPossiblePosotionsList(fieldCells);
             if(startShipCell.getFieldCellCoordinate().getX() == secondShipCell.getFieldCellCoordinate().getX()){shipPosition = ShipPosition.Vertical;}
             if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){shipPosition = ShipPosition.Horizontal;}
             placeShipCell(startShipCell);
@@ -54,10 +54,10 @@ public abstract class Ship {
             cells = getHorizontalCells();
         }
         if(cells.size()>1){
-            fieldCell = (GameFieldCell) cells.get(FleetAutoDisposal.getRandomInt(cells.size()));
+            fieldCell = (GameFieldCell) cells.get(FleetAutoDisposer.getRandomInt(cells.size()));
         }
         if(cells.size()==1){
-            fieldCell = (GameFieldCell) cells.get(FleetAutoDisposal.getRandomInt(1));
+            fieldCell = (GameFieldCell) cells.get(FleetAutoDisposer.getRandomInt(1));
         }
         if(cells.size()==0){
             rebuildCurrentShip();
@@ -73,13 +73,13 @@ public abstract class Ship {
         int maxY = FieldCell.getMaxYCell(cells);
 
         if(minY > 2) {
-            GameFieldCell minYFieldCell = (GameFieldCell) FleetAutoDisposal.fieldCells[x][minY - 1];
+            GameFieldCell minYFieldCell = (GameFieldCell) FleetAutoDisposer.fieldCells[x][minY - 1];
             if(!GameFieldCell.checkIfCellOccupied(minYFieldCell)){
                 possibleCellsList.add(minYFieldCell);
             }
         }
         if (maxY < 10) {
-            GameFieldCell maxYFieldCell = (GameFieldCell) FleetAutoDisposal.fieldCells[x][maxY + 1];
+            GameFieldCell maxYFieldCell = (GameFieldCell) FleetAutoDisposer.fieldCells[x][maxY + 1];
             if(!GameFieldCell.checkIfCellOccupied(maxYFieldCell)){
                 possibleCellsList.add(maxYFieldCell);
             }
@@ -94,13 +94,13 @@ public abstract class Ship {
         int maxX = FieldCell.getMaxXCell(cells);
 
         if (minX > 2) {
-            GameFieldCell minXFieldCell = (GameFieldCell) FleetAutoDisposal.fieldCells[minX - 1][y];
+            GameFieldCell minXFieldCell = (GameFieldCell) FleetAutoDisposer.fieldCells[minX - 1][y];
             if(!GameFieldCell.checkIfCellOccupied(minXFieldCell)){
                 possibleCellsList.add(minXFieldCell);
             }
         }
         if (maxX < 10) {
-            GameFieldCell maxXFieldCell = (GameFieldCell) FleetAutoDisposal.fieldCells[maxX + 1][y];
+            GameFieldCell maxXFieldCell = (GameFieldCell) FleetAutoDisposer.fieldCells[maxX + 1][y];
             if(!GameFieldCell.checkIfCellOccupied(maxXFieldCell)){
                 possibleCellsList.add(maxXFieldCell);
             }

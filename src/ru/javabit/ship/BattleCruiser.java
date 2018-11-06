@@ -17,6 +17,6 @@ public class BattleCruiser extends Ship {
                 placeOtherShipCell();
             }
         }
-        FleetAutoDisposal.maskReservedArea(buildReservedArea());
+        FleetAutoDisposer.maskReservedArea(buildReservedArea());
     }
 }

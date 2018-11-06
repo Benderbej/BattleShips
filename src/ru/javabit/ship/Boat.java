@@ -1,7 +1,5 @@
 package ru.javabit.ship;
 
-import ru.javabit.gameField.GameFieldCell;
-
 public class Boat extends Ship {
 
     Boat(){
@@ -12,6 +10,6 @@ public class Boat extends Ship {
     @Override
     public void placeShip() {
         placeStartShipCell();
-        FleetAutoDisposal.maskReservedArea(buildReservedArea());
+        FleetAutoDisposer.maskReservedArea(buildReservedArea());
     }
 }

@@ -29,7 +29,6 @@ public class GameFieldGrid {
             }
         }
     }
-
     public FieldCell[][] getCellsArr() {
         return cellsArr;
     }

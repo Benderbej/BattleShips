@@ -6,7 +6,7 @@ import ru.javabit.view.CellState;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class FleetAutoDisposal implements FleetDisposable {
+public class FleetAutoDisposer implements FleetDisposable {
 
     private Fleet fleet;
     public static GameField gameField;//player's gamefield
@@ -15,8 +15,7 @@ public class FleetAutoDisposal implements FleetDisposable {
 
     private static Random r = new Random();
 
-
-    public FleetAutoDisposal(Fleet fleet, GameField gameField){
+    public FleetAutoDisposer(Fleet fleet, GameField gameField){
         this.fleet = fleet;
         this.gameField = gameField;
         this.fieldCells = gameField.getPlayerFieldGrid().getCellsArr();

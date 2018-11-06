@@ -12,6 +12,6 @@ public class Destroyer extends Ship {
     public void placeShip() {
         GameFieldCell fieldCell = placeStartShipCell();
         placeSecondShipCell(fieldCell);
-        FleetAutoDisposal.maskReservedArea(buildReservedArea());
+        FleetAutoDisposer.maskReservedArea(buildReservedArea());
     }
 }

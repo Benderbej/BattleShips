@@ -1,8 +1,8 @@
 package ru.javabit.report;
 
-public class ConsoleDialogue {
+public class ConsoleDialogue implements UserDialogue  {
 
-    public static void makeReportToConsole(String s){
+    public void makeReport(String s){
         System.out.println(s);
     }
 }
