@@ -14,9 +14,8 @@ public class GameFieldCell extends FieldCell {
 
     GameFieldCell(int x, int y){
         super(new FieldCellCoordinate(x,y));
-        CellState state = CellState.FreeWater;
-        this.state = state;
-        this.setSkin(this.state.getSkin());
+        state = CellState.FreeWater;
+        this.setSkin(state.getSkin());
     }
 
     @Override

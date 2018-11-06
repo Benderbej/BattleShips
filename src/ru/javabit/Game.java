@@ -11,17 +11,17 @@ import ru.javabit.ship.FleetAutoDisposer;
 public class Game {
 
     private static Game game;
+    UserDialogue dialogue;
     GameField gameField;
     GameFieldRenderer gameFieldRenderer;
-    FleetAutoDisposer autoDisposal;
+    FleetAutoDisposer autoDisposer;
     Fleet fleet;
 
     Game(){
-        UserDialogue dialogue = new ConsoleDialogue();//???
-        dialogue.makeReport(Report.Greeting.getText());//???
-        this.gameField = new GameField(11, 11);
-        this.fleet = new Fleet();
-        this.autoDisposal = new FleetAutoDisposer(fleet, gameField);
+        meetUser();
+        gameField = new GameField(11, 11);
+        fleet = new Fleet();
+        autoDisposer = new FleetAutoDisposer(fleet, gameField);
         gameFieldRenderer = new GameFieldRenderer(gameField);
         gameFieldRenderer.renderGameField();
     }
@@ -31,6 +31,11 @@ public class Game {
             game = new Game();
         }
         return game;
+    }
+
+    private void meetUser(){
+        dialogue = new ConsoleDialogue();//???
+        dialogue.makeReport(Report.Greeting.getText());//???
     }
 
 }

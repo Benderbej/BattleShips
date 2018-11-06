@@ -11,8 +11,8 @@ public class GameFieldGrid {
 
     GameFieldGrid (int xsize, int ysize){
 
-        this.gameFieldRulers = new GameFieldRulers(ysize, xsize);
-        this.cellsArr = new FieldCell[xsize][ysize];
+        gameFieldRulers = new GameFieldRulers(ysize, xsize);
+        cellsArr = new FieldCell[xsize][ysize];
 
         fieldCellFactory = new FieldCellFactory();
         for (int y=0; y < ysize; y++){

@@ -39,12 +39,14 @@ public class GameField {
 
     private GameFieldGrid playerFieldGrid;
     private GameFieldGrid enemyFieldGrid;
-    private int columnNum = 11;
-    private int rowNum = 11;
+    private int columnNum;
+    private int rowNum;
 
     public GameField(int rowNum, int columnNum){
-        this.playerFieldGrid = new GameFieldGrid(rowNum, columnNum);
-        this.enemyFieldGrid = new GameFieldGrid(rowNum, columnNum);
+        this.columnNum = columnNum;
+        this.rowNum = rowNum;
+        playerFieldGrid = new GameFieldGrid(rowNum, columnNum);
+        enemyFieldGrid = new GameFieldGrid(rowNum, columnNum);
     }
 
     public GameFieldGrid getPlayerFieldGrid() {
