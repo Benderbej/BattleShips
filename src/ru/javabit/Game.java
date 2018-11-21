@@ -18,12 +18,7 @@ public class Game {
     Fleet fleet;
 
     Game(){
-        meetUser();
-        gameField = new GameField(11, 11);
-        fleet = new Fleet();
-        autoDisposer = new FleetAutoDisposer(fleet, gameField);
-        gameFieldRenderer = new GameFieldRenderer(gameField);
-        gameFieldRenderer.renderGameField();
+        initGame();
     }
 
     public static Game getInstance(){
@@ -31,6 +26,15 @@ public class Game {
             game = new Game();
         }
         return game;
+    }
+
+    private void initGame(){
+        meetUser();
+        gameField = new GameField(11, 11);
+        fleet = new Fleet();
+        autoDisposer = new FleetAutoDisposer(fleet, gameField);
+        gameFieldRenderer = new GameFieldRenderer(gameField);
+        gameFieldRenderer.renderGameField();
     }
 
     private void meetUser(){
