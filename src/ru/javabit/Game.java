@@ -31,13 +31,22 @@ public class Game {
 
      private void initGame(){
         meetUser();
-        gameField = new GameField(11, 11);
+        gameField = new GameField(11, 11,"computer 1", "computer 2");
+
         fleet = new Fleet();
-        autoDisposer = new FleetAutoDisposer(fleet, gameField);
+        //autoDisposer = new FleetAutoDisposer(fleet, gameField);
+        autoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
         autoDisposer.disposeFleet(fleet.shipList);
+
+         ;
+
+
 
         gameFieldRenderer = new GameFieldRenderer(gameField);
         gameFieldRenderer.renderGameField();
+
+
+
 
 
         turnMaster = TurnMaster.getInstance();

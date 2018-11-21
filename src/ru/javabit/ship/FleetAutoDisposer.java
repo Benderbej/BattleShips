@@ -8,18 +8,17 @@ import java.util.Random;
 
 public class FleetAutoDisposer implements FleetDisposable {
 
-    private Fleet fleet;
-    public static GameField gameField;//player's gamefield
+    private static int rowNum;
+    private static int columnNum;
     public static FieldCell[][] fieldCells;//player's gamefield
-    private static FieldCell[][] enemiesFieldCells;//enemy's gamefield
+    //private static FieldCell[][] enemiesFieldCells;//enemy's gamefield
 
     private static Random r = new Random();
 
-    public FleetAutoDisposer(Fleet fleet, GameField gameField){
-        this.fleet = fleet;
-        this.gameField = gameField;
-        this.fieldCells = gameField.getPlayerFieldGrid().getCellsArr();
-        //this.f
+    public FleetAutoDisposer(int rowNum, int columnNum, FieldCell[][] fieldCells){
+        this.fieldCells = fieldCells;
+        this.rowNum = rowNum;
+        this.columnNum = columnNum;
     }
 
     public void disposeFleet(ArrayList<Ship> shipList) {
@@ -30,7 +29,7 @@ public class FleetAutoDisposer implements FleetDisposable {
     }
 
     public static int getRandomPositiveInt() {
-        int index = r.nextInt(gameField.getPlayerFieldGrid().getCellsArr().length -1)+1;
+        int index = r.nextInt(fieldCells.length -1)+1;
         return index;
     }
 
@@ -67,7 +66,7 @@ public class FleetAutoDisposer implements FleetDisposable {
 
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
         int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
-        if(checkNotOutOfBounds(x,y,gameField.getColumnNum(),gameField.getRowNum())){
+        if(checkNotOutOfBounds(x,y,columnNum,rowNum)){
             GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
             if((cell.getState() != CellState.Reserved) && (cell.getState() != CellState.ShipPart)) {//повтор есть в getVerticalCells и getHorizontalCells
                 return cell;
@@ -99,7 +98,7 @@ public class FleetAutoDisposer implements FleetDisposable {
 
     public static void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
         for(FieldCellCoordinate coordinate : resFieldCellCoords){
-            if(checkNotOutOfBounds(coordinate.getX(), coordinate.getY(), gameField.getColumnNum(), gameField.getRowNum())) {
+            if(checkNotOutOfBounds(coordinate.getX(), coordinate.getY(), columnNum, rowNum)) {
                 GameFieldCell gameFieldCell = (GameFieldCell) fieldCells[coordinate.getX()][coordinate.getY()];
                 if(gameFieldCell.getState()!=CellState.ShipPart){
                     gameFieldCell.setState(CellState.Reserved);
