@@ -37,7 +37,7 @@ public class Game {
         gameFieldRenderer.renderGameField();
     }
 
-    private void startGame(){
+    public void startGame(){
     }
 
     private void meetUser(){
