@@ -6,13 +6,11 @@ import ru.javabit.view.CellState;
  * имеет поле состояние state, от вида этого состяние зависит внешний вид клетки skin, поэтому переопределен getSkin в
  */
 
-
-
 public class GameFieldCell extends FieldCell {
 
     private CellState state;
 
-    GameFieldCell(int x, int y){
+    GameFieldCell(int x, int y) {
         super(new FieldCellCoordinate(x,y));
         state = CellState.FreeWater;
         this.setSkin(state.getSkin());
@@ -32,7 +30,7 @@ public class GameFieldCell extends FieldCell {
         this.setSkin(state.getSkin());
     }
 
-    public static boolean checkIfCellOccupied(GameFieldCell fieldCell){
+    public static boolean checkIfCellOccupied(GameFieldCell fieldCell) {
         if ((fieldCell.getState() == CellState.Reserved) || (fieldCell.getState() == CellState.ShipPart)){return true;}
         return false;
     }

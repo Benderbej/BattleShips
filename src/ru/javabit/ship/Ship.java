@@ -13,17 +13,17 @@ public abstract class Ship {
     ArrayList<FieldCell> cells;
     ShipPosition shipPosition;
 
-    protected Ship(int size, String name){
+    protected Ship(int size, String name) {
         this.size = size;
         this.cells = new ArrayList<>(size);
     }
 
-    private void placeShipCell(GameFieldCell fieldCell){
+    private void placeShipCell(GameFieldCell fieldCell) {
         cells.add(fieldCell);
         GameFieldCell.setCellOccupied(fieldCell);
     }
 
-    GameFieldCell placeStartShipCell(){
+    GameFieldCell placeStartShipCell() {
         GameFieldCell startShipCell = FleetAutoDisposer.getRandomPositiveCell();
         while(GameFieldCell.checkIfCellOccupied(startShipCell)) {
             startShipCell = FleetAutoDisposer.getRandomPositiveCell();
@@ -32,7 +32,7 @@ public abstract class Ship {
         return startShipCell;
     }
 
-    void placeSecondShipCell(GameFieldCell startShipCell){
+    void placeSecondShipCell(GameFieldCell startShipCell) {
         ArrayList<FieldCell> fieldCells = FleetAutoDisposer.findPossiblePositionsForCell(startShipCell);
         if(fieldCells.size()>0) {
             FieldCell secondShipCell = FleetAutoDisposer.getFromPossiblePosotionsList(fieldCells);
@@ -44,7 +44,7 @@ public abstract class Ship {
         }
     }
 
-    void placeOtherShipCell(){
+    void placeOtherShipCell() {
         ArrayList<FieldCell> cells = null;
         GameFieldCell fieldCell = null;
         if (shipPosition == ShipPosition.Vertical){
@@ -66,7 +66,7 @@ public abstract class Ship {
         placeShipCell(fieldCell);
     }
 
-    private ArrayList<FieldCell> getVerticalCells(){//похожий код, можно подумать о рефакторинге
+    private ArrayList<FieldCell> getVerticalCells() {//похожий код, можно подумать о рефакторинге
         int x = cells.get(0).getFieldCellCoordinate().getX();
         ArrayList<FieldCell> possibleCellsList = new ArrayList<>(2);
         int minY = FieldCell.getMinYCell(cells);
@@ -87,7 +87,7 @@ public abstract class Ship {
         return possibleCellsList;
     }
 
-    private ArrayList<FieldCell> getHorizontalCells(){//похожий код, можно подумать о рефакторинге
+    private ArrayList<FieldCell> getHorizontalCells() {//похожий код, можно подумать о рефакторинге
         int y = cells.get(0).getFieldCellCoordinate().getY();
         ArrayList<FieldCell> possibleCellsList = new ArrayList<>(2);
         int minX = FieldCell.getMinXCell(cells);
@@ -110,7 +110,7 @@ public abstract class Ship {
 
     public abstract void placeShip();
 
-    ArrayList<FieldCellCoordinate> buildReservedArea(){//reserve cells ares from occupying it by another ships(do it after replacing the ship)
+    ArrayList<FieldCellCoordinate> buildReservedArea() {//reserve cells ares from occupying it by another ships(do it after replacing the ship)
         ArrayList<FieldCellCoordinate> resFieldCellCoords = new ArrayList<>();
         if(shipPosition == ShipPosition.Horizontal){
             int maxX = FieldCell.getMaxXCell(cells);
@@ -141,7 +141,7 @@ public abstract class Ship {
         return resFieldCellCoords;
     }
 
-    private void rebuildCurrentShip(){
+    private void rebuildCurrentShip() {
         this.cells = new ArrayList<FieldCell>(size);
         placeShip();
     }

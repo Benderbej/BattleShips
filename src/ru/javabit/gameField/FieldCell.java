@@ -2,7 +2,7 @@ package ru.javabit.gameField;
 
 import java.util.ArrayList;
 
-public abstract class FieldCell  {
+public abstract class FieldCell {
 
     /**
      * класс абстрактный так как обязывает нас выбрать либо gameFieldCell реализацию, либо MetaFieldCell реализацию
@@ -17,7 +17,6 @@ public abstract class FieldCell  {
 
     private FieldCellCoordinate fieldCellCoordinate;
     private String skin;//лучше бы было здесь хранить Enum State и оттуда брать skin, точнее создать класс FieldState и хранить его экземпляр в экземпляре FieldState, а Enum оставить для скинов итд
-
 
     FieldCell (FieldCellCoordinate fieldCellCoordinate) {
         this.fieldCellCoordinate = fieldCellCoordinate;
@@ -35,30 +34,30 @@ public abstract class FieldCell  {
         return fieldCellCoordinate;
     }
 
-    public static int getMinXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+    public static int getMinXCell(ArrayList<FieldCell> cells) {//похожий код, можно подумать о рефакторинге
         int  x = 11;
         for (FieldCell cell: cells) {
             if (cell.getFieldCellCoordinate().getX() < x){x = cell.getFieldCellCoordinate().getX();}
         }
         return x;
     }
-    public static int getMaxXCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+    public static int getMaxXCell(ArrayList<FieldCell> cells) {//похожий код, можно подумать о рефакторинге
         int  x = 0;
-        for (FieldCell cell: cells) {
+        for (FieldCell cell: cells){
             if (cell.getFieldCellCoordinate().getX() > x){x = cell.getFieldCellCoordinate().getX();}
         }
         return x;
     }
-    public static int getMinYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+    public static int getMinYCell(ArrayList<FieldCell> cells) {//похожий код, можно подумать о рефакторинге
         int  y = 11;
-        for (FieldCell cell: cells) {
+        for (FieldCell cell: cells){
             if (cell.getFieldCellCoordinate().getY() < y){y = cell.getFieldCellCoordinate().getY();}
         }
         return y;
     }
-    public static int getMaxYCell(ArrayList<FieldCell> cells){//похожий код, можно подумать о рефакторинге
+    public static int getMaxYCell(ArrayList<FieldCell> cells) {//похожий код, можно подумать о рефакторинге
         int  y = 0;
-        for (FieldCell cell: cells) {
+        for (FieldCell cell: cells){
             if (cell.getFieldCellCoordinate().getY() > y){y = cell.getFieldCellCoordinate().getY();}
         }
         return y;
@@ -73,5 +72,4 @@ public abstract class FieldCell  {
             return false;
         }
     }
-
 }

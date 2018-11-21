@@ -8,7 +8,7 @@ public class GameFieldRulers {
     private ArrayList<String> fieldRowsSkins = new ArrayList<>();
     private ArrayList<String> fieldColsSkins = new ArrayList<>();
 
-    public GameFieldRulers(int colNum, int rowNum){
+    public GameFieldRulers(int colNum, int rowNum) {
         fieldRowsSkins = new ArrayList<>();
         fieldColsSkins = new ArrayList<>();
         setFieldColsSkins(colNum);

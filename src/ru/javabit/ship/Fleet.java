@@ -6,7 +6,7 @@ public class Fleet {
 
     ArrayList<Ship> shipList;
 
-    public Fleet(){
+    public Fleet() {
         shipList = new ArrayList<Ship>();
         shipList.add(new BattleCruiser());
         shipList.add(new Cruiser());

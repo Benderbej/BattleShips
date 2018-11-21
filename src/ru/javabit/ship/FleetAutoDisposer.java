@@ -23,30 +23,30 @@ public class FleetAutoDisposer implements FleetDisposable {
         makeAllReservedCellsFreewater();
     }
 
-    public void disposeFleet(ArrayList<Ship> shipList){
+    public void disposeFleet(ArrayList<Ship> shipList) {
         for (Ship ship : shipList) {
             ship.placeShip();
         }
     }
 
-    public static int getRandomPositiveInt(){
+    public static int getRandomPositiveInt() {
         int index = r.nextInt(gameField.getPlayerFieldGrid().getCellsArr().length -1)+1;
         return index;
     }
 
-    public static int getRandomInt(int size){//довольно общий метод, сделать статическим?
+    public static int getRandomInt(int size) {//довольно общий метод, сделать статическим?
         int id = r.nextInt(size);
         return id;
     }
 
-    public static GameFieldCell getRandomPositiveCell(){
+    public static GameFieldCell getRandomPositiveCell() {
         int x = getRandomPositiveInt();
         int y = getRandomPositiveInt();
         GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
         return cell;
     }
 
-    public static ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell){//find vertical and horizontal neighbors ad add it ti list if in bounds
+    public static ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell) {//find vertical and horizontal neighbors ad add it ti list if in bounds
         ArrayList<FieldCell> possibleCellsList = new ArrayList<>(5);
         FieldCell fieldCell1 = getNeighborCell(fieldCell, -1, 0);
         if(!fieldCellIsZero(fieldCell1)){possibleCellsList.add(fieldCell1);}
@@ -59,7 +59,7 @@ public class FleetAutoDisposer implements FleetDisposable {
         return possibleCellsList;
     }
 
-    public static FieldCell getFromPossiblePosotionsList(ArrayList<FieldCell> possiblePosotionsList){
+    public static FieldCell getFromPossiblePosotionsList(ArrayList<FieldCell> possiblePosotionsList) {
         return possiblePosotionsList.get(r.nextInt(possiblePosotionsList.size()));
     }
 

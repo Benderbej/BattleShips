@@ -11,3 +11,4 @@ public enum ShipPosition {
     }
 
 }
+//unar for 1-cell ships

@@ -9,7 +9,7 @@ public class GameFieldGrid {
     private FieldCell[][] cellsArr;
     private GameFieldRulers gameFieldRulers;
 
-    GameFieldGrid (int xsize, int ysize){
+    GameFieldGrid (int xsize, int ysize) {
 
         gameFieldRulers = new GameFieldRulers(ysize, xsize);
         cellsArr = new FieldCell[xsize][ysize];

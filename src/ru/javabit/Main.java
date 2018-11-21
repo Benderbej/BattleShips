@@ -6,11 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-
         new Game();
-
     }
-
     /*
     Написать программу (начальный прототип Морского Боя), которая будет:
 
@@ -54,10 +51,4 @@ public class Main {
     (абстрактный класс). Тем самым все классы, которые у вас отвечают за логику работы программы станут тем,
      что называется Моделью в паттерне Model-View-Controller. https://ru.wikipedia.org/wiki/Model-View-Controlle...
     */
-
-
-
-
-
-
 }
