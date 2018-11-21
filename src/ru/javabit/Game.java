@@ -21,13 +21,6 @@ public class Game {
         initGame();
     }
 
-    public static Game getInstance(){
-        if(game == null){
-            game = new Game();
-        }
-        return game;
-    }
-
     private void initGame(){
         meetUser();
         gameField = new GameField(11, 11);
