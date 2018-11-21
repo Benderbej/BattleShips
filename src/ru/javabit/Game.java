@@ -16,6 +16,7 @@ public class Game {
     GameFieldRenderer gameFieldRenderer;
     FleetAutoDisposer autoDisposer;
     Fleet fleet;
+    TurnMaster turnMaster;
 
     private Game(){
         initGame();
@@ -35,9 +36,13 @@ public class Game {
         autoDisposer = new FleetAutoDisposer(fleet, gameField);
         gameFieldRenderer = new GameFieldRenderer(gameField);
         gameFieldRenderer.renderGameField();
+
+        turnMaster = TurnMaster.getInstance();
+        turnMaster.initComputerVsComputer("computer 1", "computer 2");
+        turnMaster.startTurning();
     }
 
-    public void startGame(){
+    public void startGame(){//todo init gameprocess thread??
     }
 
     private void meetUser(){
