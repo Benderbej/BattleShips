@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-        new Game();
+        Game game = Game.getInstance();
     }
     /*
     Написать программу (начальный прототип Морского Боя), которая будет:

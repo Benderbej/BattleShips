@@ -17,17 +17,27 @@ public class Game {
     FleetAutoDisposer autoDisposer;
     Fleet fleet;
 
-    Game(){
+    private Game(){
         initGame();
     }
 
-    private void initGame(){
+    public static Game getInstance(){
+        if(game == null){
+            game = new Game();
+        }
+        return game;
+    }
+
+     private void initGame(){
         meetUser();
         gameField = new GameField(11, 11);
         fleet = new Fleet();
         autoDisposer = new FleetAutoDisposer(fleet, gameField);
         gameFieldRenderer = new GameFieldRenderer(gameField);
         gameFieldRenderer.renderGameField();
+    }
+
+    private void startGame(){
     }
 
     private void meetUser(){
