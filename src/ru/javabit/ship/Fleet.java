@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Fleet {
 
-    ArrayList<Ship> shipList;
+    public ArrayList<Ship> shipList;
 
     public Fleet() {
         shipList = new ArrayList<Ship>();

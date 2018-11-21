@@ -34,8 +34,11 @@ public class Game {
         gameField = new GameField(11, 11);
         fleet = new Fleet();
         autoDisposer = new FleetAutoDisposer(fleet, gameField);
+        autoDisposer.disposeFleet(fleet.shipList);
+
         gameFieldRenderer = new GameFieldRenderer(gameField);
         gameFieldRenderer.renderGameField();
+
 
         turnMaster = TurnMaster.getInstance();
         turnMaster.initComputerVsComputer("computer 1", "computer 2");

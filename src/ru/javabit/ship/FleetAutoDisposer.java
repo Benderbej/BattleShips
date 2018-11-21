@@ -19,15 +19,14 @@ public class FleetAutoDisposer implements FleetDisposable {
         this.fleet = fleet;
         this.gameField = gameField;
         this.fieldCells = gameField.getPlayerFieldGrid().getCellsArr();
-        this.f
-        disposeFleet(fleet.shipList);
-        makeAllReservedCellsFreewater();
+        //this.f
     }
 
     public void disposeFleet(ArrayList<Ship> shipList) {
         for (Ship ship : shipList) {
             ship.placeShip();
         }
+        makeAllReservedCellsFreewater();
     }
 
     public static int getRandomPositiveInt() {
