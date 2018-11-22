@@ -14,7 +14,8 @@ public class Game {
     UserDialogue dialogue;
     GameField gameField;
     GameFieldRenderer gameFieldRenderer;
-    FleetAutoDisposer autoDisposer;
+    FleetAutoDisposer playerAutoDisposer;
+    FleetAutoDisposer enemyAutoDisposer;
     Fleet fleet;
     TurnMaster turnMaster;
 
@@ -29,16 +30,16 @@ public class Game {
         return game;
     }
 
-     private void initGame(){
+    private void initGame(){
         meetUser();
         gameField = new GameField(11, 11,"computer 1", "computer 2");
 
         fleet = new Fleet();
         //autoDisposer = new FleetAutoDisposer(fleet, gameField);
-        autoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
-        autoDisposer.disposeFleet(fleet.shipList);
-
-         ;
+        playerAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
+        playerAutoDisposer.disposeFleet(fleet.shipList);
+        enemyAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getEnemyFieldGrid().getCellsArr());
+        enemyAutoDisposer.disposeFleet(fleet.shipList);
 
 
 

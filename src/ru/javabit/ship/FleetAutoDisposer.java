@@ -10,8 +10,7 @@ public class FleetAutoDisposer implements FleetDisposable {
 
     private static int rowNum;
     private static int columnNum;
-    public static FieldCell[][] fieldCells;//player's gamefield
-    //private static FieldCell[][] enemiesFieldCells;//enemy's gamefield
+    public FieldCell[][] fieldCells;//player's gamefield
 
     private static Random r = new Random();
 
@@ -28,7 +27,7 @@ public class FleetAutoDisposer implements FleetDisposable {
         makeAllReservedCellsFreewater();
     }
 
-    public static int getRandomPositiveInt() {
+    public int getRandomPositiveInt() {
         int index = r.nextInt(fieldCells.length -1)+1;
         return index;
     }
@@ -38,14 +37,14 @@ public class FleetAutoDisposer implements FleetDisposable {
         return id;
     }
 
-    public static GameFieldCell getRandomPositiveCell() {
+    public GameFieldCell getRandomPositiveCell() {
         int x = getRandomPositiveInt();
         int y = getRandomPositiveInt();
         GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
         return cell;
     }
 
-    public static ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell) {//find vertical and horizontal neighbors ad add it ti list if in bounds
+    public ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell) {//find vertical and horizontal neighbors ad add it ti list if in bounds
         ArrayList<FieldCell> possibleCellsList = new ArrayList<>(5);
         FieldCell fieldCell1 = getNeighborCell(fieldCell, -1, 0);
         if(!fieldCellIsZero(fieldCell1)){possibleCellsList.add(fieldCell1);}
@@ -62,7 +61,7 @@ public class FleetAutoDisposer implements FleetDisposable {
         return possiblePosotionsList.get(r.nextInt(possiblePosotionsList.size()));
     }
 
-    private static FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
+    private FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
 
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
         int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
@@ -75,7 +74,7 @@ public class FleetAutoDisposer implements FleetDisposable {
         return fieldCells[0][0];
     }
 
-    private static boolean fieldCellIsZero(FieldCell fieldCell){
+    private boolean fieldCellIsZero(FieldCell fieldCell){
         if(fieldCell.equals(fieldCells[0][0])){return true;} else {return false;}
     }
 
@@ -96,7 +95,7 @@ public class FleetAutoDisposer implements FleetDisposable {
         }
     }
 
-    public static void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
+    public void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
         for(FieldCellCoordinate coordinate : resFieldCellCoords){
             if(checkNotOutOfBounds(coordinate.getX(), coordinate.getY(), columnNum, rowNum)) {
                 GameFieldCell gameFieldCell = (GameFieldCell) fieldCells[coordinate.getX()][coordinate.getY()];
