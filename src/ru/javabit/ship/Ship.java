@@ -6,36 +6,43 @@ import ru.javabit.gameField.GameFieldCell;
 
 import java.util.ArrayList;
 
+/**
+ * в placeShipCell() мы модифицируем объекты GameFieldCell внутри массива fieldCells, который передает нам FleetAutoDisposer
+ * и пополняем общий список боевых клеток cells(чтобы можно было проверить все ли клетки корабля уничтожены)
+ */
 public abstract class Ship {
 
     int size;
     String name;
-    ArrayList<FieldCell> cells;
+    ArrayList<FieldCell> cells;//ship cells
     ShipPosition shipPosition;
+    FleetAutoDisposer disposer;
 
     protected Ship(int size, String name) {
         this.size = size;
         this.cells = new ArrayList<>(size);
     }
 
+    //в placeShipCell() мы модифицируем объекты GameFieldCell внутри массива fieldCells, который передает нам FleetAutoDisposer
+    //и пополняем общий список боевых клеток cells(чтобы можно было проверить все ли клетки корабля уничтожены)
     private void placeShipCell(GameFieldCell fieldCell) {
         cells.add(fieldCell);
         GameFieldCell.setCellOccupied(fieldCell);
     }
 
     GameFieldCell placeStartShipCell() {
-        GameFieldCell startShipCell = FleetAutoDisposer.getRandomPositiveCell();
+        GameFieldCell startShipCell = disposer.getRandomPositiveCell();
         while(GameFieldCell.checkIfCellOccupied(startShipCell)) {
-            startShipCell = FleetAutoDisposer.getRandomPositiveCell();
+            startShipCell = disposer.getRandomPositiveCell();
         }
         placeShipCell(startShipCell);
         return startShipCell;
     }
 
     void placeSecondShipCell(GameFieldCell startShipCell) {
-        ArrayList<FieldCell> fieldCells = FleetAutoDisposer.findPossiblePositionsForCell(startShipCell);
-        if(fieldCells.size()>0) {
-            FieldCell secondShipCell = FleetAutoDisposer.getFromPossiblePosotionsList(fieldCells);
+        ArrayList<FieldCell> fieldCellList = disposer.findPossiblePositionsForCell(startShipCell);
+        if(fieldCellList.size()>0) {
+            FieldCell secondShipCell = FleetAutoDisposer.getFromPossiblePosotionsList(fieldCellList);
             if(startShipCell.getFieldCellCoordinate().getX() == secondShipCell.getFieldCellCoordinate().getX()){shipPosition = ShipPosition.Vertical;}
             if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){shipPosition = ShipPosition.Horizontal;}
             placeShipCell(startShipCell);
@@ -73,13 +80,13 @@ public abstract class Ship {
         int maxY = FieldCell.getMaxYCell(cells);
 
         if(minY > 2) {
-            GameFieldCell minYFieldCell = (GameFieldCell) FleetAutoDisposer.fieldCells[x][minY - 1];
+            GameFieldCell minYFieldCell = (GameFieldCell) disposer.fieldCells[x][minY - 1];
             if(!GameFieldCell.checkIfCellOccupied(minYFieldCell)){
                 possibleCellsList.add(minYFieldCell);
             }
         }
         if (maxY < 10) {
-            GameFieldCell maxYFieldCell = (GameFieldCell) FleetAutoDisposer.fieldCells[x][maxY + 1];
+            GameFieldCell maxYFieldCell = (GameFieldCell) disposer.fieldCells[x][maxY + 1];
             if(!GameFieldCell.checkIfCellOccupied(maxYFieldCell)){
                 possibleCellsList.add(maxYFieldCell);
             }
@@ -94,13 +101,13 @@ public abstract class Ship {
         int maxX = FieldCell.getMaxXCell(cells);
 
         if (minX > 2) {
-            GameFieldCell minXFieldCell = (GameFieldCell) FleetAutoDisposer.fieldCells[minX - 1][y];
+            GameFieldCell minXFieldCell = (GameFieldCell) disposer.fieldCells[minX - 1][y];
             if(!GameFieldCell.checkIfCellOccupied(minXFieldCell)){
                 possibleCellsList.add(minXFieldCell);
             }
         }
         if (maxX < 10) {
-            GameFieldCell maxXFieldCell = (GameFieldCell) FleetAutoDisposer.fieldCells[maxX + 1][y];
+            GameFieldCell maxXFieldCell = (GameFieldCell) disposer.fieldCells[maxX + 1][y];
             if(!GameFieldCell.checkIfCellOccupied(maxXFieldCell)){
                 possibleCellsList.add(maxXFieldCell);
             }
@@ -108,7 +115,9 @@ public abstract class Ship {
         return possibleCellsList;
     }
 
-    public abstract void placeShip();
+    public void placeShip(FleetAutoDisposer disposer){
+        this.disposer = disposer;
+    };
 
     ArrayList<FieldCellCoordinate> buildReservedArea() {//reserve cells ares from occupying it by another ships(do it after replacing the ship)
         ArrayList<FieldCellCoordinate> resFieldCellCoords = new ArrayList<>();
@@ -143,6 +152,6 @@ public abstract class Ship {
 
     private void rebuildCurrentShip() {
         this.cells = new ArrayList<FieldCell>(size);
-        placeShip();
+        placeShip(disposer);
     }
 }

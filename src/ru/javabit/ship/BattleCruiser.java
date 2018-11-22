@@ -1,5 +1,6 @@
 package ru.javabit.ship;
 
+import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameFieldCell;
 
 public class BattleCruiser extends Ship {
@@ -9,7 +10,8 @@ public class BattleCruiser extends Ship {
     }
 
     @Override
-    public void placeShip() {
+    public void placeShip(FleetAutoDisposer disposer) {
+        super.placeShip(disposer);
         GameFieldCell fieldCell = placeStartShipCell();
         placeSecondShipCell(fieldCell);
         if (size > 2) {
@@ -17,6 +19,6 @@ public class BattleCruiser extends Ship {
                 placeOtherShipCell();
             }
         }
-        FleetAutoDisposer.maskReservedArea(buildReservedArea());
+        disposer.maskReservedArea(buildReservedArea());
     }
 }

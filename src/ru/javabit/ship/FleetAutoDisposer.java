@@ -8,10 +8,9 @@ import java.util.Random;
 
 public class FleetAutoDisposer implements FleetDisposable {
 
-    private static int rowNum;
-    private static int columnNum;
+    private int rowNum;
+    private int columnNum;
     public FieldCell[][] fieldCells;//player's gamefield
-
     private static Random r = new Random();
 
     public FleetAutoDisposer(int rowNum, int columnNum, FieldCell[][] fieldCells){
@@ -22,7 +21,7 @@ public class FleetAutoDisposer implements FleetDisposable {
 
     public void disposeFleet(ArrayList<Ship> shipList) {
         for (Ship ship : shipList) {
-            ship.placeShip();
+            ship.placeShip(this);
         }
         makeAllReservedCellsFreewater();
     }
@@ -30,11 +29,6 @@ public class FleetAutoDisposer implements FleetDisposable {
     public int getRandomPositiveInt() {
         int index = r.nextInt(fieldCells.length -1)+1;
         return index;
-    }
-
-    public static int getRandomInt(int size) {//довольно общий метод, сделать статическим?
-        int id = r.nextInt(size);
-        return id;
     }
 
     public GameFieldCell getRandomPositiveCell() {
@@ -57,10 +51,6 @@ public class FleetAutoDisposer implements FleetDisposable {
         return possibleCellsList;
     }
 
-    public static FieldCell getFromPossiblePosotionsList(ArrayList<FieldCell> possiblePosotionsList) {
-        return possiblePosotionsList.get(r.nextInt(possiblePosotionsList.size()));
-    }
-
     private FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
 
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
@@ -76,11 +66,6 @@ public class FleetAutoDisposer implements FleetDisposable {
 
     private boolean fieldCellIsZero(FieldCell fieldCell){
         if(fieldCell.equals(fieldCells[0][0])){return true;} else {return false;}
-    }
-
-    private static boolean checkNotOutOfBounds(int x, int y, int maxX, int maxY){
-        if((0 < x && x < maxX)&&(0 < y && y < maxY)) {return true;}
-        return false;
     }
 
     private void makeAllReservedCellsFreewater(){//makeAllPaddingCellsFreewater
@@ -104,5 +89,19 @@ public class FleetAutoDisposer implements FleetDisposable {
                 }
             }
         }
+    }
+
+    public static int getRandomInt(int size) {
+        int id = r.nextInt(size);
+        return id;
+    }
+
+    public static FieldCell getFromPossiblePosotionsList(ArrayList<FieldCell> possiblePosotionsList) {
+        return possiblePosotionsList.get(r.nextInt(possiblePosotionsList.size()));
+    }
+
+    private boolean checkNotOutOfBounds(int x, int y, int maxX, int maxY){
+        if((0 < x && x < maxX)&&(0 < y && y < maxY)) {return true;}
+        return false;
     }
 }
