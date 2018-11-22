@@ -7,16 +7,14 @@ import ru.javabit.report.UserDialogue;
 import ru.javabit.ship.FleetsDisposal;
 import ru.javabit.view.GameFieldRenderer;
 import ru.javabit.ship.Fleet;
-import ru.javabit.ship.FleetAutoDisposer;
 
 public class Game {
 
     private static Game game;
     UserDialogue dialogue;
     GameField gameField;
+    FleetsDisposal fleetsDisposal;
     GameFieldRenderer gameFieldRenderer;
-    FleetAutoDisposer playerAutoDisposer;
-    FleetAutoDisposer enemyAutoDisposer;
     Fleet fleet1;
     Fleet fleet2;
     TurnMaster turnMaster;
@@ -35,30 +33,18 @@ public class Game {
     private void initGame(){
         meetUser();
         gameField = new GameField(11, 11,"computer 1", "computer 2");
-
         fleet1 = new Fleet();
         fleet2 = new Fleet();
-        //autoDisposer = new FleetAutoDisposer(fleet, gameField);
-        //playerAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
-        //playerAutoDisposer.disposeFleet(fleet.shipList);
-        //enemyAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getEnemyFieldGrid().getCellsArr());
-        //enemyAutoDisposer.disposeFleet(fleet.shipList);
-        FleetsDisposal fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
-
-
+        fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
+        fleetsDisposal.disposeAutoAuto();
         gameFieldRenderer = new GameFieldRenderer(gameField);
         gameFieldRenderer.renderGameField();
-
-
-
-
-
-        turnMaster = TurnMaster.getInstance();
-        turnMaster.initComputerVsComputer("computer 1", "computer 2");
-        turnMaster.startTurning();
     }
 
     public void startGame(){//todo init gameprocess thread??
+        turnMaster = TurnMaster.getInstance();
+        turnMaster.initComputerVsComputer("computer 1", "computer 2");
+        turnMaster.startTurning();
     }
 
     private void meetUser(){
