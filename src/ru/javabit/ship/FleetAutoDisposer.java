@@ -68,7 +68,7 @@ public class FleetAutoDisposer implements FleetDisposable {
         if(fieldCell.equals(fieldCells[0][0])){return true;} else {return false;}
     }
 
-    private void makeAllReservedCellsFreewater(){//makeAllPaddingCellsFreewater
+    public void makeAllReservedCellsFreewater(){//makeAllPaddingCellsFreewater
         for (FieldCell[] fieldCellArr: fieldCells) {
             for (FieldCell fieldCell : fieldCellArr) {
                 if(fieldCell instanceof GameFieldCell) {

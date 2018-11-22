@@ -4,6 +4,7 @@ import ru.javabit.report.ConsoleDialogue;
 import ru.javabit.report.Report;
 import ru.javabit.gameField.GameField;
 import ru.javabit.report.UserDialogue;
+import ru.javabit.ship.FleetsDisposal;
 import ru.javabit.view.GameFieldRenderer;
 import ru.javabit.ship.Fleet;
 import ru.javabit.ship.FleetAutoDisposer;
@@ -16,7 +17,8 @@ public class Game {
     GameFieldRenderer gameFieldRenderer;
     FleetAutoDisposer playerAutoDisposer;
     FleetAutoDisposer enemyAutoDisposer;
-    Fleet fleet;
+    Fleet fleet1;
+    Fleet fleet2;
     TurnMaster turnMaster;
 
     private Game(){
@@ -34,13 +36,14 @@ public class Game {
         meetUser();
         gameField = new GameField(11, 11,"computer 1", "computer 2");
 
-        fleet = new Fleet();
+        fleet1 = new Fleet();
+        fleet2 = new Fleet();
         //autoDisposer = new FleetAutoDisposer(fleet, gameField);
-        playerAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
-        playerAutoDisposer.disposeFleet(fleet.shipList);
-        enemyAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getEnemyFieldGrid().getCellsArr());
-        enemyAutoDisposer.disposeFleet(fleet.shipList);
-
+        //playerAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
+        //playerAutoDisposer.disposeFleet(fleet.shipList);
+        //enemyAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getEnemyFieldGrid().getCellsArr());
+        //enemyAutoDisposer.disposeFleet(fleet.shipList);
+        FleetsDisposal fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
 
 
         gameFieldRenderer = new GameFieldRenderer(gameField);
