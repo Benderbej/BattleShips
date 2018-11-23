@@ -26,7 +26,7 @@ public class PlayerComputerAI {
 
             }
         }
-        //System.out.println(enemyFieldCellsList.size());
+        System.out.println(enemyFieldCellsList.size());
     }
 
     private GameFieldCell chooseCellToAttack() {

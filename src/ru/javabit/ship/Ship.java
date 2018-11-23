@@ -1,5 +1,6 @@
 package ru.javabit.ship;
 
+import ru.javabit.GameMath;
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.FieldCellCoordinate;
 import ru.javabit.gameField.GameFieldCell;
@@ -42,7 +43,7 @@ public abstract class Ship {
     void placeSecondShipCell(GameFieldCell startShipCell) {
         ArrayList<FieldCell> fieldCellList = disposer.findPossiblePositionsForCell(startShipCell);
         if(fieldCellList.size()>0) {
-            FieldCell secondShipCell = FleetAutoDisposer.getFromPossiblePosotionsList(fieldCellList);
+            FieldCell secondShipCell = GameMath.getFromPossiblePosotionsList(fieldCellList);
             if(startShipCell.getFieldCellCoordinate().getX() == secondShipCell.getFieldCellCoordinate().getX()){shipPosition = ShipPosition.Vertical;}
             if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){shipPosition = ShipPosition.Horizontal;}
             placeShipCell(startShipCell);
@@ -61,10 +62,10 @@ public abstract class Ship {
             cells = getHorizontalCells();
         }
         if(cells.size()>1){
-            fieldCell = (GameFieldCell) cells.get(FleetAutoDisposer.getRandomInt(cells.size()));
+            fieldCell = (GameFieldCell) cells.get(GameMath.getRandomInt(cells.size()));
         }
         if(cells.size()==1){
-            fieldCell = (GameFieldCell) cells.get(FleetAutoDisposer.getRandomInt(1));
+            fieldCell = (GameFieldCell) cells.get(GameMath.getRandomInt(1));
         }
         if(cells.size()==0){
             rebuildCurrentShip();

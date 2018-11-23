@@ -1,5 +1,6 @@
 package ru.javabit.ship;
 
+import ru.javabit.GameMath;
 import ru.javabit.gameField.*;
 import ru.javabit.view.CellState;
 
@@ -27,7 +28,7 @@ public class FleetAutoDisposer implements FleetDisposable {
     }
 
     public int getRandomPositiveInt() {
-        int index = r.nextInt(fieldCells.length -1)+1;
+        int index = GameMath.getRandom().nextInt(fieldCells.length -1)+1;
         return index;
     }
 
@@ -54,7 +55,7 @@ public class FleetAutoDisposer implements FleetDisposable {
     private FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
         int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
-        if(checkNotOutOfBounds(x,y,columnNum,rowNum)){
+        if(GameMath.checkNotOutOfBounds(x,y,columnNum,rowNum)){
             GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
             if((cell.getState() != CellState.Reserved) && (cell.getState() != CellState.ShipPart)) {//повтор есть в getVerticalCells и getHorizontalCells
                 return cell;
@@ -81,26 +82,12 @@ public class FleetAutoDisposer implements FleetDisposable {
 
     public void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords) {
         for(FieldCellCoordinate coordinate : resFieldCellCoords){
-            if(checkNotOutOfBounds(coordinate.getX(), coordinate.getY(), columnNum, rowNum)) {
+            if(GameMath.checkNotOutOfBounds(coordinate.getX(), coordinate.getY(), columnNum, rowNum)) {
                 GameFieldCell gameFieldCell = (GameFieldCell) fieldCells[coordinate.getX()][coordinate.getY()];
                 if(gameFieldCell.getState()!=CellState.ShipPart){
                     gameFieldCell.setState(CellState.Reserved);
                 }
             }
         }
-    }
-
-    public static int getRandomInt(int size) {
-        int id = r.nextInt(size);
-        return id;
-    }
-
-    public static FieldCell getFromPossiblePosotionsList(ArrayList<FieldCell> possiblePosotionsList) {
-        return possiblePosotionsList.get(r.nextInt(possiblePosotionsList.size()));
-    }
-
-    private boolean checkNotOutOfBounds(int x, int y, int maxX, int maxY){
-        if((0 < x && x < maxX)&&(0 < y && y < maxY)) {return true;}
-        return false;
     }
 }
