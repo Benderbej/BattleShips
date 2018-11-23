@@ -52,7 +52,6 @@ public class FleetAutoDisposer implements FleetDisposable {
     }
 
     private FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
-
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
         int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
         if(checkNotOutOfBounds(x,y,columnNum,rowNum)){

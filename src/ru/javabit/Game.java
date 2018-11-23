@@ -43,13 +43,13 @@ public class Game {
 
     public void startGame(){//todo init gameprocess thread??
         turnMaster = TurnMaster.getInstance();
-        turnMaster.initComputerVsComputer("computer 1", "computer 2");
+        turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
         turnMaster.startTurning();
     }
 
     private void meetUser(){
-        dialogue = new ConsoleDialogue();//???
-        dialogue.makeReport(Report.Greeting.getText());//???
+        dialogue = new ConsoleDialogue();
+        dialogue.makeReport(Report.Greeting.getText());
     }
 
 }

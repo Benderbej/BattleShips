@@ -1,6 +1,8 @@
 package ru.javabit;
 
 
+import ru.javabit.gameField.GameField;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,6 +16,7 @@ public class TurnMaster {
 
     private static TurnMaster turnMaster;
     private static LinkedList<TurnActor> turnActors;
+    public GameField gameField;
 
     private TurnMaster(){}
 
@@ -25,9 +28,12 @@ public class TurnMaster {
         return turnMaster;
     }
 
-    public void initComputerVsComputer(String name1, String name2){
+    public void initComputerVsComputer(GameField gameField, String name1, String name2){
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name1));
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2));
+        this.gameField = gameField;
+        PlayerComputerAI computer1AI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
+        PlayerComputerAI computer2AI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
     }
 
     public void addTurnActor(TurnActor turnActor) {
@@ -36,9 +42,11 @@ public class TurnMaster {
 
     public void startTurning() {//TODO отдельный поток
         int i=0;
-        while (i<200){//неплохо бы ограничить цикл на всякий случай
-            System.out.println("ход:"+i);//TODO вынести
-            makeTurn(getCurrentTurnActor());
+        TurnActor actor;
+        while (i<10){//неплохо бы ограничить цикл на всякий случай
+            actor = getCurrentTurnActor();
+            System.out.println("ход:"+i + " " + actor.getTurnActorName());//TODO вынести
+            makeTurn(actor);
             if(i==5675){//добавить
 
                 break;
@@ -50,6 +58,7 @@ public class TurnMaster {
 
     private TurnActor getCurrentTurnActor () {
         TurnActor currentTurnActor = turnActors.iterator().next();
+
         return currentTurnActor;
     }
 
@@ -66,7 +75,7 @@ public class TurnMaster {
     }
 
     private void makeAutoTurn () {
-
+        System.out.println("turn");
     }
 
     private void makeUserTurn () {
