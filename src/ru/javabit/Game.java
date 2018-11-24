@@ -33,16 +33,18 @@ public class Game {
 
     private void initGame(){
         meetUser();
-        gameField = new GameField(11, 11,"computer 1", "computer 2");
-        fleet1 = new Fleet();
-        fleet2 = new Fleet();
+        gameField = new GameField(9, 9,"computer 1", "computer 2");
+        //fleet1 = new Fleet();
+        //fleet2 = new Fleet();
+        fleet1 = new Fleet(0,0,1,0);
+        fleet2 = new Fleet(0,0,1,0);
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
         gameFieldRenderer = new GameFieldRenderer(gameField);
         gameFieldRenderer.renderGameField();
     }
 
-    public void startGame(){//todo init gameprocess thread??
+    public void startGame() throws InterruptedException {//todo init gameprocess thread??
         victoryTrigger = new VictoryTrigger(fleet1.shipList, fleet2.shipList);
         turnMaster = TurnMaster.getInstance();
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");

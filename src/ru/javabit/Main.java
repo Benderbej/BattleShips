@@ -4,10 +4,10 @@ import ru.javabit.gameField.GameField;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 	// write your code here
         Game game = Game.getInstance();
-        game.startGame();
+        //game.startGame();
     }
     /*
     Написать программу (начальный прототип Морского Боя), которая будет:

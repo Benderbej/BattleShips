@@ -42,14 +42,14 @@ public class TurnMaster {
         turnActors.add(turnActor);
     }
 
-    public void startTurning() {//TODO отдельный поток
+    public void startTurning() throws InterruptedException {//TODO отдельный поток
         int i=0;
         TurnActor actor = null;
         System.out.println("turnActors size"+turnActors.size());
         actorIterator = turnActors.listIterator();
         int turnLimit = (gameField.getColumnNum()+1)*(gameField.getRowNum()+1)*2;
         while (i<turnLimit){
-            //Thread.sleep(2000);
+            Thread.sleep(1000);
             if (actorIterator.hasNext()){
                 if(actor != null){System.out.println(actor.getTurnActorName());}//TODO вынести
                 actor = actorIterator.next();

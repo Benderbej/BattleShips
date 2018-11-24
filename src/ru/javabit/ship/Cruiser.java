@@ -13,10 +13,10 @@ public class Cruiser extends Ship {
     public void placeShip(FleetAutoDisposer disposer) {
         super.placeShip(disposer);
         GameFieldCell fieldCell = placeStartShipCell();
-        placeSecondShipCell(fieldCell);
+        //placeSecondShipCell(fieldCell);
         if (size > 2) {
-            for (int i = 0; i < size; i++) {
-                placeOtherShipCell();
+            for (int i = 0; i < size-2; i++) {
+                //placeOtherShipCell();
             }
         }
         disposer.maskReservedArea(buildReservedArea());
