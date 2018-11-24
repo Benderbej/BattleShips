@@ -20,6 +20,7 @@ public class GameFieldRenderer implements GameFieldRenderable {
     }
 
     public void renderGameField(){
+        System.out.flush();
         renderHeader();
         renderLine(PLAYERGRID);
         for (FieldCell[] arr : cellsArr) {

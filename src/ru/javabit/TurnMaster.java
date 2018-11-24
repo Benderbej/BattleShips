@@ -48,13 +48,15 @@ public class TurnMaster {
         System.out.println("turnActors size"+turnActors.size());
         actorIterator = turnActors.listIterator();
         int turnLimit = (gameField.getColumnNum()+1)*(gameField.getRowNum()+1)*2;
-        while (i<turnLimit){
-            Thread.sleep(1000);
+        while (i<=turnLimit){
+            System.out.println("ход: "+i);
+            Thread.sleep(10);
             if (actorIterator.hasNext()){
-                if(actor != null){System.out.println(actor.getTurnActorName());}//TODO вынести
+                if(actor != null){System.out.println(actor.getTurnActorName());}else { System.out.println("actor is null"); }//TODO вынести
                 actor = actorIterator.next();
                 makeTurn(actor);
             } else {
+                i--;
                 actorIterator = turnActors.listIterator();
             }
             if(checkVictory()){
@@ -65,6 +67,7 @@ public class TurnMaster {
             i++;
         }
         System.out.println("КОНЕЦ ИГРЫ");//TODO вынести
+        System.out.println("turnActors size"+turnActors.size());
     }
 
     private TurnActor getCurrentTurnActor() {

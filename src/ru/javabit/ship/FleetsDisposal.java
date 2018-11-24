@@ -33,7 +33,7 @@ public class FleetsDisposal {
             System.out.println(ship.name);
             ship.placeShip(disposer);
         }
-        //disposer.makeAllReservedCellsFreewater();
+        disposer.makeAllReservedCellsFreewater();
     }
 
     private void manualDisposeFleet(ArrayList<Ship> shipList) {//TODO

@@ -33,11 +33,11 @@ public class Game {
 
     private void initGame(){
         meetUser();
-        gameField = new GameField(6, 6,"computer 1", "computer 2");
-        //fleet1 = new Fleet();
-        //fleet2 = new Fleet();
-        fleet1 = new Fleet(2,0,1,0);
-        fleet2 = new Fleet(2,0,1,0);
+        gameField = new GameField(11, 11,"computer 1", "computer 2");
+        fleet1 = new Fleet();
+        fleet2 = new Fleet();
+        //fleet1 = new Fleet(2,0,1,0);
+        //fleet2 = new Fleet(2,0,1,0);
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
         gameFieldRenderer = new GameFieldRenderer(gameField);
