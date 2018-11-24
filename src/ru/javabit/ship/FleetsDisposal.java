@@ -30,9 +30,10 @@ public class FleetsDisposal {
 
     private void autoDisposeFleet(ArrayList<Ship> shipList, FleetAutoDisposer disposer) {
         for (Ship ship : shipList) {
+            System.out.println(ship.name);
             ship.placeShip(disposer);
         }
-        disposer.makeAllReservedCellsFreewater();
+        //disposer.makeAllReservedCellsFreewater();
     }
 
     private void manualDisposeFleet(ArrayList<Ship> shipList) {//TODO

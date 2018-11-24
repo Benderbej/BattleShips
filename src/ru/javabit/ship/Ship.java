@@ -4,6 +4,7 @@ import ru.javabit.GameMath;
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.FieldCellCoordinate;
 import ru.javabit.gameField.GameFieldCell;
+import ru.javabit.view.CellState;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public abstract class Ship {
     protected Ship(int size, String name) {
         this.size = size;
         this.cells = new ArrayList<>(size);
+        this.name = name;
     }
 
     //в placeShipCell() мы модифицируем объекты GameFieldCell внутри массива fieldCells, который передает нам FleetAutoDisposer
@@ -130,6 +132,20 @@ public abstract class Ship {
 
     ArrayList<FieldCellCoordinate> buildReservedArea() {//reserve cells ares from occupying it by another ships(do it after replacing the ship)
         ArrayList<FieldCellCoordinate> resFieldCellCoords = new ArrayList<>();
+        if(shipPosition == ShipPosition.Unar){//Unar is the same as horizontal the same as vertical
+            int maxX = FieldCell.getMaxXCell(cells);
+            int minX = FieldCell.getMinXCell(cells);
+            int y = cells.get(0).getFieldCellCoordinate().getY();
+            int startX = minX-1;
+            int finX = maxX+1;
+            resFieldCellCoords.add(new FieldCellCoordinate(0,0));
+            for (int i = startX; i <= finX; i++ ){
+                resFieldCellCoords.add(new FieldCellCoordinate(i,y-1));
+                resFieldCellCoords.add(new FieldCellCoordinate(i,y));
+                resFieldCellCoords.add(new FieldCellCoordinate(i,y+1));
+            }
+        }
+
         if(shipPosition == ShipPosition.Horizontal){
             int maxX = FieldCell.getMaxXCell(cells);
             int minX = FieldCell.getMinXCell(cells);
@@ -160,8 +176,18 @@ public abstract class Ship {
     }
 
     private void rebuildCurrentShip() {
+        System.out.println("rebuildCurrentShip()");
+        clearUnplacedShip();
         this.cells = new ArrayList<FieldCell>(size);
         placeShip(disposer);
+    }
+
+    private void clearUnplacedShip(){
+        GameFieldCell gameFieldCell;
+        for (FieldCell cell: cells) {
+            gameFieldCell = (GameFieldCell) disposer.fieldCells[cell.getFieldCellCoordinate().getX()][cell.getFieldCellCoordinate().getY()];
+            gameFieldCell.setState(CellState.FreeWater);
+        }
     }
 
     public int getSize() {
