@@ -2,6 +2,7 @@ package ru.javabit;
 
 
 import ru.javabit.gameField.GameField;
+import ru.javabit.view.GameFieldRenderer;
 
 import java.util.*;
 
@@ -15,6 +16,8 @@ public class TurnMaster {
     private static LinkedList<TurnActor> turnActors;
     private static ListIterator<TurnActor> actorIterator;
     public GameField gameField;
+    private GameFieldRenderer gameFieldRenderer;
+    public static VictoryTrigger victoryTrigger;
 
     private TurnMaster() {}
 
@@ -27,11 +30,12 @@ public class TurnMaster {
     }
 
     public void initComputerVsComputer(GameField gameField, String name1, String name2){
-        addTurnActor(new TurnActor(TurnActorType.COMPUTER,name1));
-        addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2));
+        PlayerComputerAI computer1AI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
+        PlayerComputerAI computer2AI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
+        addTurnActor(new TurnActor(TurnActorType.COMPUTER,name1,computer1AI,1));//0 - is reserved for nowinner
+        addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computer2AI,2));
         this.gameField = gameField;
-        PlayerComputerAI computer1AI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
-        PlayerComputerAI computer2AI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
+
     }
 
     public void addTurnActor(TurnActor turnActor) {
@@ -40,21 +44,22 @@ public class TurnMaster {
 
     public void startTurning() {//TODO отдельный поток
         int i=0;
-        TurnActor actor;
+        TurnActor actor = null;
         System.out.println("turnActors size"+turnActors.size());
         actorIterator = turnActors.listIterator();
-
-        while (i<10){//неплохо бы ограничить цикл на всякий случай
+        int turnLimit = (gameField.getColumnNum()+1)*(gameField.getRowNum()+1)*2;
+        while (i<turnLimit){
+            //Thread.sleep(2000);
             if (actorIterator.hasNext()){
+                if(actor != null){System.out.println(actor.getTurnActorName());}//TODO вынести
                 actor = actorIterator.next();
                 makeTurn(actor);
-                System.out.println(actor.getTurnActorName());//TODO вынести
             } else {
                 actorIterator = turnActors.listIterator();
             }
-
-            if(i==5675){//добавить
-
+            if(checkVictory()){
+                victoryTrigger.getWinerPlayerNum();
+                System.out.println("Выиграл"+actor.getTurnActorName());
                 break;
             }
             i++;
@@ -71,17 +76,36 @@ public class TurnMaster {
     public void makeTurn(TurnActor turnActor) {
         switch (turnActor.getTurnActorType()){
             case COMPUTER:
-                makeAutoTurn();
+                makeAutoTurn(turnActor);
             case USER:
-                makeUserTurn();
+                makeUserTurn(turnActor);
         }
+        gameFieldRenderer.renderGameField();
     }
 
-    private void makeAutoTurn () {
+    private void makeAutoTurn (TurnActor turnActor) {
+        //turnActor.getComputerAI().attack();
+        if(turnActor.getComputerAI().attack()){
+            //turnActors.po
+            victoryTrigger.minusCell(turnActor.getTurnActorId());
+            System.out.println(">>>HIT!<<<");
+        }
         System.out.println("turn");
     }
 
-    private void makeUserTurn () {
+    private void makeUserTurn (TurnActor turnActor) { }
 
+    private boolean checkVictory() {
+        boolean victory = false;
+        if(victoryTrigger.isFinished()){victory = true;}
+        return victory;
+    }
+
+    public void setGameFieldRenderer(GameFieldRenderer gameFieldRenderer) {
+        this.gameFieldRenderer = gameFieldRenderer;
+    }
+
+    public void setVictoryTrigger(VictoryTrigger victoryTrigger) {
+        this.victoryTrigger = victoryTrigger;
     }
 }

@@ -155,4 +155,8 @@ public abstract class Ship {
         this.cells = new ArrayList<FieldCell>(size);
         placeShip(disposer);
     }
+
+    public int getSize() {
+        return size;
+    }
 }

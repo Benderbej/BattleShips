@@ -18,6 +18,7 @@ public class Game {
     Fleet fleet1;
     Fleet fleet2;
     TurnMaster turnMaster;
+    VictoryTrigger victoryTrigger;
 
     private Game(){
         initGame();
@@ -42,8 +43,11 @@ public class Game {
     }
 
     public void startGame(){//todo init gameprocess thread??
+        victoryTrigger = new VictoryTrigger(fleet1.shipList, fleet2.shipList);
         turnMaster = TurnMaster.getInstance();
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
+        turnMaster.setVictoryTrigger(victoryTrigger);
+        turnMaster.setGameFieldRenderer(gameFieldRenderer);
         turnMaster.startTurning();
     }
 
