@@ -14,11 +14,7 @@ public class BattleCruiser extends Ship {
         super.placeShip(disposer);
         GameFieldCell fieldCell = placeStartShipCell();
         placeSecondShipCell(fieldCell);
-        if (size > 2) {
-            for (int i = 0; i < size; i++) {
-                placeOtherShipCell();
-            }
-        }
+        placeMoreThanSecondShipCell();
         disposer.maskReservedArea(buildReservedArea());
     }
 }

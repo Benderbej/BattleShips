@@ -43,12 +43,20 @@ public abstract class Ship {
     void placeSecondShipCell(GameFieldCell startShipCell) {
         ArrayList<FieldCell> fieldCellList = disposer.findPossiblePositionsForCell(startShipCell);
         if(fieldCellList.size()>0) {
-            FieldCell secondShipCell = GameMath.getFromPossiblePosotionsList(fieldCellList);
+            GameFieldCell secondShipCell = (GameFieldCell) GameMath.getFromPossiblePosotionsList(fieldCellList);
             if(startShipCell.getFieldCellCoordinate().getX() == secondShipCell.getFieldCellCoordinate().getX()){shipPosition = ShipPosition.Vertical;}
             if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){shipPosition = ShipPosition.Horizontal;}
-            placeShipCell(startShipCell);
+            placeShipCell(secondShipCell);
         } else {
             rebuildCurrentShip();
+        }
+    }
+
+    void placeMoreThanSecondShipCell(){
+        if (size > 2) {
+            for (int i = 0; i < size-2; i++) {
+                placeOtherShipCell();
+            }
         }
     }
 
