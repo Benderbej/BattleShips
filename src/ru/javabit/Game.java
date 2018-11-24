@@ -33,7 +33,7 @@ public class Game {
 
     private void initGame(){
         meetUser();
-        gameField = new GameField(9, 9,"computer 1", "computer 2");
+        gameField = new GameField(5, 5,"computer 1", "computer 2");
         //fleet1 = new Fleet();
         //fleet2 = new Fleet();
         fleet1 = new Fleet(0,0,1,0);

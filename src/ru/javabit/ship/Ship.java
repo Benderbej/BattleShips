@@ -94,7 +94,7 @@ public abstract class Ship {
                 possibleCellsList.add(minYFieldCell);
             }
         }
-        if (maxY < 10) {
+        if (maxY < disposer.getRowNum()-1) {
             GameFieldCell maxYFieldCell = (GameFieldCell) disposer.fieldCells[x][maxY + 1];
             if(!GameFieldCell.checkIfCellOccupied(maxYFieldCell)){
                 possibleCellsList.add(maxYFieldCell);
@@ -115,7 +115,7 @@ public abstract class Ship {
                 possibleCellsList.add(minXFieldCell);
             }
         }
-        if (maxX < 10) {
+        if (maxX < (disposer.getColumnNum()-1)) {
             GameFieldCell maxXFieldCell = (GameFieldCell) disposer.fieldCells[maxX + 1][y];
             if(!GameFieldCell.checkIfCellOccupied(maxXFieldCell)){
                 possibleCellsList.add(maxXFieldCell);

@@ -90,4 +90,12 @@ public class FleetAutoDisposer implements FleetDisposable {
             }
         }
     }
+
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    public int getColumnNum() {
+        return columnNum;
+    }
 }

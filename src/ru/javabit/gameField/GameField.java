@@ -35,4 +35,5 @@ public class GameField {
     public int getRowNum() {
         return rowNum;
     }
+
 }
