@@ -20,9 +20,7 @@ public class Game {
     TurnMaster turnMaster;
     VictoryTrigger victoryTrigger;
 
-    private Game(){
-        initGame();
-    }
+    private Game(){ }
 
     public static Game getInstance(){
         if(game == null){
@@ -31,9 +29,10 @@ public class Game {
         return game;
     }
 
-    private void initGame() {
+    public void initGame() {
         meetUser();
         gameField = new GameField(11, 11,"computer 1", "computer 2");
+        //gameField = new GameField(25, 25,"computer 1", "computer 2");
         fleet1 = new Fleet();
         fleet2 = new Fleet();
         //fleet1 = new Fleet(2,0,1,0);
@@ -44,7 +43,7 @@ public class Game {
         gameFieldRenderer.renderGameField();
     }
 
-    public void startGame() throws InterruptedException {//todo init gameprocess thread??
+    public void startGame() throws InterruptedException {//todo init gameprocess thread
         victoryTrigger = new VictoryTrigger(fleet1.shipList, fleet2.shipList);
         turnMaster = TurnMaster.getInstance();
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
