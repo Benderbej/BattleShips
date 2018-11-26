@@ -2,6 +2,8 @@ package ru.javabit;
 
 
 import ru.javabit.gameField.GameField;
+import ru.javabit.report.ConsoleDialogue;
+import ru.javabit.report.Report;
 import ru.javabit.view.GameFieldRenderer;
 
 import java.util.*;
@@ -18,8 +20,11 @@ public class TurnMaster {
     public GameField gameField;
     private GameFieldRenderer gameFieldRenderer;
     public static VictoryTrigger victoryTrigger;
+    private ConsoleDialogue consoleDialogue;
 
-    private TurnMaster() {}
+    private TurnMaster() {
+        consoleDialogue = new ConsoleDialogue();
+    }
 
     public static TurnMaster getInstance() {
         if(turnMaster == null){
@@ -45,14 +50,12 @@ public class TurnMaster {
     public void startTurning() throws InterruptedException {//TODO отдельный поток
         int i=0;
         TurnActor actor = null;
-        System.out.println("turnActors size"+turnActors.size());
         actorIterator = turnActors.listIterator();
         int turnLimit = (gameField.getColumnNum()+1)*(gameField.getRowNum()+1)*2;
         while (i<=turnLimit){
-            System.out.println("ход: "+i);
             Thread.sleep(10);
             if (actorIterator.hasNext()){
-                if(actor != null){System.out.println(actor.getTurnActorName());}else { System.out.println("actor is null"); }//TODO вынести
+                if(actor != null){makeReport("ходит "+actor.getTurnActorName());}
                 actor = actorIterator.next();
                 makeTurn(actor);
             } else {
@@ -61,19 +64,12 @@ public class TurnMaster {
             }
             if(checkVictory()){
                 victoryTrigger.getWinerPlayerNum();
-                System.out.println("Выиграл"+actor.getTurnActorName());
+                makeReport("Выиграл "+actor.getTurnActorName());
                 break;
             }
             i++;
         }
-        System.out.println("КОНЕЦ ИГРЫ");//TODO вынести
-        System.out.println("turnActors size"+turnActors.size());
-    }
-
-    private TurnActor getCurrentTurnActor() {
-        TurnActor currentTurnActor = turnActors.iterator().next();
-
-        return currentTurnActor;
+        makeReport("КОНЕЦ ИГРЫ");
     }
 
     public void makeTurn(TurnActor turnActor) {
@@ -87,13 +83,9 @@ public class TurnMaster {
     }
 
     private void makeAutoTurn (TurnActor turnActor) {
-        //turnActor.getComputerAI().attack();
         if(turnActor.getComputerAI().attack()){
-            //turnActors.po
             victoryTrigger.minusCell(turnActor.getTurnActorId());
-            System.out.println(">>>HIT!<<<");
         }
-        System.out.println("turn");
     }
 
     private void makeUserTurn (TurnActor turnActor) { }
@@ -110,5 +102,10 @@ public class TurnMaster {
 
     public void setVictoryTrigger(VictoryTrigger victoryTrigger) {
         this.victoryTrigger = victoryTrigger;
+    }
+
+    private void makeReport(String s) {
+        consoleDialogue = new ConsoleDialogue();//TODO ConsoleDialoge maybe singleton with static makeReport
+        consoleDialogue.makeReport(s);
     }
 }

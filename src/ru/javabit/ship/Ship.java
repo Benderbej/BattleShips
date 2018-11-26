@@ -175,7 +175,6 @@ public abstract class Ship {
     }
 
     private void rebuildCurrentShip() {
-        System.out.println("rebuildCurrentShip()");
         clearUnplacedShip();
         this.cells = new ArrayList<FieldCell>(size);
         placeShip(disposer);

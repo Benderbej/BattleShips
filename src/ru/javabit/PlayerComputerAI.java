@@ -24,7 +24,6 @@ public class PlayerComputerAI {
             for(FieldCell cell : arr){
                 if(cell instanceof GameFieldCell){
                     enemyFieldCellsList.add((GameFieldCell) cell);
-                    //System.out.println("X=" + cell.getFieldCellCoordinate().getX() + " Y=" + cell.getFieldCellCoordinate().getY());
                 }
 
             }
@@ -47,8 +46,6 @@ public class PlayerComputerAI {
     private boolean attackCell(FieldCellCoordinate coordinate) {
         boolean success = false;
         GameFieldCell gameFieldCell = (GameFieldCell) fieldCells[coordinate.getX()][coordinate.getY()];
-        System.out.println("x="+coordinate.getX()+ " y="+coordinate.getY());
-
         switch (gameFieldCell.getState()){
             case FreeWater:
                 gameFieldCell.setState(CellState.WaterAttacked);
@@ -60,7 +57,6 @@ public class PlayerComputerAI {
                 break;
         }
         enemyFieldCellsList.remove(gameFieldCell);
-        System.out.println("enemyFieldCellsList="+enemyFieldCellsList.size());
         return success;
     }
 

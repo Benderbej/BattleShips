@@ -31,8 +31,6 @@ public class VictoryTrigger {
             case 1: shipCellsCount1--; break;
             case 2: shipCellsCount2--; break;
         }
-        System.out.println("enemyShipCellsCount1="+shipCellsCount1);
-        System.out.println("enemyShipCellsCount2="+shipCellsCount2);
         winCheck();
     }
 
