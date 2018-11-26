@@ -4,7 +4,7 @@ import ru.javabit.gameField.FieldCell;
 
 public class Boat extends Ship {
 
-    Boat(){
+    Boat() {
         super(1, "Boat");
         this.shipPosition = ShipPosition.Unar;
     }

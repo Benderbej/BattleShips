@@ -6,7 +6,6 @@ import ru.javabit.view.GameFieldRenderable;
 
 public class GameFieldRenderer implements GameFieldRenderable {
 
-    //private ArrayList<FieldCell> cellsList;
     private FieldCell[][] cellsArr;
     private FieldCell[][] enemiesCellsArr;
     private final String FIELDHEADER = "***^^^^^^^^^(-+o^^o+-)^^^^^^^^^***";
@@ -14,12 +13,12 @@ public class GameFieldRenderer implements GameFieldRenderable {
     private final String PLAYERGRID =  "***=========YOUR SHIPS=========***";
     private final String ENEMYGRID =   "***========ENEMY SHIPS=========***";
 
-    public GameFieldRenderer (GameField gameField){
+    public GameFieldRenderer (GameField gameField) {
         this.cellsArr = gameField.getPlayerFieldGrid().getCellsArr();
         this.enemiesCellsArr = gameField.getEnemyFieldGrid().getCellsArr();
     }
 
-    public void renderGameField(){
+    public void renderGameField() {
         System.out.flush();
         renderHeader();
         renderLine(PLAYERGRID);

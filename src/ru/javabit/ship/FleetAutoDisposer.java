@@ -52,7 +52,7 @@ public class FleetAutoDisposer implements FleetDisposable {
         return possibleCellsList;
     }
 
-    private FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY){//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
+    private FieldCell getNeighborCell(FieldCell fieldCell, int deltaX, int deltaY) {//getNeighborCell, in bounds, not ship or reserved(over ship neighbor)
         int x=fieldCell.getFieldCellCoordinate().getX()+deltaX;
         int y=fieldCell.getFieldCellCoordinate().getY()+deltaY;
         if(GameMath.checkNotOutOfBounds(x,y,columnNum,rowNum)){
@@ -64,11 +64,11 @@ public class FleetAutoDisposer implements FleetDisposable {
         return fieldCells[0][0];
     }
 
-    private boolean fieldCellIsZero(FieldCell fieldCell){
+    private boolean fieldCellIsZero(FieldCell fieldCell) {
         if(fieldCell.equals(fieldCells[0][0])){return true;} else {return false;}
     }
 
-    public void makeAllReservedCellsFreewater(){//makeAllPaddingCellsFreewater
+    public void makeAllReservedCellsFreewater() {//makeAllPaddingCellsFreewater
         for (FieldCell[] fieldCellArr: fieldCells) {
             for (FieldCell fieldCell : fieldCellArr) {
                 if(fieldCell instanceof GameFieldCell) {

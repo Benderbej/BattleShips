@@ -54,7 +54,7 @@ public abstract class Ship {
         }
     }
 
-    void placeMoreThanSecondShipCell(){
+    void placeMoreThanSecondShipCell() {
         if (size > 2) {
             for (int i = 0; i < size-2; i++) {
                 placeOtherShipCell();
@@ -132,7 +132,7 @@ public abstract class Ship {
 
     ArrayList<FieldCellCoordinate> buildReservedArea() {//reserve cells ares from occupying it by another ships(do it after replacing the ship)
         ArrayList<FieldCellCoordinate> resFieldCellCoords = new ArrayList<>();
-        if(shipPosition == ShipPosition.Unar){//Unar is the same as horizontal the same as vertical
+        if(shipPosition == ShipPosition.Unar){//Unar is the same as horizontal the same as vertical!!!
             int maxX = FieldCell.getMaxXCell(cells);
             int minX = FieldCell.getMinXCell(cells);
             int y = cells.get(0).getFieldCellCoordinate().getY();
@@ -145,7 +145,6 @@ public abstract class Ship {
                 resFieldCellCoords.add(new FieldCellCoordinate(i,y+1));
             }
         }
-
         if(shipPosition == ShipPosition.Horizontal){
             int maxX = FieldCell.getMaxXCell(cells);
             int minX = FieldCell.getMinXCell(cells);

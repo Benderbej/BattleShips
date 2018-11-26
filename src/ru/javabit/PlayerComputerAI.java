@@ -57,7 +57,6 @@ public class PlayerComputerAI {
             case ShipPart:
                 gameFieldCell.setState(CellState.ShipDamaged);
                 success = true;
-                //TurnMaster.victoryTrigger.minusCell(1);//!!!!!!!!!!!!!!!!!!!!
                 break;
         }
         enemyFieldCellsList.remove(gameFieldCell);
@@ -66,7 +65,6 @@ public class PlayerComputerAI {
     }
 
     private void moveFromFieldCellsList(int x, int y){
-
         //enemyFieldCellsList.get()
     }
 }

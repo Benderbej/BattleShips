@@ -15,7 +15,7 @@ public class FleetsDisposal {
 
     GameField gameField;
 
-    public FleetsDisposal(GameField gameField, Fleet fleet1, Fleet fleet2){
+    public FleetsDisposal(GameField gameField, Fleet fleet1, Fleet fleet2) {
         this.gameField = gameField;
         this.fleet1 = fleet1;
         this.fleet2 = fleet2;

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class GameFieldGrid {
 
     FieldCellFactory fieldCellFactory;
-
     private FieldCell[][] cellsArr;
     private GameFieldRulers gameFieldRulers;
 

@@ -5,7 +5,7 @@ public class FieldCellCoordinate {
     private int x;
     private int y;
 
-    public FieldCellCoordinate(int x, int y){
+    public FieldCellCoordinate(int x, int y) {
         this.x = x;//real coordinates, include column row name cells (0-10)
         this.y = y;//real coordinates, include column row name cells (0-10)
     }

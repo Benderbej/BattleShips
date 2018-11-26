@@ -15,7 +15,7 @@ public class VictoryTrigger {
 
     private int winerPlayerNum = 0;//0 - no winner
 
-    VictoryTrigger(ArrayList<Ship> shipList1, ArrayList<Ship> shipList2){
+    VictoryTrigger(ArrayList<Ship> shipList1, ArrayList<Ship> shipList2) {
         this.shipList1 = shipList1;
         this.shipList2 = shipList2;
         for (Ship ship: shipList1) {
@@ -26,7 +26,7 @@ public class VictoryTrigger {
         }
     }
 
-    public void minusCell(int turnActorId){
+    public void minusCell(int turnActorId) {
         switch (turnActorId){
             case 1: shipCellsCount1--; break;
             case 2: shipCellsCount2--; break;
@@ -36,7 +36,7 @@ public class VictoryTrigger {
         winCheck();
     }
 
-    private void winCheck(){
+    private void winCheck() {
         if(conditionCheck(shipCellsCount1)){
             isFinished = true;
             winerPlayerNum = 1;
@@ -47,7 +47,7 @@ public class VictoryTrigger {
         }
     }//TODO interface where this should be main method if win circumstances different
 
-    private boolean conditionCheck(int shipCellsCount){
+    private boolean conditionCheck(int shipCellsCount) {
         boolean victory = false;
         if(shipCellsCount == 0){
             victory = true;

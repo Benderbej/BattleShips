@@ -20,7 +20,7 @@ public class Fleet {
         shipList.add(new Boat());
     }
 
-    public Fleet(int boats, int destroyers, int cruisers, int battlecruisers){
+    public Fleet(int boats, int destroyers, int cruisers, int battlecruisers) {
         shipList = new ArrayList<Ship>();
         for (int i = 0; i < boats; i++){
             shipList.add(new Boat());
