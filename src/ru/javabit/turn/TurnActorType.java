@@ -1,4 +1,4 @@
-package ru.javabit;
+package ru.javabit.turn;
 
 public enum TurnActorType {
 

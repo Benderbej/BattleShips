@@ -1,12 +1,13 @@
-package ru.javabit;
+package ru.javabit.turn;
 
 
+import ru.javabit.VictoryTrigger;
 import ru.javabit.gameField.GameField;
 import ru.javabit.report.ConsoleDialogue;
-import ru.javabit.report.Report;
 import ru.javabit.view.GameFieldRenderer;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * turn controller - controls and make turns

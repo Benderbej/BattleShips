@@ -1,6 +1,4 @@
-package ru.javabit;
-
-import ru.javabit.gameField.FieldCell;
+package ru.javabit.turn;
 
 /**
  * turn actor is not player it is only turn actor, it may be some algorithm to do smth in code while game in process

@@ -1,5 +1,6 @@
-package ru.javabit;
+package ru.javabit.turn;
 
+import ru.javabit.GameMath;
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.FieldCellCoordinate;
 import ru.javabit.gameField.GameField;
