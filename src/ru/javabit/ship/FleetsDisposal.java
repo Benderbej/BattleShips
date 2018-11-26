@@ -12,7 +12,6 @@ public class FleetsDisposal {
     FleetAutoDisposer enemyAutoDisposer;
     FleetAutoDisposer playerManualDisposer;//TODO
     FleetAutoDisposer enemyManualDisposer;//TODO
-
     GameField gameField;
 
     public FleetsDisposal(GameField gameField, Fleet fleet1, Fleet fleet2) {
