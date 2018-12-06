@@ -23,7 +23,7 @@ public abstract class Ship {
     String name;
     ArrayList<FieldCell> cells;//ship cells
     ShipPosition shipPosition;
-    FleetAutoDisposer disposer;
+    FleetDisposer disposer;
 
     protected Ship(int size, String name) {
         this.size = size;
@@ -31,12 +31,11 @@ public abstract class Ship {
         this.name = name;
     }
 
-
-    public void placeShip(FleetAutoDisposer disposer) {
+    public void placeShip(FleetDisposer disposer) {
         this.disposer = disposer;
-    };
+    }
 
-    public void placeShipToCoast(FleetAutoDisposer disposer, GameFieldCell cell) {
+    public void placeShipToCoast(FleetDisposer disposer, GameFieldCell cell) {
         this.disposer = disposer;
     }
 
@@ -128,13 +127,13 @@ public abstract class Ship {
         int maxY = FieldCell.getMaxYCell(cells);
 
         if(minY > 2) {
-            GameFieldCell minYFieldCell = (GameFieldCell) disposer.fieldCells[x][minY - 1];
+            GameFieldCell minYFieldCell = (GameFieldCell) disposer.getFieldCells()[x][minY - 1];
             if(!GameFieldCell.checkIfCellOccupied(minYFieldCell)){
                 possibleCellsList.add(minYFieldCell);
             }
         }
         if (maxY < disposer.getRowNum()-1) {
-            GameFieldCell maxYFieldCell = (GameFieldCell) disposer.fieldCells[x][maxY + 1];
+            GameFieldCell maxYFieldCell = (GameFieldCell) disposer.getFieldCells()[x][maxY + 1];
             if(!GameFieldCell.checkIfCellOccupied(maxYFieldCell)){
                 possibleCellsList.add(maxYFieldCell);
             }
@@ -149,13 +148,13 @@ public abstract class Ship {
         int maxX = FieldCell.getMaxXCell(cells);
 
         if (minX > 2) {
-            GameFieldCell minXFieldCell = (GameFieldCell) disposer.fieldCells[minX - 1][y];
+            GameFieldCell minXFieldCell = (GameFieldCell) disposer.getFieldCells()[minX - 1][y];
             if(!GameFieldCell.checkIfCellOccupied(minXFieldCell)){
                 possibleCellsList.add(minXFieldCell);
             }
         }
         if (maxX < (disposer.getColumnNum()-1)) {
-            GameFieldCell maxXFieldCell = (GameFieldCell) disposer.fieldCells[maxX + 1][y];
+            GameFieldCell maxXFieldCell = (GameFieldCell) disposer.getFieldCells()[maxX + 1][y];
             if(!GameFieldCell.checkIfCellOccupied(maxXFieldCell)){
                 possibleCellsList.add(maxXFieldCell);
             }
@@ -216,7 +215,7 @@ public abstract class Ship {
     private void clearUnplacedShip(){
         GameFieldCell gameFieldCell;
         for (FieldCell cell: cells) {
-            gameFieldCell = (GameFieldCell) disposer.fieldCells[cell.getFieldCellCoordinate().getX()][cell.getFieldCellCoordinate().getY()];
+            gameFieldCell = (GameFieldCell) disposer.getFieldCells()[cell.getFieldCellCoordinate().getX()][cell.getFieldCellCoordinate().getY()];
             gameFieldCell.setState(CellState.FreeWater);
         }
     }

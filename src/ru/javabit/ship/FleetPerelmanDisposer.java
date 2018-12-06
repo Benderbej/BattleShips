@@ -4,21 +4,24 @@ import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameFieldCell;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
 
 public class FleetPerelmanDisposer extends FleetAutoDisposer {
 
-    private HashMap coastGameFieldCells;
+    private HashSet<GameFieldCell> coastGameFieldCells;
 
     public FleetPerelmanDisposer(int rowNum, int columnNum, FieldCell[][] fieldCells) {
         super(rowNum, columnNum, fieldCells);
-        coastGameFieldCells = new HashMap();
+        coastGameFieldCells = new HashSet();
+        setRandomCoastCells();
+        System.out.println(coastGameFieldCells);
     }
 
     public void disposeFleet(ArrayList<Ship> shipList) {
         for (Ship ship : shipList) {
             if(ship.size >=2) {
-                ship.placeShipToCoast(this, null );
+                ship.placeShipToCoast(this, getRandomCellFromHashSet());
             } else {
                 ship.placeShip(this);
             }
@@ -26,26 +29,31 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
         makeAllReservedCellsFreewater();
     }
 
-    public GameFieldCell getRandomCoastCell() {//список
-        int x = getRandomPositiveInt(true);
-        int y = getRandomPositiveInt(false);
-
-        //private int rowNum;
-        //private int columnNum;
-
-        //int minX = ;
-        //int minY = ;
-        //int maxX = minX+;
-        //int maxY = minY+ ;
-
-
-        GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
-        coastGameFieldCells.remove(cell);
-        return cell;
+    private void setRandomCoastCells() {
+        for (int i=1; i < getColumnNum(); i++) {
+            coastGameFieldCells.add((GameFieldCell) fieldCells[i][1]);
+            coastGameFieldCells.add((GameFieldCell) fieldCells[i][getRowNum()]);
+        }
+        for (int i=1; i < getRowNum(); i++) {
+            coastGameFieldCells.add((GameFieldCell) fieldCells[i][1]);
+            coastGameFieldCells.add((GameFieldCell) fieldCells[i][getColumnNum()]);
+        }
     }
 
-    public Object getRandomHashMap(HashMap map){
+    public GameFieldCell getRandomCoastCell() {//список
+        return null;
+    }
 
-        return coastGameFieldCells.get(map.size());
+    public GameFieldCell getRandomCellFromHashSet() {
+        int size = coastGameFieldCells.size();
+        int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+        int i = 0;
+        for(GameFieldCell obj : coastGameFieldCells)
+        {
+            if (i == item)
+                return obj;
+            i++;
+        }
+        return null;
     }
 }

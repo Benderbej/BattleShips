@@ -7,7 +7,7 @@ import ru.javabit.view.CellState;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class FleetAutoDisposer implements FleetDisposable {
+public class FleetAutoDisposer implements FleetDisposer {
 
     private int rowNum;
     private int columnNum;
@@ -102,5 +102,9 @@ public class FleetAutoDisposer implements FleetDisposable {
 
     public int getColumnNum() {
         return columnNum;
+    }
+
+    public FieldCell[][] getFieldCells(){
+        return fieldCells;
     }
 }
