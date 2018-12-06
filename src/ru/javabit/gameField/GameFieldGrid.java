@@ -8,18 +8,19 @@ public class GameFieldGrid {
     private FieldCell[][] cellsArr;
     private GameFieldRulers gameFieldRulers;
 
-    GameFieldGrid (int xsize, int ysize) {
+    GameFieldGrid (int rowNum, int colNum) {
 
-        gameFieldRulers = new GameFieldRulers(ysize, xsize);
-        cellsArr = new FieldCell[xsize][ysize];
+        gameFieldRulers = new GameFieldRulers(rowNum, colNum);
+        cellsArr = new FieldCell[colNum][rowNum];
 
         fieldCellFactory = new FieldCellFactory();
-        for (int y=0; y < ysize; y++){
-            for(int x=0; x < xsize; x++){
+        for (int y=0; y < rowNum; y++){
+            for(int x=0; x < colNum; x++){
                 if(y == 0){
                     cellsArr[x][y] = fieldCellFactory.createMetaFieldCell(x,y,gameFieldRulers.getFieldRowsSkin(x));
                 }
                 if((x == 0)&&(y != 0)){
+                    gameFieldRulers.getFieldColsSkin(y);
                     cellsArr[x][y] = fieldCellFactory.createMetaFieldCell(x,y,gameFieldRulers.getFieldColsSkin(y));
                 }
                 if((x != 0)&&(y != 0)) {

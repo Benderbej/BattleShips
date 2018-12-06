@@ -17,4 +17,13 @@ public class BattleCruiser extends Ship {
         placeMoreThanSecondShipCell();
         disposer.maskReservedArea(buildReservedArea());
     }
+
+    @Override
+    public void placeShipToCoast(FleetAutoDisposer disposer, GameFieldCell cell) {
+        super.placeShip(disposer);
+        GameFieldCell fieldCell = placeStartShipCellToCoast(cell);
+        placeSecondShipCellToCoast(fieldCell);
+        placeMoreThanSecondShipCell();
+        disposer.maskReservedArea(buildReservedArea());
+    }
 }

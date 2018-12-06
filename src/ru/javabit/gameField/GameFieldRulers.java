@@ -13,18 +13,17 @@ public class GameFieldRulers {
         fieldColsSkins = new ArrayList<>();
         setFieldColsSkins(colNum);
         setFieldRowsSkins(rowNum);
-        //System.out.println("setFieldRowsSkins"+fieldRowsSkins.get(5));
     }
 
-    public void setFieldRowsSkins(int colNum) {
-        for(int i =0; i < colNum; i++){
-            fieldColsSkins.add(String.valueOf(alphabet[i]));
+    public void setFieldRowsSkins(int rowNum) {
+        for(int i =0; i < rowNum; i++){
+            fieldRowsSkins.add(String.valueOf(i));
         }
     }
 
-    public void setFieldColsSkins(int rowNum) {
-        for(int i =0; i < rowNum+1; i++){
-            fieldRowsSkins.add(String.valueOf(i));
+    public void setFieldColsSkins(int colNum) {
+        for(int i =0; i < colNum+1; i++){
+            fieldColsSkins.add(String.valueOf(alphabet[i]));
         }
     }
 

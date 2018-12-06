@@ -31,6 +31,15 @@ public abstract class Ship {
         this.name = name;
     }
 
+
+    public void placeShip(FleetAutoDisposer disposer) {
+        this.disposer = disposer;
+    };
+
+    public void placeShipToCoast(FleetAutoDisposer disposer, GameFieldCell cell) {
+        this.disposer = disposer;
+    }
+
     //в placeShipCell() мы модифицируем объекты GameFieldCell внутри массива fieldCells, который передает нам FleetAutoDisposer
     //и пополняем общий список боевых клеток cells(чтобы можно было проверить все ли клетки корабля уничтожены)
     private void placeShipCell(GameFieldCell fieldCell) {
@@ -58,6 +67,29 @@ public abstract class Ship {
             rebuildCurrentShip();
         }
     }
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    GameFieldCell placeStartShipCellToCoast(GameFieldCell gameFieldCell) {
+        GameFieldCell startShipCell = disposer.getRandomPositiveCell();
+        while(GameFieldCell.checkIfCellOccupied(startShipCell)) {
+            startShipCell = disposer.getRandomPositiveCell();
+        }
+        placeShipCell(startShipCell);
+        return startShipCell;
+    }
+
+    void placeSecondShipCellToCoast(GameFieldCell startShipCell) {
+        ArrayList<FieldCell> fieldCellList = disposer.findPossiblePositionsForCell(startShipCell);
+        if(fieldCellList.size()>0) {
+            GameFieldCell secondShipCell = (GameFieldCell) GameMath.getFromPossiblePosotionsList(fieldCellList);
+            if(startShipCell.getFieldCellCoordinate().getX() == secondShipCell.getFieldCellCoordinate().getX()){shipPosition = ShipPosition.Vertical;}
+            if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){shipPosition = ShipPosition.Horizontal;}
+            placeShipCell(secondShipCell);
+        } else {
+            rebuildCurrentShip();
+        }
+    }
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     void placeMoreThanSecondShipCell() {
         if (size > 2) {
@@ -130,10 +162,6 @@ public abstract class Ship {
         }
         return possibleCellsList;
     }
-
-    public void placeShip(FleetAutoDisposer disposer){
-        this.disposer = disposer;
-    };
 
     ArrayList<FieldCellCoordinate> buildReservedArea() {//reserve cells ares from occupying it by another ships(do it after replacing the ship)
         ArrayList<FieldCellCoordinate> resFieldCellCoords = new ArrayList<>();

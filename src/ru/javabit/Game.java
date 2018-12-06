@@ -32,12 +32,14 @@ public class Game {
 
     public void initGame() {
         meetUser();
-        gameField = new GameField(11, 11,"computer 1", "computer 2");
+        gameField = new GameField(11, 15,"computer 1", "computer 2");
         //gameField = new GameField(25, 25,"computer 1", "computer 2");
         fleet1 = new Fleet();
         fleet2 = new Fleet();
+
         //fleet1 = new Fleet(2,0,1,0);
         //fleet2 = new Fleet(2,0,1,0);
+
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
         gameFieldRenderer = new GameFieldRenderer(gameField);
@@ -57,5 +59,4 @@ public class Game {
         dialogue = new ConsoleDialogue();
         dialogue.makeReport(Report.Greeting.getText());
     }
-
 }

@@ -27,14 +27,19 @@ public class FleetAutoDisposer implements FleetDisposable {
         makeAllReservedCellsFreewater();
     }
 
-    public int getRandomPositiveInt() {
-        int index = GameMath.getRandom().nextInt(fieldCells.length -1)+1;
+    public int getRandomPositiveInt(boolean rowsNotCols) {//boolean true x, boolean false
+        int index;
+        if(rowsNotCols) {
+            index = GameMath.getRandom().nextInt(fieldCells[1].length - 1) + 1;
+        } else {
+            index = GameMath.getRandom().nextInt(fieldCells.length - 1) + 1;
+        }
         return index;
     }
 
     public GameFieldCell getRandomPositiveCell() {
-        int x = getRandomPositiveInt();
-        int y = getRandomPositiveInt();
+        int x = getRandomPositiveInt(false);
+        int y = getRandomPositiveInt(true);
         GameFieldCell cell = (GameFieldCell) fieldCells[x][y];
         return cell;
     }
