@@ -69,16 +69,17 @@ public abstract class Ship {
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    GameFieldCell placeStartShipCellToCoast(GameFieldCell gameFieldCell) {
-        GameFieldCell startShipCell = disposer.getRandomPositiveCell();
+    GameFieldCell placeStartShipCellToCoast(GameFieldCell startShipCell) {
+        System.out.println("placeStartShipCellToCoast();");
         while(GameFieldCell.checkIfCellOccupied(startShipCell)) {
-            startShipCell = disposer.getRandomPositiveCell();
+            startShipCell = disposer.getRandomCellFromHashSet();
         }
         placeShipCell(startShipCell);
         return startShipCell;
     }
 
     void placeSecondShipCellToCoast(GameFieldCell startShipCell) {
+        System.out.println("placeSecondShipCellToCoast();");
         ArrayList<FieldCell> fieldCellList = disposer.findPossiblePositionsForCell(startShipCell);
         if(fieldCellList.size()>0) {
             GameFieldCell secondShipCell = (GameFieldCell) GameMath.getFromPossiblePosotionsList(fieldCellList);
@@ -91,7 +92,7 @@ public abstract class Ship {
     }
 
     private void rebuildCurrentShipToCoast() {
-
+        System.out.println("rebuildCurrentShipToCoast();");
         clearUnplacedShip();
         this.cells = new ArrayList<FieldCell>(size);
         placeShipToCoast(disposer, disposer.getRandomCellFromHashSet());
@@ -122,7 +123,7 @@ public abstract class Ship {
             fieldCell = (GameFieldCell) cells.get(GameMath.getRandomInt(1));
         }
         if(cells.size()==0){
-            rebuildCurrentShip();
+            rebuildCurrentShip();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! dlya coast
             return;
         }
         placeShipCell(fieldCell);
