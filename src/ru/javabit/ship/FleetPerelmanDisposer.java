@@ -15,12 +15,10 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
         super(rowNum, columnNum, fieldCells);
         coastGameFieldCells = new HashSet();
         setRandomCoastCells();
-        System.out.println(coastGameFieldCells);
     }
 
     public void disposeFleet(ArrayList<Ship> shipList) {
         for (Ship ship : shipList) {
-            System.out.println(ship.size);
             if(ship.size >=2) {
                 //ship.placeShipToCoast(this, getRandomCellFromHashSet());
                 ship.placeShipToCoast(this);

@@ -78,10 +78,6 @@ public abstract class Ship {
         }
     }
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
     void placeMoreThanSecondShipCell() {
         if (size > 2) {
             for (int i = 0; i < size-2; i++) {
@@ -106,7 +102,7 @@ public abstract class Ship {
             fieldCell = (GameFieldCell) cells.get(GameMath.getRandomInt(1));
         }
         if(cells.size()==0){
-            rebuildCurrentShip();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! dlya coast
+            rebuildCurrentShip();
             return;
         }
         placeShipCell(fieldCell);

@@ -29,5 +29,5 @@ public interface FleetDisposer {
 
     GameFieldCell getRandomPositiveCell();
 
-    GameFieldCell getRandomCell();
+    GameFieldCell getRandomCell();//different in to implementations
 }
