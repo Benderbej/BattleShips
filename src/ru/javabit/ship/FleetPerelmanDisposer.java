@@ -23,7 +23,7 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
             System.out.println(ship.size);
             if(ship.size >=2) {
                 //ship.placeShipToCoast(this, getRandomCellFromHashSet());
-                ship.placeShip(this);
+                ship.placeShipToCoast(this);
             } else {
                 ship.placeShip(this);
             }

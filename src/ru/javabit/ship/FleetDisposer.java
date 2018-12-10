@@ -15,8 +15,6 @@ public interface FleetDisposer {
 
     void disposeFleet(ArrayList<Ship> shipList);
 
-    GameFieldCell getRandomPositiveCell();
-
     ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell);
 
     int getRowNum();
@@ -29,7 +27,7 @@ public interface FleetDisposer {
 
     void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords);
 
-    GameFieldCell getRandomCellFromHashSet();
+    GameFieldCell getRandomPositiveCell();
 
     GameFieldCell getRandomCell();
 }

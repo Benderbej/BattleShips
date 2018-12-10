@@ -24,6 +24,7 @@ public abstract class Ship {
     ArrayList<FieldCell> cells;//ship cells
     ShipPosition shipPosition;
     FleetDisposer disposer;
+    boolean coastShip;
 
 
     protected Ship(int size, String name) {
@@ -36,8 +37,9 @@ public abstract class Ship {
         this.disposer = disposer;
     }
 
-    public void placeShipToCoast(FleetDisposer disposer, GameFieldCell cell) {
-        this.disposer = disposer;
+    public void placeShipToCoast(FleetDisposer disposer) {
+        coastShip = true;
+        placeShip(disposer);
     }
 
     //в placeShipCell() мы модифицируем объекты GameFieldCell внутри массива fieldCells, который передает нам FleetAutoDisposer
@@ -48,9 +50,17 @@ public abstract class Ship {
     }
 
     GameFieldCell placeStartShipCell() {
-        GameFieldCell startShipCell = disposer.getRandomCell();
-        while(GameFieldCell.checkIfCellOccupied(startShipCell)) {
+        GameFieldCell startShipCell;
+        if(coastShip == true) {
             startShipCell = disposer.getRandomCell();
+            while (GameFieldCell.checkIfCellOccupied(startShipCell)) {
+                startShipCell = disposer.getRandomCell();
+            }
+        } else {//default
+            startShipCell = disposer.getRandomPositiveCell();
+            while (GameFieldCell.checkIfCellOccupied(startShipCell)) {
+                startShipCell = disposer.getRandomPositiveCell();
+            }
         }
         placeShipCell(startShipCell);
         return startShipCell;
@@ -69,34 +79,7 @@ public abstract class Ship {
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    GameFieldCell placeStartShipCellToCoast(GameFieldCell startShipCell) {
-        System.out.println("placeStartShipCellToCoast();");
-        while(GameFieldCell.checkIfCellOccupied(startShipCell)) {
-            startShipCell = disposer.getRandomCellFromHashSet();
-        }
-        placeShipCell(startShipCell);
-        return startShipCell;
-    }
 
-    void placeSecondShipCellToCoast(GameFieldCell startShipCell) {
-        System.out.println("placeSecondShipCellToCoast();");
-        ArrayList<FieldCell> fieldCellList = disposer.findPossiblePositionsForCell(startShipCell);
-        if(fieldCellList.size()>0) {
-            GameFieldCell secondShipCell = (GameFieldCell) GameMath.getFromPossiblePosotionsList(fieldCellList);
-            if(startShipCell.getFieldCellCoordinate().getX() == secondShipCell.getFieldCellCoordinate().getX()){shipPosition = ShipPosition.Vertical;}
-            if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){shipPosition = ShipPosition.Horizontal;}
-            placeShipCell(secondShipCell);
-        } else {
-            rebuildCurrentShipToCoast();
-        }
-    }
-
-    private void rebuildCurrentShipToCoast() {
-        System.out.println("rebuildCurrentShipToCoast();");
-        clearUnplacedShip();
-        this.cells = new ArrayList<FieldCell>(size);
-        placeShipToCoast(disposer, disposer.getRandomCellFromHashSet());
-    }
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     void placeMoreThanSecondShipCell() {

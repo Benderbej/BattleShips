@@ -96,11 +96,6 @@ public class FleetAutoDisposer implements FleetDisposer {
         }
     }
 
-    @Override
-    public GameFieldCell getRandomCellFromHashSet() {
-        return null;
-    }
-
     public int getRowNum() {
         return rowNum;
     }
