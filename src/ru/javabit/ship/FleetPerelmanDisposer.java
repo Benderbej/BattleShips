@@ -35,9 +35,9 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
             coastGameFieldCells.add((GameFieldCell) fieldCells[i][1]);
             coastGameFieldCells.add((GameFieldCell) fieldCells[i][getRowNum()-1]);
         }
-        for (int i=1; i < getRowNum(); i++) {
-            coastGameFieldCells.add((GameFieldCell) fieldCells[i][1]);
-            coastGameFieldCells.add((GameFieldCell) fieldCells[i][getColumnNum()-1]);
+        for (int j=1; j < getRowNum(); j++) {
+            coastGameFieldCells.add((GameFieldCell) fieldCells[1][j]);
+            coastGameFieldCells.add((GameFieldCell) fieldCells[getColumnNum()-1][j]);
         }
     }
 
@@ -60,6 +60,6 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
 
     @Override
     public GameFieldCell getRandomCell() {
-        return null;
+        return getRandomCellFromHashSet();
     }
 }
