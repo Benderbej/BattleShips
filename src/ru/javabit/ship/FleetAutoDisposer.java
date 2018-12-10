@@ -112,4 +112,9 @@ public class FleetAutoDisposer implements FleetDisposer {
     public FieldCell[][] getFieldCells(){
         return fieldCells;
     }
+
+    @Override
+    public GameFieldCell getRandomCell() {
+        return null;
+    }
 }

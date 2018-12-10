@@ -57,4 +57,9 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
         }
         return null;
     }
+
+    @Override
+    public GameFieldCell getRandomCell() {
+        return null;
+    }
 }
