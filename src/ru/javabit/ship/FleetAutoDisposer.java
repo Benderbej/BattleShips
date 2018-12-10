@@ -115,6 +115,6 @@ public class FleetAutoDisposer implements FleetDisposer {
 
     @Override
     public GameFieldCell getRandomCell() {
-        return null;
+        return getRandomPositiveCell();
     }
 }
