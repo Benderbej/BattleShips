@@ -33,7 +33,10 @@ public class Game {
 
     public void initGame() throws BattleShipsException {
         meetUser();
-        gameField = new GameField(6, 6,"computer 1", "computer 2");
+        gameField = new GameField(8, 6,"computer 1", "computer 2");
+        //gameField = new GameField(10, 8,"computer 1", "computer 2"); //CAN CATCH RUNTIME
+        //gameField = new GameField(6, 6,"computer 1", "computer 2"); //CAN CATCH EXCEPTION
+
         //gameField = new GameField(25, 25,"computer 1", "computer 2");
         fleet1 = new Fleet();
         fleet2 = new Fleet();

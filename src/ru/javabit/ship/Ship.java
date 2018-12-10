@@ -60,7 +60,7 @@ public abstract class Ship {
                 while (GameFieldCell.checkIfCellOccupied(startShipCell)) {
                     startShipCell = disposer.getRandomCell();
                     i++;
-                    //if(i==60){throw new RuntimeException("too many attempts to find cell in placeStartShipCell() by getRandomCell()");}
+                    //if(i==10){throw new RuntimeException("too many attempts to find cell in placeStartShipCell() by getRandomCell()");}
                     if(i==100){throw new BattleShipsException("method getRandomCell() can not find and provide any cell to start ship disposing, may be field is too small or fleet too big, 100 attempts passed");}
                 }
             } else {//default
@@ -68,7 +68,7 @@ public abstract class Ship {
                 while (GameFieldCell.checkIfCellOccupied(startShipCell)) {
                     startShipCell = disposer.getRandomPositiveCell();
                     i++;
-                    //if(i==60){throw new RuntimeException("too many attempts to find cell in placeStartShipCell() by getRandomPositiveCell()");}
+                    //if(i==10){throw new RuntimeException("too many attempts to find cell in placeStartShipCell() by getRandomPositiveCell()");}
                     if(i==100){throw new BattleShipsException("method getRandomPositiveCell() can not find and provide any cell to start ship disposing, may be field is too small or fleet too big, 100 attempts passed");}
                 }
             }
