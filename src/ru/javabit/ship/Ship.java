@@ -48,9 +48,9 @@ public abstract class Ship {
     }
 
     GameFieldCell placeStartShipCell() {
-        GameFieldCell startShipCell = disposer.getRandomPositiveCell();
+        GameFieldCell startShipCell = disposer.getRandomCell();
         while(GameFieldCell.checkIfCellOccupied(startShipCell)) {
-            startShipCell = disposer.getRandomPositiveCell();
+            startShipCell = disposer.getRandomCell();
         }
         placeShipCell(startShipCell);
         return startShipCell;
