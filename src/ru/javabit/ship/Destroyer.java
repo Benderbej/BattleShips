@@ -18,7 +18,7 @@ public class Destroyer extends Ship {
 
     @Override
     public void placeShipToCoast(FleetDisposer disposer, GameFieldCell cell) {
-        super.placeShip(disposer);
+        super.placeShipToCoast(disposer, cell);
         GameFieldCell fieldCell = placeStartShipCellToCoast(cell);
         placeSecondShipCellToCoast(fieldCell);
         disposer.maskReservedArea(buildReservedArea());

@@ -28,4 +28,6 @@ public interface FleetDisposer {
     void makeAllReservedCellsFreewater();
 
     void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords);
+
+    GameFieldCell getRandomCellFromHashSet();
 }

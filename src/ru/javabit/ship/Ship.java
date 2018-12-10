@@ -25,6 +25,7 @@ public abstract class Ship {
     ShipPosition shipPosition;
     FleetDisposer disposer;
 
+
     protected Ship(int size, String name) {
         this.size = size;
         this.cells = new ArrayList<>(size);
@@ -85,8 +86,15 @@ public abstract class Ship {
             if(startShipCell.getFieldCellCoordinate().getY() == secondShipCell.getFieldCellCoordinate().getY()){shipPosition = ShipPosition.Horizontal;}
             placeShipCell(secondShipCell);
         } else {
-            rebuildCurrentShip();
+            rebuildCurrentShipToCoast();
         }
+    }
+
+    private void rebuildCurrentShipToCoast() {
+
+        clearUnplacedShip();
+        this.cells = new ArrayList<FieldCell>(size);
+        placeShipToCoast(disposer, disposer.getRandomCellFromHashSet());
     }
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

@@ -56,7 +56,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Game game = Game.getInstance();
         game.initGame();
-        game.startGame();
+        //game.startGame();
     }
 
 

@@ -20,6 +20,7 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
 
     public void disposeFleet(ArrayList<Ship> shipList) {
         for (Ship ship : shipList) {
+            System.out.println(ship.size);
             if(ship.size >=2) {
                 ship.placeShipToCoast(this, getRandomCellFromHashSet());
             } else {
@@ -32,11 +33,11 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
     private void setRandomCoastCells() {
         for (int i=1; i < getColumnNum(); i++) {
             coastGameFieldCells.add((GameFieldCell) fieldCells[i][1]);
-            coastGameFieldCells.add((GameFieldCell) fieldCells[i][getRowNum()]);
+            coastGameFieldCells.add((GameFieldCell) fieldCells[i][getRowNum()-1]);
         }
         for (int i=1; i < getRowNum(); i++) {
             coastGameFieldCells.add((GameFieldCell) fieldCells[i][1]);
-            coastGameFieldCells.add((GameFieldCell) fieldCells[i][getColumnNum()]);
+            coastGameFieldCells.add((GameFieldCell) fieldCells[i][getColumnNum()-1]);
         }
     }
 
