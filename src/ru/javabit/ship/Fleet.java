@@ -36,4 +36,12 @@ public class Fleet {
         }
     }
 
+    public int getShipListCellsCount(){
+        int shipCellsCount = 0;
+        for (Ship ship: shipList) {
+            shipCellsCount += ship.getSize();
+        }
+        return shipCellsCount;
+    }
+
 }

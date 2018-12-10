@@ -1,5 +1,6 @@
 package ru.javabit.ship;
 
+import ru.javabit.Game;
 import ru.javabit.GameMath;
 import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.FieldCell;
@@ -34,11 +35,11 @@ public abstract class Ship {
         this.name = name;
     }
 
-    public void placeShip(FleetDisposer disposer) {
+    public void placeShip(FleetDisposer disposer) throws BattleShipsException {
         this.disposer = disposer;
     }
 
-    public void placeShipToCoast(FleetDisposer disposer) {
+    public void placeShipToCoast(FleetDisposer disposer) throws BattleShipsException {
         coastShip = true;
         placeShip(disposer);
     }
@@ -50,7 +51,7 @@ public abstract class Ship {
         GameFieldCell.setCellOccupied(fieldCell);
     }
 
-    GameFieldCell placeStartShipCell() {
+    GameFieldCell placeStartShipCell() throws BattleShipsException {
         GameFieldCell startShipCell=null;
         try {
             int i=0;
@@ -59,6 +60,7 @@ public abstract class Ship {
                 while (GameFieldCell.checkIfCellOccupied(startShipCell)) {
                     startShipCell = disposer.getRandomCell();
                     i++;
+                    //if(i==60){throw new RuntimeException("too many attempts to find cell in placeStartShipCell() by getRandomCell()");}
                     if(i==100){throw new BattleShipsException("method getRandomCell() can not find and provide any cell to start ship disposing, may be field is too small or fleet too big, 100 attempts passed");}
                 }
             } else {//default
@@ -66,18 +68,34 @@ public abstract class Ship {
                 while (GameFieldCell.checkIfCellOccupied(startShipCell)) {
                     startShipCell = disposer.getRandomPositiveCell();
                     i++;
+                    //if(i==60){throw new RuntimeException("too many attempts to find cell in placeStartShipCell() by getRandomPositiveCell()");}
                     if(i==100){throw new BattleShipsException("method getRandomPositiveCell() can not find and provide any cell to start ship disposing, may be field is too small or fleet too big, 100 attempts passed");}
                 }
             }
-        } catch (BattleShipsException e) {
-            e.printStackTrace();
+        } catch (BattleShipsException b) {
+            StringBuilder info = new StringBuilder();
+            info.append(System.getProperty("line.separator"));
+            info.append("Potential rows*cols="+disposer.getColumnNum()*disposer.getRowNum() +" cols:"+disposer.getColumnNum()+ " rows:" +disposer.getRowNum());
+            info.append(System.getProperty("line.separator"));
+            if((disposer.getColumnNum()>1)&&(disposer.getRowNum()>1)) {
+                info.append("Num of all field cells getFieldCells array size=" + (disposer.getFieldCells().length - 1) * (disposer.getFieldCells()[1].length));
+                info.append(System.getProperty("line.separator"));
+            }
+            if(disposer instanceof FleetPerelmanDisposer) {
+                info.append("FleetPerelmanDisposer: num of coast field cells: CoastGameFieldCellsSize=" + ((FleetPerelmanDisposer) disposer).getCoastGameFieldCellsSize());
+                info.append(System.getProperty("line.separator"));
+            }
+            info.append("Fleet1 getShipListCellsCount=" + Game.getInstance().getFleet1().getShipListCellsCount() + ", fleet2 getShipListCellsCount=" + Game.getInstance().getFleet2().getShipListCellsCount());
+            throw new BattleShipsException(b.getMessage() + info.toString());
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
         }
 
         placeShipCell(startShipCell);
         return startShipCell;
     }
 
-    void placeSecondShipCell(GameFieldCell startShipCell) {
+    void placeSecondShipCell(GameFieldCell startShipCell) throws BattleShipsException {
         ArrayList<FieldCell> fieldCellList = disposer.findPossiblePositionsForCell(startShipCell);
         if(fieldCellList.size()>0) {
             GameFieldCell secondShipCell = (GameFieldCell) GameMath.getFromPossiblePosotionsList(fieldCellList);
@@ -89,7 +107,7 @@ public abstract class Ship {
         }
     }
 
-    void placeMoreThanSecondShipCell() {
+    void placeMoreThanSecondShipCell() throws BattleShipsException {
         if (size > 2) {
             for (int i = 0; i < size-2; i++) {
                 placeOtherShipCell();
@@ -97,7 +115,7 @@ public abstract class Ship {
         }
     }
 
-    void placeOtherShipCell() {
+    void placeOtherShipCell() throws BattleShipsException {
         ArrayList<FieldCell> cells = null;
         GameFieldCell fieldCell = null;
         if (shipPosition == ShipPosition.Vertical){
@@ -205,7 +223,7 @@ public abstract class Ship {
         return resFieldCellCoords;
     }
 
-    private void rebuildCurrentShip() {
+    private void rebuildCurrentShip() throws BattleShipsException {
         clearUnplacedShip();
         this.cells = new ArrayList<FieldCell>(size);
         placeShip(disposer);

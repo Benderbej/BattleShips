@@ -1,5 +1,6 @@
 package ru.javabit.ship;
 
+import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.GameField;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class FleetsDisposal {
         this.fleet2 = fleet2;
     }
 
-    public void disposeAutoAuto() {
+    public void disposeAutoAuto() throws BattleShipsException {
 
         playerAutoDisposer = new FleetPerelmanDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
         //playerAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
@@ -31,7 +32,7 @@ public class FleetsDisposal {
 
     }
 
-    private void autoDisposeFleet(ArrayList<Ship> shipList, FleetDisposer disposer) {
+    private void autoDisposeFleet(ArrayList<Ship> shipList, FleetDisposer disposer) throws BattleShipsException {
         disposer.disposeFleet(shipList);
         disposer.makeAllReservedCellsFreewater();
     }

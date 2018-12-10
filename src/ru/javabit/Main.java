@@ -51,9 +51,11 @@ TurnMaster - класс запускающий процесс игры(ходо�
 PlayerComputerAI - класс содержащий логику компьютерного игрока(список вариантов для атаки, методы по выбору клетки для атаки)
  */
 
+import ru.javabit.exceptions.BattleShipsException;
+
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, BattleShipsException {
         Game game = Game.getInstance();
         game.initGame();
         game.startGame();

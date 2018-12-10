@@ -1,6 +1,7 @@
 package ru.javabit.ship;
 
 import ru.javabit.GameMath;
+import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.*;
 import ru.javabit.view.CellState;
 
@@ -20,7 +21,7 @@ public class FleetAutoDisposer implements FleetDisposer {
         this.columnNum = columnNum;
     }
 
-    public void disposeFleet(ArrayList<Ship> shipList) {
+    public void disposeFleet(ArrayList<Ship> shipList) throws BattleShipsException {
         for (Ship ship : shipList) {
             ship.placeShip(this);
         }

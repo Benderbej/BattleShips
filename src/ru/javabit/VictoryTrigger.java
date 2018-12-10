@@ -64,4 +64,12 @@ public class VictoryTrigger {
     public int getWinerPlayerNum() {
         return winerPlayerNum;
     }
+
+    public int getShipCellsCount1() {
+        return shipCellsCount1;
+    }
+
+    public int getShipCellsCount2() {
+        return shipCellsCount2;
+    }
 }

@@ -1,5 +1,6 @@
 package ru.javabit.ship;
 
+import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameFieldCell;
 
@@ -10,6 +11,7 @@ import java.util.Random;
 public class FleetPerelmanDisposer extends FleetAutoDisposer {
 
     private HashSet<GameFieldCell> coastGameFieldCells;
+    private int coastGameFieldCellsSize;//needed for exception info
 
     public FleetPerelmanDisposer(int rowNum, int columnNum, FieldCell[][] fieldCells) {
         super(rowNum, columnNum, fieldCells);
@@ -17,7 +19,7 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
         setRandomCoastCells();
     }
 
-    public void disposeFleet(ArrayList<Ship> shipList) {
+    public void disposeFleet(ArrayList<Ship> shipList) throws BattleShipsException {
         for (Ship ship : shipList) {
             if(ship.size >=2) {
                 //ship.placeShipToCoast(this, getRandomCellFromHashSet());
@@ -38,6 +40,7 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
             coastGameFieldCells.add((GameFieldCell) fieldCells[1][j]);
             coastGameFieldCells.add((GameFieldCell) fieldCells[getColumnNum()-1][j]);
         }
+        coastGameFieldCellsSize = coastGameFieldCells.size();
     }
 
     public GameFieldCell getRandomCoastCell() {//список
@@ -60,5 +63,9 @@ public class FleetPerelmanDisposer extends FleetAutoDisposer {
     @Override
     public GameFieldCell getRandomCell() {
         return getRandomCellFromHashSet();
+    }
+
+    public int getCoastGameFieldCellsSize() {
+        return coastGameFieldCellsSize;
     }
 }

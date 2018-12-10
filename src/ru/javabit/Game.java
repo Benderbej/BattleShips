@@ -1,5 +1,6 @@
 package ru.javabit;
 
+import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.report.ConsoleDialogue;
 import ru.javabit.report.Report;
 import ru.javabit.gameField.GameField;
@@ -30,9 +31,9 @@ public class Game {
         return game;
     }
 
-    public void initGame() {
+    public void initGame() throws BattleShipsException {
         meetUser();
-        gameField = new GameField(11, 11,"computer 1", "computer 2");
+        gameField = new GameField(6, 6,"computer 1", "computer 2");
         //gameField = new GameField(25, 25,"computer 1", "computer 2");
         fleet1 = new Fleet();
         fleet2 = new Fleet();
@@ -56,5 +57,13 @@ public class Game {
     private void meetUser() {
         dialogue = new ConsoleDialogue();
         dialogue.makeReport(Report.Greeting.getText());
+    }
+
+    public Fleet getFleet1() {
+        return fleet1;
+    }
+
+    public Fleet getFleet2() {
+        return fleet2;
     }
 }

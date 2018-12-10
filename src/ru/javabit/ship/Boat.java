@@ -1,5 +1,6 @@
 package ru.javabit.ship;
 
+import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.GameFieldCell;
 
 public class Boat extends Ship {
@@ -10,7 +11,7 @@ public class Boat extends Ship {
     }
 
     @Override
-    public void placeShip(FleetDisposer disposer) {
+    public void placeShip(FleetDisposer disposer) throws BattleShipsException {
         super.placeShip(disposer);
         placeStartShipCell();
         disposer.maskReservedArea(buildReservedArea());
