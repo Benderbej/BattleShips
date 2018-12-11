@@ -14,21 +14,21 @@ import java.util.ArrayList;
 
 public interface FleetDisposer {
 
-    void disposeFleet(ArrayList<Ship> shipList) throws BattleShipsException;
+    void disposeFleet(ArrayList<Ship> shipList) throws BattleShipsException; //получает флот и располагает корабли флота на игровом поле
 
-    ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell);
+    ArrayList<FieldCell> findPossiblePositionsForCell(FieldCell fieldCell);//ищет соседнюю координату определяет чтобы не было выхода за границы
 
-    int getRowNum();
+    int getRowNum();//получить количество рядов поля
 
-    int getColumnNum();
+    int getColumnNum();//получить количество колонок поля
 
-    FieldCell[][] getFieldCells();
+    FieldCell[][] getFieldCells();//получить массив с игровыми клетками
 
-    void makeAllReservedCellsFreewater();
+    void makeAllReservedCellsFreewater();//все клетки со статусом - зарезервировано(то есть пограничные клетки кораблей) меняет на статус -вода
 
-    void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords);
+    void maskReservedArea(ArrayList<FieldCellCoordinate> resFieldCellCoords);//присваивает клетке статус зарезервировано
 
-    GameFieldCell getRandomPositiveCell();
+    GameFieldCell getRandomPositiveCell();//получить ЛЮБУЮ случайную клетку поля(хоть с кораблем хоть без, лишь бы в рамках границ)
 
-    GameFieldCell getRandomCell();//different in to implementations
+    GameFieldCell getRandomCell();//получить случайную клетку поля для данной имплементации(то есть для перельманова алгоритма это будут все прибрежные клетки (получается из подмножества того что дает getRandomPositiveCell()))
 }

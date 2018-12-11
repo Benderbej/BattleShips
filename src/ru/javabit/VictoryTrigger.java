@@ -1,5 +1,6 @@
 package ru.javabit;
 
+import ru.javabit.ship.Fleet;
 import ru.javabit.ship.Ship;
 
 import java.util.ArrayList;
@@ -15,15 +16,9 @@ public class VictoryTrigger {
 
     private int winerPlayerNum = 0;//0 - no winner
 
-    VictoryTrigger(ArrayList<Ship> shipList1, ArrayList<Ship> shipList2) {
-        this.shipList1 = shipList1;
-        this.shipList2 = shipList2;
-        for (Ship ship: shipList1) {
-            shipCellsCount1 += ship.getSize();
-        }
-        for (Ship ship: shipList2) {
-            shipCellsCount2 += ship.getSize();
-        }
+    VictoryTrigger(Fleet fleet1, Fleet fleet2) {
+        shipCellsCount1 = fleet1.getShipListCellsCount();
+        shipCellsCount2 = fleet2.getShipListCellsCount();
     }
 
     public void minusCell(int turnActorId) {

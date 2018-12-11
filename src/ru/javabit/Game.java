@@ -33,7 +33,7 @@ public class Game {
 
     public void initGame() throws BattleShipsException {
         meetUser();
-        gameField = new GameField(8, 6,"computer 1", "computer 2");
+        gameField = new GameField(11, 11,"computer 1", "computer 2");
         //gameField = new GameField(10, 8,"computer 1", "computer 2"); //CAN CATCH RUNTIME
         //gameField = new GameField(6, 6,"computer 1", "computer 2"); //CAN CATCH EXCEPTION
 
@@ -49,7 +49,7 @@ public class Game {
     }
 
     public void startGame() throws InterruptedException {//todo init gameprocess thread
-        victoryTrigger = new VictoryTrigger(fleet1.shipList, fleet2.shipList);
+        victoryTrigger = new VictoryTrigger(fleet1, fleet2);
         turnMaster = TurnMaster.getInstance();
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
         turnMaster.setVictoryTrigger(victoryTrigger);
