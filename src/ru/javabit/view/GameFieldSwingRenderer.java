@@ -5,6 +5,8 @@ import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameField;
 
 import javax.swing.*;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 public class GameFieldSwingRenderer implements GameFieldRenderable {
@@ -16,8 +18,11 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     private final String FIELDFOOTER = "***^^^^^^^^^(-+o^^o+-)^^^^^^^^^***";
     private final String PLAYERGRID =  "***=========YOUR SHIPS=========***";
     private final String ENEMYGRID =   "***========ENEMY SHIPS=========***";
+    private JTextField playerGridName;
+    private JTextField enemyGridName;
     private JFrame jFrame;
     private JPanel gameFieldPanel;
+
     JPanel pl1Panel;
     JPanel pl2Panel;
     private boolean renderInit;
@@ -49,51 +54,71 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
         renderInit = true;
     }
 
-    public void addCells() {
-        if(renderInit) {
+    public void updateCellsData() {
+        int i=0; int j=0;
+        System.out.println(pl1Panel.getComponentCount());
             for (FieldCell[] arr : gameField.getPlayerFieldGrid().getCellsArr()) {
                 for (FieldCell cell : arr) {
-                    JButton jButton = new JButton();
-                    pl1Panel.add(jButton);
+                    System.out.printf("i=" + i + " j=" + j + ", ");
+                    JButton jButton = (JButton) pl1Panel.getComponent((i*(gameField.getRowNum())+j));
+                    jButton.setText(cell.getSkin());
+                    j++;
                 }
+                j=0;
+                i++;
             }
+        i=0; j=0;
             for (FieldCell[] arr : gameField.getEnemyFieldGrid().getCellsArr()) {
                 for (FieldCell cell : arr) {
-                    JButton jButton = new JButton();
-                    pl2Panel.add(jButton);
+                    JButton jButton = (JButton) pl2Panel.getComponent((i*(gameField.getRowNum())+j));
+                    jButton.setText(cell.getSkin());
+                    j++;
                 }
+                j=0;
+                i++;
             }
-        } else {
-            initAddCells();
-        }
     }
 
     public void renderGameField(){
+        if(renderInit == true){
+            updateCellsData();
+        }
         jFrame.setVisible(true);
     }
 
 
     private void jFrameInit(){
+        playerGridName = new JTextField(PLAYERGRID);
+        enemyGridName = new JTextField(ENEMYGRID);
+        playerGridName.setEditable(false);
+        enemyGridName.setEditable(false);
+
         jFrame = new JFrame();
         jFrame.setTitle("BattleShips");
         //jFrame.setLocationRelativeTo(null);
-        jFrame.setSize(500, 300);
+        jFrame.setSize(gameField.getColumnNum()*70, gameField.getRowNum()*70);
         //jFrame.setLocationRelativeTo(null);
         jFrame.setLayout(new BorderLayout());
         gameFieldPanel = new JPanel();
-
         pl1Panel = new JPanel();
         pl2Panel = new JPanel();
         pl1Panel.setLayout(new GridLayout(gameField.getColumnNum(), gameField.getRowNum()));
         pl2Panel.setLayout(new GridLayout(gameField.getColumnNum(), gameField.getRowNum()));
-        addCells();
+        initAddCells();
+
+        gameFieldPanel.add(playerGridName);
         gameFieldPanel.add(pl1Panel);
+        gameFieldPanel.add(enemyGridName);
         gameFieldPanel.add(pl2Panel);
 
+
+        jFrame.add(playerGridName);
+        jFrame.add(enemyGridName);
+
+
         jFrame.add(gameFieldPanel, BorderLayout.CENTER);
-        //gameFieldPanel.add(new JButton("gh"));
-        //jFrame.add(new JButton("df"));
-        jFrame.add(gameFieldPanel, BorderLayout.CENTER);
+
+
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 }

@@ -61,7 +61,7 @@ public class Main {
         //game.startGame();
 
         game.initGame2();
-        //game.startGame2();
+        game.startGame2();
     }
 
 
