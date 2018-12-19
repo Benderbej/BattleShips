@@ -57,8 +57,11 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException, BattleShipsException {
         Game game = Game.getInstance();
-        game.initGame();
-        game.startGame();
+        //game.initGame();
+        //game.startGame();
+
+        game.initGame2();
+        //game.startGame2();
     }
 
 

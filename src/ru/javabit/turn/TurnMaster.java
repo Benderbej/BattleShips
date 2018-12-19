@@ -4,6 +4,7 @@ package ru.javabit.turn;
 import ru.javabit.VictoryTrigger;
 import ru.javabit.gameField.GameField;
 import ru.javabit.report.ConsoleDialogue;
+import ru.javabit.view.GameFieldRenderable;
 import ru.javabit.view.GameFieldRenderer;
 
 import java.util.LinkedList;
@@ -19,7 +20,7 @@ public class TurnMaster {
     private static LinkedList<TurnActor> turnActors;
     private static ListIterator<TurnActor> actorIterator;
     public GameField gameField;
-    private GameFieldRenderer gameFieldRenderer;
+    private GameFieldRenderable gameFieldRenderer;
     public static VictoryTrigger victoryTrigger;
     private ConsoleDialogue consoleDialogue;
 
@@ -97,7 +98,7 @@ public class TurnMaster {
         return victory;
     }
 
-    public void setGameFieldRenderer(GameFieldRenderer gameFieldRenderer) {
+    public void setGameFieldRenderer(GameFieldRenderable gameFieldRenderer) {
         this.gameFieldRenderer = gameFieldRenderer;
     }
 

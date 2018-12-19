@@ -7,8 +7,10 @@ import ru.javabit.gameField.GameField;
 import ru.javabit.report.UserDialogue;
 import ru.javabit.ship.FleetsDisposal;
 import ru.javabit.turn.TurnMaster;
+import ru.javabit.view.GameFieldRenderable;
 import ru.javabit.view.GameFieldRenderer;
 import ru.javabit.ship.Fleet;
+import ru.javabit.view.GameFieldSwingRenderer;
 
 public class Game {
 
@@ -16,7 +18,9 @@ public class Game {
     UserDialogue dialogue;
     GameField gameField;
     FleetsDisposal fleetsDisposal;
-    GameFieldRenderer gameFieldRenderer;
+    GameFieldRenderable gameFieldRenderer;
+    //GameFieldRenderer gameFieldRenderer;
+    //GameFieldSwingRenderer gameFieldSwingRenderer;
     Fleet fleet1;
     Fleet fleet2;
     TurnMaster turnMaster;
@@ -56,6 +60,35 @@ public class Game {
         turnMaster.setGameFieldRenderer(gameFieldRenderer);
         turnMaster.startTurning();
     }
+
+
+
+
+
+    public void initGame2() throws BattleShipsException {
+        meetUser();
+        gameField = new GameField(11, 11,"computer 1", "computer 2");
+        fleet1 = new Fleet();
+        fleet2 = new Fleet();
+        fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
+        fleetsDisposal.disposeAutoAuto();
+        gameFieldRenderer = new GameFieldSwingRenderer(gameField);
+        gameFieldRenderer.renderGameField();
+    }
+
+    public void startGame2() throws InterruptedException {//todo init gameprocess thread
+        victoryTrigger = new VictoryTrigger(fleet1, fleet2);
+        turnMaster = TurnMaster.getInstance();
+        turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
+        turnMaster.setVictoryTrigger(victoryTrigger);
+        turnMaster.setGameFieldRenderer(gameFieldRenderer);
+        turnMaster.startTurning();
+    }
+
+
+
+
+
 
     private void meetUser() {
         dialogue = new ConsoleDialogue();
