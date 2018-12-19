@@ -20,6 +20,7 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     private final String ENEMYGRID =   "***========ENEMY SHIPS=========***";
     private JTextField playerGridName;
     private JTextField enemyGridName;
+    public JTextField gameStatus;
     private JFrame jFrame;
     private JPanel gameFieldPanel;
 
@@ -41,25 +42,24 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
             for(FieldCell cell : arr){
                 JButton jButton = new JButton(cell.getSkin());
                 pl1Panel.add(jButton);
-                if(cell.getFieldCellCoordinate().getY()==0 || cell.getFieldCellCoordinate().getX()==0){jButton.setEnabled(false);}
+                jButton.setEnabled(false);
             }
         }
         for (FieldCell[] arr : gameField.getEnemyFieldGrid().getCellsArr()) {
             for(FieldCell cell : arr){
                 JButton jButton = new JButton(cell.getSkin());
                 pl2Panel.add(jButton);
-                jButton.setEnabled(false);
+                if(cell.getFieldCellCoordinate().getY()==0 || cell.getFieldCellCoordinate().getX()==0){jButton.setEnabled(false);}
             }
         }
         renderInit = true;
     }
 
-    public void updateCellsData() {
+    public void updateCellsData() {//TODO повторы сплошные убрать!
         int i=0; int j=0;
         System.out.println(pl1Panel.getComponentCount());
             for (FieldCell[] arr : gameField.getPlayerFieldGrid().getCellsArr()) {
                 for (FieldCell cell : arr) {
-                    System.out.printf("i=" + i + " j=" + j + ", ");
                     JButton jButton = (JButton) pl1Panel.getComponent((i*(gameField.getRowNum())+j));
                     jButton.setText(cell.getSkin());
                     j++;
@@ -87,11 +87,14 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     }
 
 
-    private void jFrameInit(){
+    private void jFrameInit(){//TODO оптимизировать
         playerGridName = new JTextField(PLAYERGRID);
         enemyGridName = new JTextField(ENEMYGRID);
+        gameStatus = new JTextField("старт игры");
+
         playerGridName.setEditable(false);
         enemyGridName.setEditable(false);
+        gameStatus.setEditable(false);
 
         jFrame = new JFrame();
         jFrame.setTitle("BattleShips");
@@ -112,13 +115,17 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
         gameFieldPanel.add(pl2Panel);
 
 
-        jFrame.add(playerGridName);
-        jFrame.add(enemyGridName);
+
 
 
         jFrame.add(gameFieldPanel, BorderLayout.CENTER);
+        jFrame.add(gameStatus, BorderLayout.SOUTH);
 
 
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    public void setGameStatus(String s) {
+        gameStatus.setText(s);
     }
 }

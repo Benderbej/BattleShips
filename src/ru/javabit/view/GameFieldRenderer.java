@@ -2,6 +2,7 @@ package ru.javabit.view;
 
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameField;
+import ru.javabit.report.ConsoleDialogue;
 import ru.javabit.view.GameFieldRenderable;
 
 public class GameFieldRenderer implements GameFieldRenderable {
@@ -12,10 +13,12 @@ public class GameFieldRenderer implements GameFieldRenderable {
     private final String FIELDFOOTER = "***^^^^^^^^^(-+o^^o+-)^^^^^^^^^***";
     private final String PLAYERGRID =  "***=========YOUR SHIPS=========***";
     private final String ENEMYGRID =   "***========ENEMY SHIPS=========***";
+    ConsoleDialogue dialogue;
 
     public GameFieldRenderer (GameField gameField) {
         this.cellsArr = gameField.getPlayerFieldGrid().getCellsArr();
         this.enemiesCellsArr = gameField.getEnemyFieldGrid().getCellsArr();
+        dialogue = new ConsoleDialogue();
     }
 
     public void renderGameField() {
@@ -38,6 +41,11 @@ public class GameFieldRenderer implements GameFieldRenderable {
             renderLine(line);
         }
         renderFooter();
+    }
+
+    @Override
+    public void setGameStatus(String s) {
+        dialogue.makeReport(s);
     }
 
     private void renderLine(String s){

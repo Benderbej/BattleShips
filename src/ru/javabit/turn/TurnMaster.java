@@ -55,9 +55,11 @@ public class TurnMaster {
         actorIterator = turnActors.listIterator();
         int turnLimit = (gameField.getColumnNum()+1)*(gameField.getRowNum()+1)*2;
         while (i<=turnLimit){
-            Thread.sleep(10);
+            Thread.sleep(50);
             if (actorIterator.hasNext()){
-                if(actor != null){makeReport("ходит "+actor.getTurnActorName());}
+                if(actor != null){
+                makeReport("ходит "+actor.getTurnActorName());}
+                if(actor != null){gameFieldRenderer.setGameStatus("ходит "+actor.getTurnActorName());}
                 actor = actorIterator.next();
                 makeTurn(actor);
             } else {
@@ -67,6 +69,7 @@ public class TurnMaster {
             if(checkVictory()){
                 victoryTrigger.getWinerPlayerNum();
                 makeReport("Выиграл "+actor.getTurnActorName());
+                gameFieldRenderer.setGameStatus("Выиграл "+actor.getTurnActorName());
                 break;
             }
             i++;
