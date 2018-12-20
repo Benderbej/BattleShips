@@ -58,7 +58,10 @@ public class Game {
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
         turnMaster.setVictoryTrigger(victoryTrigger);
         turnMaster.setGameFieldRenderer(gameFieldRenderer);
-        turnMaster.startTurning();
+
+        //turnMaster.startTurning();
+
+        new Thread(turnMaster).start();
     }
 
 
@@ -72,7 +75,7 @@ public class Game {
         fleet2 = new Fleet();
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
-        gameFieldRenderer = new GameFieldSwingRenderer(gameField);
+        gameFieldRenderer = new GameFieldSwingRenderer(gameField);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         gameFieldRenderer.renderGameField();
     }
 
@@ -82,7 +85,10 @@ public class Game {
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
         turnMaster.setVictoryTrigger(victoryTrigger);
         turnMaster.setGameFieldRenderer(gameFieldRenderer);
-        turnMaster.startTurning();
+
+        //turnMaster.startTurning();
+
+        new Thread(turnMaster).start();
     }
 
 
