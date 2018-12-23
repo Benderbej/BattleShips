@@ -15,6 +15,7 @@ public class HumanControl implements TurnControlled {
     private FieldCell[][] fieldCells;//enemy's gamefield
     private GameField gameField;
     private JPanel panel;
+    private Thread listen;
 
     HumanControl(FieldCell[][] fieldCells) {
         this.fieldCells = fieldCells;
@@ -24,7 +25,8 @@ public class HumanControl implements TurnControlled {
     HumanControl(FieldCell[][] fieldCells, JPanel panel) {
         this.fieldCells = fieldCells;
         this.panel = panel;
-        //Thread init = new Thread(new ListenersInit());
+        listen = new Thread(new ListenersInit());
+        listen.start();
 
         fillFieldCellsList();
     }
@@ -91,16 +93,12 @@ public class HumanControl implements TurnControlled {
 
         @Override
         public void run() {
+            System.out.println("ListenersInit.run()");
             int i=0; int j=0;
             for (FieldCell[] arr : fieldCells) {
                 for (FieldCell cell : arr) {
-                    JButton jButton = (JButton) panel.getComponent((i*(gameField.getRowNum())+j));
-                    jButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-
-                        }
-                    });
+                    JButton jButton = (JButton) panel.getComponent((i*(fieldCells.length)+j));
+                    jButton.addActionListener(new CellActionListener(cell));
                     j++;
                 }
                 j=0;
