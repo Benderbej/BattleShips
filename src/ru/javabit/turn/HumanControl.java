@@ -93,7 +93,6 @@ public class HumanControl implements TurnControlled {
 
         @Override
         public void run() {
-            System.out.println("ListenersInit.run()");
             int i=0; int j=0;
             for (FieldCell[] arr : fieldCells) {
                 for (FieldCell cell : arr) {
