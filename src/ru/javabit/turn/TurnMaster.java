@@ -37,16 +37,16 @@ public class TurnMaster implements Runnable {
     }
 
     public void initComputerVsComputer(GameField gameField, String name1, String name2){
-        PlayerComputerAI computer1AI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
-        PlayerComputerAI computer2AI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
+        TurnControlled computer1AI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
+        TurnControlled computer2AI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name1,computer1AI,1));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computer2AI,2));
         this.gameField = gameField;
     }
 
     public void initHumanVsComputer(GameField gameField, String name1, String name2){
-        PlayerComputerAI humanAI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
-        PlayerComputerAI computerAI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
+        TurnControlled humanAI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
+        TurnControlled computerAI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
         addTurnActor(new TurnActor(TurnActorType.HUMAN,name1,humanAI,1));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computerAI,2));
         this.gameField = gameField;
@@ -67,13 +67,13 @@ public class TurnMaster implements Runnable {
     }
 
     private void makeAutoTurn (TurnActor turnActor) {
-        if(turnActor.getComputerAI().attack()){
+        if(turnActor.getTurnControlled().attack()){
             victoryTrigger.minusCell(turnActor.getTurnActorId());
         }
     }
 
     private void makeHumanTurn (TurnActor turnActor) {
-        if(turnActor.getComputerAI().attack()){
+        if(turnActor.getTurnControlled().attack()){
             victoryTrigger.minusCell(turnActor.getTurnActorId());
         }
     }

@@ -8,7 +8,7 @@ import ru.javabit.view.CellState;
 
 import java.util.ArrayList;
 
-public class HumanControl {
+public class HumanControl implements TurnControlled {
     private ArrayList<GameFieldCell> enemyFieldCellsList;
     private FieldCell[][] fieldCells;//enemy's gamefield
 

@@ -9,7 +9,7 @@ import ru.javabit.view.CellState;
 
 import java.util.ArrayList;
 
-public class PlayerComputerAI {
+public class PlayerComputerAI implements TurnControlled{
 
     private ArrayList<GameFieldCell> enemyFieldCellsList;
     private FieldCell[][] fieldCells;//enemy's gamefield

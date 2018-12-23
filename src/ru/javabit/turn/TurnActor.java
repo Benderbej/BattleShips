@@ -10,13 +10,15 @@ public class TurnActor {
     private TurnActorType turnActorType;
     private String turnActorName;
     private int turnActorId;
-    private PlayerComputerAI computerAI;
+    //private PlayerComputerAI computerAI;
 
-    public TurnActor(TurnActorType turnActorType, String turnActorName, PlayerComputerAI computerAI, int turnActorId) {
+    private TurnControlled turnControlled;
+
+    public TurnActor(TurnActorType turnActorType, String turnActorName, TurnControlled turnControlled, int turnActorId) {
         this.turnActorType = turnActorType;
         this.turnActorName = turnActorName;
-        this.computerAI = computerAI;
         this.turnActorId = turnActorId;
+        this.turnControlled = turnControlled;
     }
 
     public TurnActorType getTurnActorType() {
@@ -31,7 +33,11 @@ public class TurnActor {
         return turnActorId;
     }
 
-    public PlayerComputerAI getComputerAI() {
-        return computerAI;
+//    public PlayerComputerAI getComputerAI() {
+//        return computerAI;
+//    }
+
+    public TurnControlled getTurnControlled() {
+        return turnControlled;
     }
 }
