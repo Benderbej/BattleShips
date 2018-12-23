@@ -2,7 +2,7 @@ package ru.javabit.turn;
 
 public enum TurnActorType {
 
-    USER("Ходит игрок"), COMPUTER("Ходит компьютер");
+    HUMAN("Ходит игрок"), COMPUTER("Ходит компьютер");
 
     String turnName;
 

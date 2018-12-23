@@ -42,7 +42,14 @@ public class TurnMaster implements Runnable {
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name1,computer1AI,1));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computer2AI,2));
         this.gameField = gameField;
+    }
 
+    public void initHumanVsComputer(GameField gameField, String name1, String name2){
+        PlayerComputerAI humanAI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
+        PlayerComputerAI computerAI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
+        addTurnActor(new TurnActor(TurnActorType.HUMAN,name1,humanAI,1));//0 - is reserved for nowinner
+        addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computerAI,2));
+        this.gameField = gameField;
     }
 
     public void addTurnActor(TurnActor turnActor) {
@@ -53,8 +60,8 @@ public class TurnMaster implements Runnable {
         switch (turnActor.getTurnActorType()){
             case COMPUTER:
                 makeAutoTurn(turnActor);
-            case USER:
-                makeUserTurn(turnActor);
+            case HUMAN:
+                makeHumanTurn(turnActor);
         }
         gameFieldRenderer.renderGameField();
     }
@@ -65,7 +72,11 @@ public class TurnMaster implements Runnable {
         }
     }
 
-    private void makeUserTurn (TurnActor turnActor) { }
+    private void makeHumanTurn (TurnActor turnActor) {
+        if(turnActor.getComputerAI().attack()){
+            victoryTrigger.minusCell(turnActor.getTurnActorId());
+        }
+    }
 
     private boolean checkVictory() {
         boolean victory = false;

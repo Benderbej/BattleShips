@@ -52,7 +52,7 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
         renderInit = true;
     }
 
-    public void updateCellsData() {//TODO повторы сплошные убрать!
+    public void updateCellsData() {
         renderGrid(gameField.getPlayerFieldGrid(), pl1Panel);
         renderHiddenGrid(gameField.getEnemyFieldGrid(), pl2Panel);
     }
@@ -90,6 +90,8 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
             i++;
         }
     }
+
+
 
     public void renderGameField(){
         if(renderInit == true){

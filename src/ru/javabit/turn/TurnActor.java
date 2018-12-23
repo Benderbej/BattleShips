@@ -2,7 +2,7 @@ package ru.javabit.turn;
 
 /**
  * turn actor is not player it is only turn actor, it may be some algorithm to do smth in code while game in process
- * turn actor maybe user, computer, or other
+ * turn actor maybe human, computer, or other
  */
 
 public class TurnActor {
