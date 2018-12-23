@@ -1,19 +1,28 @@
 package ru.javabit.turn;
 
 import ru.javabit.GameMath;
-import ru.javabit.gameField.FieldCell;
-import ru.javabit.gameField.FieldCellCoordinate;
-import ru.javabit.gameField.GameFieldCell;
+import ru.javabit.gameField.*;
 import ru.javabit.view.CellState;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class HumanControl implements TurnControlled {
     private ArrayList<GameFieldCell> enemyFieldCellsList;
     private FieldCell[][] fieldCells;//enemy's gamefield
+    private GameField gameField;
+    private JPanel panel;
 
     HumanControl(FieldCell[][] fieldCells) {
         this.fieldCells = fieldCells;
+        fillFieldCellsList();
+    }
+
+    HumanControl(FieldCell[][] fieldCells, JPanel panel) {
+        this.fieldCells = fieldCells;
+        this.panel = panel;
         fillFieldCellsList();
     }
 
@@ -31,6 +40,9 @@ public class HumanControl implements TurnControlled {
     }
 
     public boolean attack() {
+
+
+
         boolean success = false;
         if(attackCell(chooseCellToAttack())){success = true;}
         return success;
@@ -61,6 +73,31 @@ public class HumanControl implements TurnControlled {
 
     private void moveFromFieldCellsList(int x, int y){
         //enemyFieldCellsList.get()
+    }
+
+    private class ChooseCellToAttackByHumanPlayer implements Runnable{
+
+        @Override
+        public void run() {
+                int i=0; int j=0;
+                for (FieldCell[] arr : fieldCells) {
+                    for (FieldCell cell : arr) {
+                        JButton jButton = (JButton) panel.getComponent((i*(gameField.getRowNum())+j));
+                        jButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                            }
+                        });
+                        j++;
+                    }
+                    j=0;
+                    i++;
+                }
+
+
+
+
+        }
     }
 
 }
