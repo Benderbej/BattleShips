@@ -1,10 +1,7 @@
 package ru.javabit.view;
 
 import javafx.geometry.VerticalDirection;
-import ru.javabit.gameField.FieldCell;
-import ru.javabit.gameField.GameField;
-import ru.javabit.gameField.GameFieldCell;
-import ru.javabit.gameField.MetaFieldCell;
+import ru.javabit.gameField.*;
 
 import javax.swing.*;
 import javax.swing.text.DefaultStyledDocument;
@@ -56,38 +53,37 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     }
 
     public void updateCellsData() {//TODO повторы сплошные убрать!
-        int i=0; int j=0;
-        System.out.println(pl1Panel.getComponentCount());
-            for (FieldCell[] arr : gameField.getPlayerFieldGrid().getCellsArr()) {
-                for (FieldCell cell : arr) {
-                    JButton jButton = (JButton) pl1Panel.getComponent((i*(gameField.getRowNum())+j));
-                    jButton.setText(cell.getSkin());
-                    j++;
-                }
-                j=0;
-                i++;
-            }
-        i=0; j=0;
-            for (FieldCell[] arr : gameField.getEnemyFieldGrid().getCellsArr()) {
-                for (FieldCell cell : arr) {
-                    JButton jButton = (JButton) pl2Panel.getComponent((i*(gameField.getRowNum())+j));
-                    String s = cell.getSkin();
-                    if(s != CellState.ShipDamaged.getSkin()&(cell instanceof GameFieldCell)){s = CellState.Unknown.getSkin();}
-                    jButton.setText(s);
-                    j++;
-                }
-                j=0;
-                i++;
-            }
+        renderGrid(gameField.getPlayerFieldGrid(), pl1Panel);
+        renderHiddenGrid(gameField.getEnemyFieldGrid(), pl2Panel);
     }
 
 
     public void showEnemyPositions(){
         int i=0; int j=0;
-        for (FieldCell[] arr : gameField.getEnemyFieldGrid().getCellsArr()) {
+        renderGrid(gameField.getEnemyFieldGrid(), pl2Panel);
+    }
+
+    private void renderGrid(GameFieldGrid grid, JPanel panel){
+        int i=0; int j=0;
+        for (FieldCell[] arr : grid.getCellsArr()) {
             for (FieldCell cell : arr) {
-                JButton jButton = (JButton) pl2Panel.getComponent((i*(gameField.getRowNum())+j));
+                JButton jButton = (JButton) panel.getComponent((i*(gameField.getRowNum())+j));
                 jButton.setText(cell.getSkin());
+                j++;
+            }
+            j=0;
+            i++;
+        }
+    }
+
+    private void renderHiddenGrid(GameFieldGrid grid, JPanel panel){
+        int i=0; int j=0;
+        for (FieldCell[] arr : grid.getCellsArr()) {
+            for (FieldCell cell : arr) {
+                JButton jButton = (JButton) panel.getComponent((i*(gameField.getRowNum())+j));
+                String s = cell.getSkin();
+                if(((s != CellState.ShipDamaged.getSkin())&(s!=CellState.WaterAttacked.getSkin()))&(cell instanceof GameFieldCell)){s = CellState.Unknown.getSkin();}
+                jButton.setText(s);
                 j++;
             }
             j=0;
