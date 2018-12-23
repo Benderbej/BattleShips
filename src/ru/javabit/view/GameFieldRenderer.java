@@ -48,6 +48,11 @@ public class GameFieldRenderer implements GameFieldRenderable {
         dialogue.makeReport(s);
     }
 
+    @Override
+    public void showEnemyPositions() {
+
+    }
+
     private void renderLine(String s){
         System.out.println(s);
     }

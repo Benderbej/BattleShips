@@ -3,6 +3,8 @@ package ru.javabit.view;
 import javafx.geometry.VerticalDirection;
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameField;
+import ru.javabit.gameField.GameFieldCell;
+import ru.javabit.gameField.MetaFieldCell;
 
 import javax.swing.*;
 import javax.swing.text.DefaultStyledDocument;
@@ -69,12 +71,28 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
             for (FieldCell[] arr : gameField.getEnemyFieldGrid().getCellsArr()) {
                 for (FieldCell cell : arr) {
                     JButton jButton = (JButton) pl2Panel.getComponent((i*(gameField.getRowNum())+j));
-                    jButton.setText(cell.getSkin());
+                    String s = cell.getSkin();
+                    if(s != CellState.ShipDamaged.getSkin()&(cell instanceof GameFieldCell)){s = CellState.Unknown.getSkin();}
+                    jButton.setText(s);
                     j++;
                 }
                 j=0;
                 i++;
             }
+    }
+
+
+    public void showEnemyPositions(){
+        int i=0; int j=0;
+        for (FieldCell[] arr : gameField.getEnemyFieldGrid().getCellsArr()) {
+            for (FieldCell cell : arr) {
+                JButton jButton = (JButton) pl2Panel.getComponent((i*(gameField.getRowNum())+j));
+                jButton.setText(cell.getSkin());
+                j++;
+            }
+            j=0;
+            i++;
+        }
     }
 
     public void renderGameField(){

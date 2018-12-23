@@ -2,7 +2,7 @@ package ru.javabit.view;
 
 public enum CellState {
 
-    FreeWater("~"), ShipPart("O"), WaterAttacked("v"), ShipDamaged("&"), Reserved("#");
+    FreeWater("~"), ShipPart("O"), WaterAttacked("v"), ShipDamaged("&"), Reserved("#"), Unknown("?");
 
     private String skin;
 

@@ -5,4 +5,6 @@ public interface GameFieldRenderable {
     void renderGameField();
 
     void setGameStatus(String s);
+
+    void showEnemyPositions();
 }

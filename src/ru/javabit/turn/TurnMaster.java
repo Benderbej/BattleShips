@@ -113,6 +113,7 @@ public class TurnMaster implements Runnable {
                     victoryTrigger.getWinerPlayerNum();
                     makeReport("Выиграл "+actor.getTurnActorName());
                     gameFieldRenderer.setGameStatus("Выиграл "+actor.getTurnActorName());
+                    gameFieldRenderer.showEnemyPositions();
                     break;
                 }
                 i++;
