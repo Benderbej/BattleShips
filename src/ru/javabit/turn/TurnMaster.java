@@ -45,7 +45,7 @@ public class TurnMaster implements Runnable {
     }
 
     public void initHumanVsComputer(GameField gameField, String name1, String name2){
-        TurnControlled humanAI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
+        TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr());
         TurnControlled computerAI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
         addTurnActor(new TurnActor(TurnActorType.HUMAN,name1,humanAI,1));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computerAI,2));

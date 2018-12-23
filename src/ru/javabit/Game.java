@@ -75,7 +75,8 @@ public class Game {
     public void startGame2() throws InterruptedException {//todo init gameprocess thread
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
         turnMaster = TurnMaster.getInstance();
-        turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
+        //turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
+        turnMaster.initHumanVsComputer(gameField, "human", "computer 2");
         turnMaster.setVictoryTrigger(victoryTrigger);
         turnMaster.setGameFieldRenderer(gameFieldRenderer);
         new Thread(turnMaster).start();
