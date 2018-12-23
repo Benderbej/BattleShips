@@ -32,8 +32,6 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     public GameFieldSwingRenderer(GameField gameField) {
         this.gameField = gameField;
         jFrameInit();
-
-
     }
 
     public void initAddCells() {
@@ -86,42 +84,41 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
         jFrame.setVisible(true);
     }
 
-
-    private void jFrameInit(){//TODO оптимизировать
+    private void componentsInit(){
+        jFrame = new JFrame();
+        gameFieldPanel = new JPanel();
         playerGridName = new JTextField(PLAYERGRID);
         enemyGridName = new JTextField(ENEMYGRID);
         gameStatus = new JTextField("старт игры");
+        pl1Panel = new JPanel();
+        pl2Panel = new JPanel();
+    }
 
+    private void setComponentsPars(){
         playerGridName.setEditable(false);
         enemyGridName.setEditable(false);
         gameStatus.setEditable(false);
-
-        jFrame = new JFrame();
         jFrame.setTitle("BattleShips");
-        //jFrame.setLocationRelativeTo(null);
         jFrame.setSize(gameField.getColumnNum()*70, gameField.getRowNum()*70);
-        //jFrame.setLocationRelativeTo(null);
         jFrame.setLayout(new BorderLayout());
-        gameFieldPanel = new JPanel();
-        pl1Panel = new JPanel();
-        pl2Panel = new JPanel();
         pl1Panel.setLayout(new GridLayout(gameField.getColumnNum(), gameField.getRowNum()));
         pl2Panel.setLayout(new GridLayout(gameField.getColumnNum(), gameField.getRowNum()));
-        initAddCells();
+    }
 
+    private void constructJFrame(){
         gameFieldPanel.add(playerGridName);
         gameFieldPanel.add(pl1Panel);
         gameFieldPanel.add(enemyGridName);
         gameFieldPanel.add(pl2Panel);
-
-
-
-
-
         jFrame.add(gameFieldPanel, BorderLayout.CENTER);
         jFrame.add(gameStatus, BorderLayout.SOUTH);
+    }
 
-
+    private void jFrameInit(){//TODO оптимизировать
+        componentsInit();
+        setComponentsPars();
+        initAddCells();
+        constructJFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 

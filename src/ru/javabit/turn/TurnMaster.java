@@ -49,37 +49,6 @@ public class TurnMaster implements Runnable {
         turnActors.add(turnActor);
     }
 
-    /*
-    private void startTurning() throws InterruptedException {//TODO отдельный поток
-        int i=0;
-        TurnActor actor = null;
-        actorIterator = turnActors.listIterator();
-        int turnLimit = (gameField.getColumnNum()+1)*(gameField.getRowNum()+1)*2;
-        while (i<=turnLimit){
-            Thread.currentThread().wait();
-            Thread.sleep(50);
-            if (actorIterator.hasNext()){
-                if(actor != null){
-                makeReport("ходит "+actor.getTurnActorName());}
-                if(actor != null){gameFieldRenderer.setGameStatus("ходит "+actor.getTurnActorName());}
-                actor = actorIterator.next();
-                makeTurn(actor);
-            } else {
-                i--;
-                actorIterator = turnActors.listIterator();
-            }
-            if(checkVictory()){
-                victoryTrigger.getWinerPlayerNum();
-                makeReport("Выиграл "+actor.getTurnActorName());
-                gameFieldRenderer.setGameStatus("Выиграл "+actor.getTurnActorName());
-                break;
-            }
-            i++;
-        }
-        makeReport("КОНЕЦ ИГРЫ");
-    }
-    */
-
     public void makeTurn(TurnActor turnActor) {
         switch (turnActor.getTurnActorType()){
             case COMPUTER:

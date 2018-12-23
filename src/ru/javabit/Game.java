@@ -58,15 +58,8 @@ public class Game {
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
         turnMaster.setVictoryTrigger(victoryTrigger);
         turnMaster.setGameFieldRenderer(gameFieldRenderer);
-
-        //turnMaster.startTurning();
-
         new Thread(turnMaster).start();
     }
-
-
-
-
 
     public void initGame2() throws BattleShipsException {
         meetUser();
@@ -85,16 +78,8 @@ public class Game {
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
         turnMaster.setVictoryTrigger(victoryTrigger);
         turnMaster.setGameFieldRenderer(gameFieldRenderer);
-
-        //turnMaster.startTurning();
-
         new Thread(turnMaster).start();
     }
-
-
-
-
-
 
     private void meetUser() {
         dialogue = new ConsoleDialogue();
