@@ -76,9 +76,9 @@ public class Game {
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
         turnMaster = TurnMaster.getInstance();
         //turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
+        turnMaster.setGameFieldRenderer(gameFieldRenderer);
         turnMaster.initHumanVsComputer(gameField, "human", "computer");
         turnMaster.setVictoryTrigger(victoryTrigger);
-        turnMaster.setGameFieldRenderer(gameFieldRenderer);
         new Thread(turnMaster).start();
     }
 

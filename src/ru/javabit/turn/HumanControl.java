@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class HumanControl implements TurnControlled {
     private ArrayList<GameFieldCell> enemyFieldCellsList;
@@ -23,6 +24,8 @@ public class HumanControl implements TurnControlled {
     HumanControl(FieldCell[][] fieldCells, JPanel panel) {
         this.fieldCells = fieldCells;
         this.panel = panel;
+        //Thread init = new Thread(new ListenersInit());
+
         fillFieldCellsList();
     }
 
@@ -51,6 +54,14 @@ public class HumanControl implements TurnControlled {
     private FieldCellCoordinate chooseCellToAttack() {
         GameFieldCell gameFieldCell = enemyFieldCellsList.get(GameMath.getRandomInt(enemyFieldCellsList.size()));
         FieldCellCoordinate fieldCellCoordinate = gameFieldCell.getFieldCellCoordinate();
+
+
+
+
+
+
+
+
         return fieldCellCoordinate;
     }
 
@@ -75,28 +86,26 @@ public class HumanControl implements TurnControlled {
         //enemyFieldCellsList.get()
     }
 
-    private class ChooseCellToAttackByHumanPlayer implements Runnable{
+
+    private class ListenersInit implements Runnable {
 
         @Override
         public void run() {
-                int i=0; int j=0;
-                for (FieldCell[] arr : fieldCells) {
-                    for (FieldCell cell : arr) {
-                        JButton jButton = (JButton) panel.getComponent((i*(gameField.getRowNum())+j));
-                        jButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                            }
-                        });
-                        j++;
-                    }
-                    j=0;
-                    i++;
+            int i=0; int j=0;
+            for (FieldCell[] arr : fieldCells) {
+                for (FieldCell cell : arr) {
+                    JButton jButton = (JButton) panel.getComponent((i*(gameField.getRowNum())+j));
+                    jButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                        }
+                    });
+                    j++;
                 }
-
-
-
-
+                j=0;
+                i++;
+            }
         }
     }
 

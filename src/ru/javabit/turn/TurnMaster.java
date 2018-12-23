@@ -6,6 +6,7 @@ import ru.javabit.gameField.GameField;
 import ru.javabit.report.ConsoleDialogue;
 import ru.javabit.view.GameFieldRenderable;
 import ru.javabit.view.GameFieldRenderer;
+import ru.javabit.view.GameFieldSwingRenderer;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -45,7 +46,7 @@ public class TurnMaster implements Runnable {
     }
 
     public void initHumanVsComputer(GameField gameField, String name1, String name2){
-        TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr());
+        TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr(), ((GameFieldSwingRenderer) gameFieldRenderer).getPl2Panel());
         TurnControlled computerAI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
         addTurnActor(new TurnActor(TurnActorType.HUMAN,name1,humanAI,1));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computerAI,2));

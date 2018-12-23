@@ -23,8 +23,8 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     private JFrame jFrame;
     private JPanel gameFieldPanel;
 
-    JPanel pl1Panel;
-    JPanel pl2Panel;
+    private JPanel pl1Panel;
+    private JPanel pl2Panel;
     private boolean renderInit;
 
 
@@ -140,5 +140,9 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
 
     public void setGameStatus(String s) {
         gameStatus.setText(s);
+    }
+
+    public JPanel getPl2Panel() {
+        return pl2Panel;
     }
 }
