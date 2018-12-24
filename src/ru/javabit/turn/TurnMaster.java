@@ -24,6 +24,7 @@ public class TurnMaster implements Runnable {
     private GameFieldRenderable gameFieldRenderer;
     public static VictoryTrigger victoryTrigger;
     private ConsoleDialogue consoleDialogue;
+    private boolean isServer;// means no rendering
 
     private TurnMaster() {
         consoleDialogue = new ConsoleDialogue();
@@ -57,45 +58,13 @@ public class TurnMaster implements Runnable {
         turnActors.add(turnActor);
     }
 
-//    public void makeTurn(TurnActor turnActor) {
-//        Thread thread;
-//        switch (turnActor.getTurnActorType()){
-//            case COMPUTER:
-//                thread = new Thread();
-//                thread.start();
-//                makeAutoTurn(turnActor);
-//                thread.interrupt();
-//            case HUMAN:
-//                thread = new Thread();
-//                thread.start();
-//                makeHumanTurn(turnActor);
-//                thread.interrupt();
-//        }
-//        gameFieldRenderer.renderGameField();
-//    }
-//
-//    private void makeAutoTurn (TurnActor turnActor) {
-//        if(turnActor.getTurnControlled().attack()){
-//            victoryTrigger.minusCell(turnActor.getTurnActorId());
-//        }
-//    }
-//
-//    private void makeHumanTurn (TurnActor turnActor) {
-//        if(turnActor.getTurnControlled().attack()){
-//            victoryTrigger.minusCell(turnActor.getTurnActorId());
-//        }
-//    }
 
 
     public void makeTurn(TurnActor turnActor) {
-        Thread thread;
-                //thread = new Thread();
-                //thread.start();
                 if(turnActor.getTurnControlled().attack()){
                     victoryTrigger.minusCell(turnActor.getTurnActorId());
                 }
-                //thread.interrupt();
-        gameFieldRenderer.renderGameField();
+        if(!isServer){gameFieldRenderer.renderGameField();}//if one player
     }
 
     //private void
@@ -117,6 +86,10 @@ public class TurnMaster implements Runnable {
     private void makeReport(String s) {
         consoleDialogue = new ConsoleDialogue();//TODO ConsoleDialoge maybe singleton with static makeReport
         consoleDialogue.makeReport(s);
+    }
+
+    public void setIsServer(boolean server) {
+        isServer = server;
     }
 
     @Override
@@ -147,9 +120,14 @@ public class TurnMaster implements Runnable {
 
 
                 if (actorIterator.hasNext()){
-                    if(actor != null){
-                        makeReport("ходит "+actor.getTurnActorName());}
-                    if(actor != null){gameFieldRenderer.setGameStatus("ходит "+actor.getTurnActorName());}
+                        if(actor != null) {
+                            makeReport("ходит " + actor.getTurnActorName());
+                            if (!isServer) {
+                                    gameFieldRenderer.setGameStatus("ходит " + actor.getTurnActorName());
+                            } else {
+                                    System.out.println("ходит " + actor.getTurnActorName());
+                            }
+                        }
                     actor = actorIterator.next();
                     makeTurn(actor);
                 } else {
@@ -159,8 +137,12 @@ public class TurnMaster implements Runnable {
                 if(checkVictory()){
                     victoryTrigger.getWinerPlayerNum();
                     makeReport("Выиграл "+actor.getTurnActorName());
-                    gameFieldRenderer.setGameStatus("Выиграл "+actor.getTurnActorName());
-                    gameFieldRenderer.showEnemyPositions();
+                    if(!isServer) {
+                        gameFieldRenderer.setGameStatus("Выиграл " + actor.getTurnActorName());
+                        gameFieldRenderer.showEnemyPositions();
+                    }else{
+                        System.out.println("Выиграл " + actor.getTurnActorName());
+                    }
                     break;
                 }
                 i++;

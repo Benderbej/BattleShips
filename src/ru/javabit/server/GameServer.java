@@ -1,5 +1,7 @@
 package ru.javabit.server;
 
+import ru.javabit.Game;
+import ru.javabit.SingleGame;
 import ru.javabit.VictoryTrigger;
 import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.GameField;
@@ -26,24 +28,24 @@ public class GameServer {
 
 
 
-
-
-
-    GameField gameField;
-    FleetsDisposal fleetsDisposal;
-    GameFieldRenderable gameFieldRenderer;
-    Fleet fleet1;
-    Fleet fleet2;
-    TurnMaster turnMaster;
-    VictoryTrigger victoryTrigger;
-
-
-
-
     public static void main(String[] args) {
-        GameServer server = GameServer.getInstance();
-        server.init();
-        server.start();
+//        GameServer server = GameServer.getInstance();
+//        server.init();
+//        server.start();
+
+        Game multiplayerGame = MultiplayerGame.getInstance();
+        try {
+            multiplayerGame.initGame();
+            try {
+                multiplayerGame.startGame();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } catch (BattleShipsException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private GameServer(){ }
@@ -100,54 +102,9 @@ public class GameServer {
     }
 
 
-
-
     private void privateWaitingForClients(){
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void initGame() throws BattleShipsException {
-        gameField = new GameField(11, 11,"computer 1", "computer 2");
-        fleet1 = new Fleet();
-        fleet2 = new Fleet();
-        fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
-        fleetsDisposal.disposeAutoAuto();
-        ////gameFieldRenderer = new GameFieldSwingRenderer(gameField);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ////gameFieldRenderer.renderGameField();
-    }
-
-    public void startGame() throws InterruptedException {//todo init gameprocess thread
-        victoryTrigger = new VictoryTrigger(fleet1, fleet2);
-        turnMaster = TurnMaster.getInstance();
-        //turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
-        ////turnMaster.setGameFieldRenderer(gameFieldRenderer);
-        turnMaster.initHumanVsComputer(gameField, "human", "computer");
-        turnMaster.setVictoryTrigger(victoryTrigger);
-        new Thread(turnMaster).start();
-    }
-
-    public Fleet getFleet1() {
-        return fleet1;
-    }
-
-    public Fleet getFleet2() {
-        return fleet2;
-    }
-
-
-
 
 
 
