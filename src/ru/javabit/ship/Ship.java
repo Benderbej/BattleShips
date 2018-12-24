@@ -1,6 +1,6 @@
 package ru.javabit.ship;
 
-import ru.javabit.Game;
+import ru.javabit.SingleGame;
 import ru.javabit.GameMath;
 import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.FieldCell;
@@ -85,7 +85,7 @@ public abstract class Ship {
                 info.append("FleetPerelmanDisposer: num of coast field cells: CoastGameFieldCellsSize=" + ((FleetPerelmanDisposer) disposer).getCoastGameFieldCellsSize());
                 info.append(System.getProperty("line.separator"));
             }
-            info.append("Fleet1 getShipListCellsCount=" + Game.getInstance().getFleet1().getShipListCellsCount() + ", fleet2 getShipListCellsCount=" + Game.getInstance().getFleet2().getShipListCellsCount());
+            info.append("Fleet1 getShipListCellsCount=" + SingleGame.getInstance().getFleet1().getShipListCellsCount() + ", fleet2 getShipListCellsCount=" + SingleGame.getInstance().getFleet2().getShipListCellsCount());
             throw new BattleShipsException(b.getMessage() + info.toString());
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());

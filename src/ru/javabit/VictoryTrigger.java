@@ -16,7 +16,7 @@ public class VictoryTrigger {
 
     private int winerPlayerNum = 0;//0 - no winner
 
-    VictoryTrigger(Fleet fleet1, Fleet fleet2) {
+    public VictoryTrigger(Fleet fleet1, Fleet fleet2) {
         shipCellsCount1 = fleet1.getShipListCellsCount();
         shipCellsCount2 = fleet2.getShipListCellsCount();
     }
