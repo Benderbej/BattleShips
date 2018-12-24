@@ -13,12 +13,12 @@ public class CellActionListener implements ActionListener {
 
 
     CellActionListener(FieldCell cell){
-        System.out.println("CellActionListener");
         this.cell = cell;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("shoot!");
         System.out.println(cell.getFieldCellCoordinate().getX()+" "+cell.getFieldCellCoordinate().getY());
         HumanControl.cellIsSet = true;
         HumanControl.choosenCell = cell;

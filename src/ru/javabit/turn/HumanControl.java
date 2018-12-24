@@ -50,29 +50,20 @@ public class HumanControl implements TurnControlled {
 
     public boolean attack() {
         boolean success = false;
-        if(attackCell(chooseCellToAttack())){
-            System.out.println("ggg");
-            success = true;}
-        System.out.println("success="+success);
+        chooseCellToAttack();
+        if(attackCell(choosenCell.getFieldCellCoordinate())){ success = true;}
         return success;
     }
 
-    private FieldCellCoordinate chooseCellToAttack(){
-        //Thread thread = new Thread(new ChooseCellFromInput());
-        //thread.start();
-        //fieldCellCoordinate
-
-
-        FieldCellCoordinate fieldCellCoordinate = null;
-        while(true){//TODO THREAD!
-            if(cellIsSet){
-                fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
-                cellIsSet = false;
-                return fieldCellCoordinate;
-            }
-            System.out.println(";;");
+    private void chooseCellToAttack(){
+        ChooseCellFromInput c = new ChooseCellFromInput();
+        Thread thread = new Thread(c);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
     }
 
     private boolean attackCell(FieldCellCoordinate coordinate) {
@@ -100,7 +91,7 @@ public class HumanControl implements TurnControlled {
 
 
 
-    private class ListenersInit implements Runnable {
+    private class ListenersInit implements Runnable {//listeners are in different thread
         @Override
         public void run() {
             int i=0; int j=0;
@@ -123,12 +114,21 @@ public class HumanControl implements TurnControlled {
 
         @Override
         public void run() {
+            int i=0;
             while(true){
                 if(cellIsSet){
                     fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
+                    //System.out.println("cellis is"+choosenCell.getFieldCellCoordinate());
                     cellIsSet = false;
+                    return;
                 }
-                System.out.println(";;");
+                i++;
+
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

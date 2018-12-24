@@ -26,7 +26,8 @@ public class FleetsDisposal {
         //playerAutoDisposer = new FleetPerelmanDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
         playerAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getPlayerFieldGrid().getCellsArr());
         autoDisposeFleet(fleet1.shipList, playerAutoDisposer);
-        enemyAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getEnemyFieldGrid().getCellsArr());
+        //enemyAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getEnemyFieldGrid().getCellsArr());
+        enemyAutoDisposer = new FleetPerelmanDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getEnemyFieldGrid().getCellsArr());
         autoDisposeFleet(fleet2.shipList, enemyAutoDisposer);
 
     }
