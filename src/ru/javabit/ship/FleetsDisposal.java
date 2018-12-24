@@ -29,7 +29,6 @@ public class FleetsDisposal {
         enemyAutoDisposer = new FleetAutoDisposer(gameField.getRowNum(), gameField.getColumnNum(), gameField.getEnemyFieldGrid().getCellsArr());
         autoDisposeFleet(fleet2.shipList, enemyAutoDisposer);
 
-
     }
 
     private void autoDisposeFleet(ArrayList<Ship> shipList, FleetDisposer disposer) throws BattleShipsException {

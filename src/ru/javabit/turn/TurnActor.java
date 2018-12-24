@@ -3,6 +3,8 @@ package ru.javabit.turn;
 /**
  * turn actor is not player it is only turn actor, it may be some algorithm to do smth in code while game in process
  * turn actor maybe human, computer, or other
+ *
+ * класс - обертка, нужен лишь для итератора в TurnMaster
  */
 
 public class TurnActor {
@@ -10,8 +12,6 @@ public class TurnActor {
     private TurnActorType turnActorType;
     private String turnActorName;
     private int turnActorId;
-    //private PlayerComputerAI computerAI;
-
     private TurnControlled turnControlled;
 
     public TurnActor(TurnActorType turnActorType, String turnActorName, TurnControlled turnControlled, int turnActorId) {
@@ -32,10 +32,6 @@ public class TurnActor {
     public int getTurnActorId() {
         return turnActorId;
     }
-
-//    public PlayerComputerAI getComputerAI() {
-//        return computerAI;
-//    }
 
     public TurnControlled getTurnControlled() {
         return turnControlled;

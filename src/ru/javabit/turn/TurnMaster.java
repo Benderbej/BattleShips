@@ -58,11 +58,18 @@ public class TurnMaster implements Runnable {
     }
 
     public void makeTurn(TurnActor turnActor) {
+        Thread thread;
         switch (turnActor.getTurnActorType()){
             case COMPUTER:
+                thread = new Thread();
+                thread.start();
                 makeAutoTurn(turnActor);
+                thread.interrupt();
             case HUMAN:
+                thread = new Thread();
+                thread.start();
                 makeHumanTurn(turnActor);
+                thread.interrupt();
         }
         gameFieldRenderer.renderGameField();
     }
@@ -78,6 +85,8 @@ public class TurnMaster implements Runnable {
             victoryTrigger.minusCell(turnActor.getTurnActorId());
         }
     }
+
+    //private void
 
     private boolean checkVictory() {
         boolean victory = false;
@@ -104,6 +113,9 @@ public class TurnMaster implements Runnable {
             TurnActor actor = null;
             actorIterator = turnActors.listIterator();
             int turnLimit = (gameField.getColumnNum()+1)*(gameField.getRowNum()+1)*2;
+            //Thread thread = new Thread();
+            //Thread thread2 = new Thread();
+
             while (i<=turnLimit){
                 //Thread.currentThread().wait();
                 try {
@@ -111,6 +123,17 @@ public class TurnMaster implements Runnable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+
+
+
+                if ( i<turnActors.size()){
+                    System.out.println("turnActors.size()="+turnActors.size());
+                }
+
+
+
+
                 if (actorIterator.hasNext()){
                     if(actor != null){
                         makeReport("ходит "+actor.getTurnActorName());}

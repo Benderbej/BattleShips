@@ -91,8 +91,6 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
         }
     }
 
-
-
     public void renderGameField(){
         if(renderInit == true){
             updateCellsData();
