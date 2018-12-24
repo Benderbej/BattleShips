@@ -17,6 +17,11 @@ public class HumanControl implements TurnControlled {
     private JPanel panel;
     private Thread listen;
 
+
+    public static FieldCell choosenCell;
+    public static boolean cellIsSet;
+
+
     HumanControl(FieldCell[][] fieldCells) {
         this.fieldCells = fieldCells;
         fillFieldCellsList();
@@ -38,33 +43,36 @@ public class HumanControl implements TurnControlled {
                 if(cell instanceof GameFieldCell){
                     enemyFieldCellsList.add((GameFieldCell) cell);
                 }
-
             }
         }
         System.out.println(enemyFieldCellsList.size());
     }
 
     public boolean attack() {
-
-
-
         boolean success = false;
-        if(attackCell(chooseCellToAttack())){success = true;}
+        if(attackCell(chooseCellToAttack())){
+            System.out.println("ggg");
+            success = true;}
+        System.out.println("success="+success);
         return success;
     }
 
-    private FieldCellCoordinate chooseCellToAttack() {
-        GameFieldCell gameFieldCell = enemyFieldCellsList.get(GameMath.getRandomInt(enemyFieldCellsList.size()));
-        FieldCellCoordinate fieldCellCoordinate = gameFieldCell.getFieldCellCoordinate();
+    private FieldCellCoordinate chooseCellToAttack(){
+        //Thread thread = new Thread(new ChooseCellFromInput());
+        //thread.start();
+        //fieldCellCoordinate
 
 
+        FieldCellCoordinate fieldCellCoordinate = null;
+        while(true){//TODO THREAD!
+            if(cellIsSet){
+                fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
+                cellIsSet = false;
+                return fieldCellCoordinate;
+            }
+            System.out.println(";;");
+        }
 
-
-
-
-
-
-        return fieldCellCoordinate;
     }
 
     private boolean attackCell(FieldCellCoordinate coordinate) {
@@ -89,14 +97,17 @@ public class HumanControl implements TurnControlled {
     }
 
 
-    private class ListenersInit implements Runnable {
 
+
+
+    private class ListenersInit implements Runnable {
         @Override
         public void run() {
             int i=0; int j=0;
             for (FieldCell[] arr : fieldCells) {
                 for (FieldCell cell : arr) {
                     JButton jButton = (JButton) panel.getComponent((i*(fieldCells.length)+j));
+
                     jButton.addActionListener(new CellActionListener(cell));
                     j++;
                 }
@@ -106,4 +117,19 @@ public class HumanControl implements TurnControlled {
         }
     }
 
+    private class ChooseCellFromInput implements Runnable {
+
+        FieldCellCoordinate fieldCellCoordinate;
+
+        @Override
+        public void run() {
+            while(true){
+                if(cellIsSet){
+                    fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
+                    cellIsSet = false;
+                }
+                System.out.println(";;");
+            }
+        }
+    }
 }

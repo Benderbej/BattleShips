@@ -26,7 +26,6 @@ public class PlayerComputerAI implements TurnControlled{
                 if(cell instanceof GameFieldCell){
                     enemyFieldCellsList.add((GameFieldCell) cell);
                 }
-
             }
         }
         System.out.println(enemyFieldCellsList.size());

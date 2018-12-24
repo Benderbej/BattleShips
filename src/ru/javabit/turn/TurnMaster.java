@@ -57,33 +57,45 @@ public class TurnMaster implements Runnable {
         turnActors.add(turnActor);
     }
 
+//    public void makeTurn(TurnActor turnActor) {
+//        Thread thread;
+//        switch (turnActor.getTurnActorType()){
+//            case COMPUTER:
+//                thread = new Thread();
+//                thread.start();
+//                makeAutoTurn(turnActor);
+//                thread.interrupt();
+//            case HUMAN:
+//                thread = new Thread();
+//                thread.start();
+//                makeHumanTurn(turnActor);
+//                thread.interrupt();
+//        }
+//        gameFieldRenderer.renderGameField();
+//    }
+//
+//    private void makeAutoTurn (TurnActor turnActor) {
+//        if(turnActor.getTurnControlled().attack()){
+//            victoryTrigger.minusCell(turnActor.getTurnActorId());
+//        }
+//    }
+//
+//    private void makeHumanTurn (TurnActor turnActor) {
+//        if(turnActor.getTurnControlled().attack()){
+//            victoryTrigger.minusCell(turnActor.getTurnActorId());
+//        }
+//    }
+
+
     public void makeTurn(TurnActor turnActor) {
         Thread thread;
-        switch (turnActor.getTurnActorType()){
-            case COMPUTER:
-                thread = new Thread();
-                thread.start();
-                makeAutoTurn(turnActor);
-                thread.interrupt();
-            case HUMAN:
-                thread = new Thread();
-                thread.start();
-                makeHumanTurn(turnActor);
-                thread.interrupt();
-        }
+                //thread = new Thread();
+                //thread.start();
+                if(turnActor.getTurnControlled().attack()){
+                    victoryTrigger.minusCell(turnActor.getTurnActorId());
+                }
+                //thread.interrupt();
         gameFieldRenderer.renderGameField();
-    }
-
-    private void makeAutoTurn (TurnActor turnActor) {
-        if(turnActor.getTurnControlled().attack()){
-            victoryTrigger.minusCell(turnActor.getTurnActorId());
-        }
-    }
-
-    private void makeHumanTurn (TurnActor turnActor) {
-        if(turnActor.getTurnControlled().attack()){
-            victoryTrigger.minusCell(turnActor.getTurnActorId());
-        }
     }
 
     //private void
