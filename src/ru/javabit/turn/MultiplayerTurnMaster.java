@@ -7,6 +7,22 @@ import java.util.LinkedList;
 
 public class MultiplayerTurnMaster extends TurnMaster {
 
+    public void makeTurn(TurnActor turnActor) {
+//        if(turnActor != null) {
+//            makeReport("ходит " + turnActor.getTurnActorName());
+//            if (!isServer) {
+//                gameFieldRenderer.setGameStatus("ходит " + turnActor.getTurnActorName());
+//            } else {
+//                System.out.println("ходит " + turnActor.getTurnActorName());
+//            }
+//        }
+//        turnActor = actorIterator.next();
+
+        if (turnActor.getTurnControlled().attack()) {
+            victoryTrigger.minusCell(turnActor.getTurnActorId());
+        }
+        //gameFieldRenderer.renderGameField();
+    }
 
     @Override
     public void run() {
@@ -19,9 +35,7 @@ public class MultiplayerTurnMaster extends TurnMaster {
 
         while (i <= turnLimit) {
 
-
             if (actorIterator.hasNext()) {
-
 
                 if (actor != null) {
                     makeReport("ходит " + actor.getTurnActorName());
@@ -32,9 +46,8 @@ public class MultiplayerTurnMaster extends TurnMaster {
                 actor = actorIterator.next();
                 Thread thread = new Thread(new ServeClient(actor));
                 thread.start();
-                makeMultiPlayerTurn(actor);
+                makeTurn(actor);
                 thread.interrupt();
-
 
             } else {
                 i--;

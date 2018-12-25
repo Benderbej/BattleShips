@@ -52,33 +52,6 @@ public class TurnMaster implements Runnable {
 
 
     public void makeTurn(TurnActor turnActor) {
-//        if(turnActor != null) {
-//            makeReport("ходит " + turnActor.getTurnActorName());
-//            if (!isServer) {
-//                gameFieldRenderer.setGameStatus("ходит " + turnActor.getTurnActorName());
-//            } else {
-//                System.out.println("ходит " + turnActor.getTurnActorName());
-//            }
-//        }
-//        turnActor = actorIterator.next();
-
-        if (turnActor.getTurnControlled().attack()) {
-            victoryTrigger.minusCell(turnActor.getTurnActorId());
-        }
-        gameFieldRenderer.renderGameField();
-    }
-
-    public void makeMultiPlayerTurn(TurnActor turnActor) {
-//        if(turnActor != null) {
-//            makeReport("ходит " + turnActor.getTurnActorName());
-//            if (!isServer) {
-//                gameFieldRenderer.setGameStatus("ходит " + turnActor.getTurnActorName());
-//            } else {
-//                System.out.println("ходит " + turnActor.getTurnActorName());
-//            }
-//        }
-//        turnActor = actorIterator.next();
-
         if (turnActor.getTurnControlled().attack()) {
             victoryTrigger.minusCell(turnActor.getTurnActorId());
         }
@@ -116,11 +89,6 @@ public class TurnMaster implements Runnable {
         int turnLimit = (gameField.getColumnNum() + 1) * (gameField.getRowNum() + 1) * 2;
         while (i <= turnLimit) {
             //Thread.currentThread().wait();
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             if (i < turnActors.size()) {
                 System.out.println("turnActors.size()=" + turnActors.size());
