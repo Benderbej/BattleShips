@@ -10,6 +10,7 @@ import ru.javabit.report.Report;
 import ru.javabit.report.UserDialogue;
 import ru.javabit.ship.Fleet;
 import ru.javabit.ship.FleetsDisposal;
+import ru.javabit.turn.MultiplayerTurnMaster;
 import ru.javabit.turn.TurnMaster;
 import ru.javabit.view.GameFieldRenderable;
 import ru.javabit.view.GameFieldSwingRenderer;
@@ -52,8 +53,7 @@ public class MultiplayerGame implements Game {
     public void startGame() throws InterruptedException {
         System.out.println("3");
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
-        turnMaster = TurnMaster.getInstance();
-        turnMaster.setIsServer(true);
+        turnMaster = new MultiplayerTurnMaster();
         turnMaster.initComputerVsComputer(gameField, "human", "computer");
         turnMaster.setVictoryTrigger(victoryTrigger);
         new Thread(turnMaster).start();

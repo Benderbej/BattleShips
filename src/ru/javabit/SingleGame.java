@@ -53,7 +53,7 @@ public class SingleGame implements Game {
 
     public void startGame() throws InterruptedException {//todo init gameprocess thread
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
-        turnMaster = TurnMaster.getInstance();
+        turnMaster = new TurnMaster();
         turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
         turnMaster.setVictoryTrigger(victoryTrigger);
         turnMaster.setGameFieldRenderer(gameFieldRenderer);
@@ -73,7 +73,7 @@ public class SingleGame implements Game {
 
     public void startGame() throws InterruptedException {//todo init gameprocess thread
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
-        turnMaster = TurnMaster.getInstance();
+        turnMaster = new TurnMaster();
         //turnMaster.initComputerVsComputer(gameField, "computer 1", "computer 2");
         turnMaster.setGameFieldRenderer(gameFieldRenderer);
         turnMaster.initHumanVsComputer(gameField, "human", "computer");
