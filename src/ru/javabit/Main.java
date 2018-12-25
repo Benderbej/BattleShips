@@ -56,7 +56,7 @@ import ru.javabit.exceptions.BattleShipsException;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException, BattleShipsException {
-        Game singleGame = SingleGame.getInstance();
+        Game singleGame = new SingleGame();
         singleGame.initGame();
         singleGame.startGame();
     }

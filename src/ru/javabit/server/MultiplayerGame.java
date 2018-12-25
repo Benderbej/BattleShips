@@ -29,14 +29,7 @@ public class MultiplayerGame implements Game {
     TurnMaster turnMaster;
     VictoryTrigger victoryTrigger;
 
-    private MultiplayerGame(){ }
-
-    public static Game getInstance(){
-        if(game == null){
-            game = new MultiplayerGame();
-        }
-        return game;
-    }
+    public MultiplayerGame(){ }
 
     @Override
     public void initGame() throws BattleShipsException {
@@ -60,27 +53,15 @@ public class MultiplayerGame implements Game {
         System.out.println("4");
     }
 
-    @Override
-    public Fleet getFleet1() {
-        return fleet1;
-    }
-
-    @Override
-    public Fleet getFleet2() {
-        return fleet2;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
+//    @Override
+//    public Fleet getFleet1() {
+//        return fleet1;
+//    }
+//
+//    @Override
+//    public Fleet getFleet2() {
+//        return fleet2;
+//    }
 
 
 

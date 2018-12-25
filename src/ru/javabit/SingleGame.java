@@ -20,19 +20,13 @@ public class SingleGame implements Game {
     GameFieldRenderable gameFieldRenderer;
     //GameFieldRenderer gameFieldRenderer;
     //GameFieldSwingRenderer gameFieldSwingRenderer;
-    Fleet fleet1;
-    Fleet fleet2;
+    public static Fleet fleet1;
+    public static Fleet fleet2;
     TurnMaster turnMaster;
     VictoryTrigger victoryTrigger;
 
-    private SingleGame(){ }
+    public SingleGame(){ }
 
-    public static Game getInstance(){
-        if(game == null){
-            game = new SingleGame();
-        }
-        return game;
-    }
 /*
     public void initGame() throws BattleShipsException {
         meetUser();
@@ -86,11 +80,11 @@ public class SingleGame implements Game {
         dialogue.makeReport(Report.Greeting.getText());
     }
 
-    public Fleet getFleet1() {
-        return fleet1;
-    }
+//    public Fleet getFleet1() {
+//        return fleet1;
+//    }
 
-    public Fleet getFleet2() {
-        return fleet2;
-    }
+//    public Fleet getFleet2() {
+//        return fleet2;
+//    }
 }

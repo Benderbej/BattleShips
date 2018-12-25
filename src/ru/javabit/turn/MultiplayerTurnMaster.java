@@ -8,16 +8,6 @@ import java.util.LinkedList;
 public class MultiplayerTurnMaster extends TurnMaster {
 
     public void makeTurn(TurnActor turnActor) {
-//        if(turnActor != null) {
-//            makeReport("ходит " + turnActor.getTurnActorName());
-//            if (!isServer) {
-//                gameFieldRenderer.setGameStatus("ходит " + turnActor.getTurnActorName());
-//            } else {
-//                System.out.println("ходит " + turnActor.getTurnActorName());
-//            }
-//        }
-//        turnActor = actorIterator.next();
-
         if (turnActor.getTurnControlled().attack()) {
             victoryTrigger.minusCell(turnActor.getTurnActorId());
         }
@@ -30,8 +20,6 @@ public class MultiplayerTurnMaster extends TurnMaster {
         TurnActor actor = null;
         actorIterator = turnActors.listIterator();
         int turnLimit = (gameField.getColumnNum() + 1) * (gameField.getRowNum() + 1) * 2;
-        //Thread thread = new Thread();
-        //Thread thread2 = new Thread();
 
         while (i <= turnLimit) {
 
@@ -72,6 +60,11 @@ public class MultiplayerTurnMaster extends TurnMaster {
         addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, 1));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.HUMAN, name2, human2AI, 2));
         this.gameField = gameField;
+    }
+
+    private boolean searchClients(){
+
+        return false;
     }
 
     private class ServeClient implements Runnable {
