@@ -1,131 +1,201 @@
 package ru.javabit.client;
 
-import ru.javabit.VictoryTrigger;
-import ru.javabit.exceptions.BattleShipsException;
-import ru.javabit.gameField.GameField;
-import ru.javabit.report.ConsoleDialogue;
-import ru.javabit.report.Report;
-import ru.javabit.ship.Fleet;
-import ru.javabit.ship.FleetsDisposal;
-import ru.javabit.turn.TurnMaster;
-import ru.javabit.view.GameFieldSwingRenderer;
-
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
 
 public class GameClient extends JFrame implements Runnable {
 
-    private final Socket socket;
-    private final DataInputStream dataInputStream;
-    private final DataOutputStream dataOutputStream;
-    private JTextArea outTextArea;
-    private JTextField inTextField;
+    private String site;
+    private String port;
 
-    public GameClient(Socket socket, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    private Socket socket;
+    private DataInputStream dataInputStream;
+    private DataOutputStream dataOutputStream;
+//    private JTextArea outTextArea;
+//    private JTextField inTextField;
+
+    private int clientServantId;
+
+    public GameClient() {
         super();
-        this.socket = socket;
-        this.dataInputStream = dataInputStream;
-        this.dataOutputStream = dataOutputStream;
-
-
-
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                super.windowClosed(e);
-                try {
-                    dataOutputStream.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                try {
-                    socket.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-
-        inTextField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    dataOutputStream.writeUTF(inTextField.getText());
-                    dataOutputStream.flush();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                inTextField.setText("");
-            }
-        });
-
-        setVisible(true);
-        inTextField.requestFocus();
-        new Thread(this).start();
-    }
-
-
-    public static void main(String[] args) {
-        String site = "localhost";
-        String port = "8082";
-
-        Socket socket = null;
-        DataInputStream dataInputStream = null;
-        DataOutputStream dataOutputStream = null;
-//        new ChatClient(null, null, null);
+        site = "localhost";
+        port = "8082";
         try {
             socket = new Socket(site, Integer.parseInt(port));
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            new GameClient(socket, dataInputStream, dataOutputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-            try {
-                if (dataOutputStream != null) {
-                    dataOutputStream.close();
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (socket != null) {
-                    socket.close();
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
-    }
 
-    @Override
-    public void run() {
-        try {
-            while (true) { // todo flag
-                String line = dataInputStream.readUTF();
-                outTextArea.append(line + "\n");
-            }
+
+        Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    meet();
+                    getClientServantId();
+                    closeConnections();
+                }
+            });
+        t.start();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            inTextField.setVisible(false);
             validate();
+        }
+
+//      addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosed(WindowEvent e) {
+//                super.windowClosed(e);
+//                try {
+//                    dataOutputStream.close();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//                try {
+//                    socket.close();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        inTextField.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                try {
+//                    dataOutputStream.writeUTF(inTextField.getText());
+//                    dataOutputStream.flush();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//                inTextField.setText("");
+//            }
+//        });
+//
+//        setVisible(true);
+//        inTextField.requestFocus();
+//        new Thread(this).start();
+    }
+
+    private void closeConnections() {
+        try {
+            dataInputStream.close();
+            dataOutputStream.close();
+            //socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
+    private void getClientServantId() {
+        System.out.println("getClientServantId();");
+        clientServantId = getServerIntResponse();
+    }
+
+    private void meet() {//first data
+        System.out.println("meet()");
+        sendCode(0);
+    }
+
+    private void sendTurn() {//data o turn
+        sendCode(1);
+    }
+
+    private void sendCode(int code){
+        System.out.println("sendCode()");
+        try {
+            dataOutputStream.writeInt(code);
+            dataOutputStream.flush();
+            //dataOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private int getServerIntResponse(){
+        System.out.println("getServerIntResponse()");
+        int response = -1;
+        try {
+            if(dataInputStream==null){System.out.println("dataInputStream=null");}
+            response = dataInputStream.readInt();
+            System.out.println(response);
+            clientServantId = response;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public static void main(String[] args) {
+        GameClient client = new GameClient();
+        client.startGame();
+
+
+
+
+//        try {
+//            socket = new Socket(site, Integer.parseInt(port));
+//            dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+//            dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+//            new GameClient(socket, dataInputStream, dataOutputStream);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            try {
+//                if (dataOutputStream != null) {
+//                    dataOutputStream.close();
+//                }
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            }
+//            try {
+//                if (socket != null) {
+//                    socket.close();
+//                }
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            }
+//        }
+    }
+
+    private void startGame() {
+        while (true){
+
+        }
+    }
+
+
+    private void firstConnect(){
+//        clientServantId
+    }
+
+
+
+
+
+    @Override
+    public void run() {
+//        try {
+//            while (true) { // todo flag
+//                String line = dataInputStream.readUTF();
+//                outTextArea.append(line + "\n");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            inTextField.setVisible(false);
+//            validate();
+//        }
+    }
+
     private void windowConstruct(){
-        setSize(400, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        outTextArea = new JTextArea();
-        add(outTextArea);
-        inTextField = new JTextField();
-        add(BorderLayout.SOUTH, inTextField);
+//        setSize(400, 500);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setLayout(new BorderLayout());
+//        outTextArea = new JTextArea();
+//        add(outTextArea);
+//        inTextField = new JTextField();
+//        add(BorderLayout.SOUTH, inTextField);
     }
 
 
@@ -147,8 +217,6 @@ public class GameClient extends JFrame implements Runnable {
 //    получаем от сервера запрос на ход
 //    ходим
 //    передаем серверу ответ
-
-
 
 
 
