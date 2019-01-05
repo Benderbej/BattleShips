@@ -35,8 +35,8 @@ public class Server {
     private void run(){
         while (true) {
             try {
-                Socket Socket = serverSocket.accept();
-
+                Socket socket = serverSocket.accept();
+                //socket.getInputStream();
 
                 System.out.println("connected");//клиент коннектится
                 ClientHandler clientHandler = new ClientHandler();
