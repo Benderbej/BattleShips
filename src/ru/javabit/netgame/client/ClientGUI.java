@@ -2,6 +2,7 @@ package ru.javabit.netgame.client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class ClientGUI extends JFrame {
 
@@ -14,12 +15,17 @@ public class ClientGUI extends JFrame {
     }
 
     ClientGUI() {
-        client = new Client();
+        clientInit();
         windowConstruct();
     }
 
+    private void clientInit() {
+        client = new Client();
+        client.meet();
+        client.takeId();
+    }
 
-    private void windowConstruct(){
+    private void windowConstruct() {
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -29,8 +35,4 @@ public class ClientGUI extends JFrame {
         add(BorderLayout.SOUTH, inTextField);
         setVisible(true);
     }
-
-
-
-
 }
