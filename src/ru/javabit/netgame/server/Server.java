@@ -1,9 +1,14 @@
 package ru.javabit.netgame.server;
+
+import ru.javabit.netgame.client.ClientRequestCode;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static ru.javabit.netgame.client.ClientRequestCode.Meet;
 
 
 public class Server {
@@ -31,17 +36,36 @@ public class Server {
         while (true) {
             try {
                 Socket Socket = serverSocket.accept();
+
+
                 System.out.println("connected");//клиент коннектится
                 ClientHandler clientHandler = new ClientHandler();
 
 
 
                 clientHandlerMap.put(clientHandler.getClientServantId(), clientHandler);
-                processNewClientHandler(clientHandler);
+                //processNewClientHandler(clientHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             //clSocket.close();
+        }
+    }
+
+    private void processRequest(int code){
+        switch (code){
+            case ClientRequestCode.MEET :
+                System.out.println("client need id");
+                break;
+            case ClientRequestCode.TAKEID :
+                System.out.println("client need identification by id");
+                break;
+            case ClientRequestCode.TAKETURN :
+                System.out.println("client take GameFieldCell");
+                break;
+            case ClientRequestCode.GIVEGAMEFIELD :
+                System.out.println("clientNeed GameField");
+                break;
         }
     }
 
@@ -62,7 +86,4 @@ public class Server {
     private void addRoom(Room room) {
     }
 
-
 }
-
-
