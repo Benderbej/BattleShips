@@ -1,10 +1,22 @@
 package ru.javabit.client;
 
+import ru.javabit.gameField.GameField;
+import ru.javabit.view.GameFieldRenderer;
+
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 
-public class GameClient extends JFrame implements Runnable {
+/**
+ *
+ * клиент -тонкий, берет на себя работу только общения с сервером, отображения игровых полей. Отсылает на сервер минимум информации.
+ * Вся основная логика игры проходит на сервере, сервер создает комнату в которой запускает игру, игра уже руководит игровым процессом и через ClientHandler-ов
+ * отсылает посредством сервера обратно клиенту изменения информации
+ *
+ */
+
+public class GameClient extends JFrame {
 
     private String site;
     private String port;
@@ -12,10 +24,18 @@ public class GameClient extends JFrame implements Runnable {
     private Socket socket;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
+
+    private GameField gameField;
+
+
 //    private JTextArea outTextArea;
 //    private JTextField inTextField;
 
     private int clientServantId;
+    private int enemyServantId;
+    private JTextArea outTextArea;
+    private JTextField inTextField;
+
 
     public GameClient() {
         super();
@@ -32,7 +52,14 @@ public class GameClient extends JFrame implements Runnable {
                 public void run() {
                     meet();
                     getClientServantId();
-                    closeConnections();
+
+                    recieveGameField();
+                    windowConstruct();
+
+
+
+
+                    //closeConnections();
                 }
             });
         t.start();
@@ -41,40 +68,6 @@ public class GameClient extends JFrame implements Runnable {
         } finally {
             validate();
         }
-
-//      addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosed(WindowEvent e) {
-//                super.windowClosed(e);
-//                try {
-//                    dataOutputStream.close();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//                try {
-//                    socket.close();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//        });
-//
-//        inTextField.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                try {
-//                    dataOutputStream.writeUTF(inTextField.getText());
-//                    dataOutputStream.flush();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//                inTextField.setText("");
-//            }
-//        });
-//
-//        setVisible(true);
-//        inTextField.requestFocus();
-//        new Thread(this).start();
     }
 
     private void closeConnections() {
@@ -112,6 +105,26 @@ public class GameClient extends JFrame implements Runnable {
         }
     }
 
+    private void recieveGameField() {
+        System.out.println("recieveGameField()");
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            try {
+                gameField = (GameField) objectInputStream.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("gamefield have read");
+
+        if(gameField == null){
+            System.out.println("gamefield = null");
+        }
+        GameFieldRenderer r = new GameFieldRenderer(gameField);
+        r.renderGameField();
+    }
 
     private int getServerIntResponse(){
         System.out.println("getServerIntResponse()");
@@ -134,28 +147,6 @@ public class GameClient extends JFrame implements Runnable {
 
 
 
-//        try {
-//            socket = new Socket(site, Integer.parseInt(port));
-//            dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-//            dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-//            new GameClient(socket, dataInputStream, dataOutputStream);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            try {
-//                if (dataOutputStream != null) {
-//                    dataOutputStream.close();
-//                }
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//            try {
-//                if (socket != null) {
-//                    socket.close();
-//                }
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//        }
     }
 
     private void startGame() {
@@ -173,29 +164,15 @@ public class GameClient extends JFrame implements Runnable {
 
 
 
-    @Override
-    public void run() {
-//        try {
-//            while (true) { // todo flag
-//                String line = dataInputStream.readUTF();
-//                outTextArea.append(line + "\n");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            inTextField.setVisible(false);
-//            validate();
-//        }
-    }
-
     private void windowConstruct(){
-//        setSize(400, 500);
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        setLayout(new BorderLayout());
-//        outTextArea = new JTextArea();
-//        add(outTextArea);
-//        inTextField = new JTextField();
-//        add(BorderLayout.SOUTH, inTextField);
+        setSize(400, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        outTextArea = new JTextArea();
+        add(outTextArea);
+        inTextField = new JTextField();
+        add(BorderLayout.SOUTH, inTextField);
+        setVisible(true);
     }
 
 

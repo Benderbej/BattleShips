@@ -15,7 +15,7 @@ public class SingleGame implements Game {
 
     private static Game game;
     UserDialogue dialogue;
-    GameField gameField;
+    private GameField gameField;
     FleetsDisposal fleetsDisposal;
     GameFieldRenderable gameFieldRenderer;
     //GameFieldRenderer gameFieldRenderer;
@@ -78,6 +78,10 @@ public class SingleGame implements Game {
     private void meetUser() {
         dialogue = new ConsoleDialogue();
         dialogue.makeReport(Report.Greeting.getText());
+    }
+
+    public GameField getGameField() {
+        return gameField;
     }
 
 //    public Fleet getFleet1() {

@@ -40,6 +40,10 @@ public class MultiplayerGame implements Game {
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
         System.out.println("2");
+
+        //gameFieldRenderer = new GameFieldSwingRenderer(gameField);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //gameFieldRenderer.renderGameField();
+
     }
 
     @Override
@@ -51,6 +55,11 @@ public class MultiplayerGame implements Game {
         turnMaster.setVictoryTrigger(victoryTrigger);
         new Thread(turnMaster).start();
         System.out.println("4");
+    }
+
+    @Override
+    public GameField getGameField() {
+        return null;
     }
 
 //    @Override
