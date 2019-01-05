@@ -12,7 +12,6 @@ public class ClientHandler {
 
     public void setClientServantId() {
         clientServantId = GameMath.getRandomInt(1, Integer.MAX_VALUE);
-        //System.out.println("ClientHandler"+clientServantId);
     }
 }
 

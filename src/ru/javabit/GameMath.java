@@ -14,6 +14,10 @@ public class GameMath {
         return id;
     }
 
+    public static int getRandomInt(int min, int max) {
+        return min + (int) ((Math.random() * (max - min)));
+    }
+
     public static FieldCell getFromPossiblePosotionsList(ArrayList<FieldCell> possiblePosotionsList) {
         return possiblePosotionsList.get(random.nextInt(possiblePosotionsList.size()));
     }
