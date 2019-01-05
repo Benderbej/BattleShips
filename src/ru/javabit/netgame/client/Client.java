@@ -1,8 +1,21 @@
 package ru.javabit.netgame.client;
 
+import java.io.IOException;
+import java.net.Socket;
+
 public class Client {
 
-    private void meet(){}
+    String site;
+    String port;
+
+    Client(){
+        site = "localhost";
+        port = "8082";
+    }
+
+    private void meet() throws IOException {
+        Socket socket = new Socket(site, Integer.parseInt(port));
+    }
 
     private void takeId(){}
 
