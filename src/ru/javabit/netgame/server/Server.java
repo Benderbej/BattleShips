@@ -50,30 +50,19 @@ public class Server {
 
                 processRequest(code, socket);
 
+
+
+
+
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
 
 
-        /*
-        while (true) {
-            try {
-                Socket socket = serverSocket.accept();
-                System.out.println("connected");//клиент коннектится
-                //DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                //int code = dataInputStream.readInt();
-                //System.out.println("code"+code);
-                processRequest(0, socket);
-                ClientHandler clientHandler = new ClientHandler();
-                clientHandlerMap.put(clientHandler.getClientServantId(), clientHandler);
-                //processNewClientHandler(clientHandler);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //clSocket.close();
-        }
-        */
+
+
+
 
     }
 
@@ -93,8 +82,13 @@ public class Server {
             ex.printStackTrace();
         }
 
+        ClientHandler clientHandler = new ClientHandler();
+        clientHandlerMap.put(clientHandler.getClientServantId(), clientHandler);
+        //processNewClientHandler(clientHandler);
 
-//            ClientHandler clientHandler = new ClientHandler();
+
+
+
 //            GameField gameField = new GameField(11, 11,"computer 1", "computer 2");
 //            Fleet fleet1 = new Fleet();
 //            Fleet fleet2 = new Fleet();
