@@ -48,7 +48,7 @@ public class Server {
                 int code = dataInputStream.readInt();
                 System.out.println("code="+code);
 
-                processRequest(code, socket, inputStream);
+                processRequest(code, socket);
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -117,10 +117,10 @@ public class Server {
 
     }
 
-    private void giveGameField(Socket socket, InputStream inputStream){
+    private void giveGameField(Socket socket){
         System.out.println("giveGameField()");
         try {
-            DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             int clientHandlerId = dis.readInt();
             System.out.println("clientHandlerId" + clientHandlerId);
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -133,10 +133,10 @@ public class Server {
         }
     }
 
-    private void giveString(Socket socket, InputStream inputStream) {
+    private void giveString(Socket socket) {
         System.out.println("giveString()");
         try {
-            DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             int clientHandlerId = dis.readInt();
             System.out.println("clientHandlerId" + clientHandlerId);
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -150,7 +150,7 @@ public class Server {
     }
 
 
-    private void processRequest(int code, Socket socket, InputStream inputStream) {
+    private void processRequest(int code, Socket socket) {
         switch (code){
             case ClientRequestCode.MEET :
                 System.out.println("client need id");
@@ -158,7 +158,7 @@ public class Server {
                 break;
             case ClientRequestCode.GIVESTRING :
                 System.out.println("client need some string");
-                giveString(socket, inputStream);
+                giveString(socket);
                 //takeId();
                 break;
             case ClientRequestCode.TAKETURN :
@@ -166,7 +166,7 @@ public class Server {
                 break;
             case ClientRequestCode.GIVEGAMEFIELD :
                 System.out.println("clientNeed GameField");
-                giveGameField(socket, inputStream);
+                giveGameField(socket);
                 break;
         }
     }
