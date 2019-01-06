@@ -23,8 +23,8 @@ public class ClientGUI extends JFrame {
         client = new Client();
         //client.meet();
 
-        //client.giveGameField();
-        client.giveString();
+        client.giveGameField();
+        //client.giveString();
     }
 
     private void windowConstruct() {

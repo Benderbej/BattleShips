@@ -123,11 +123,21 @@ public class Server {
             DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             int clientHandlerId = dis.readInt();
             System.out.println("clientHandlerId" + clientHandlerId);
+
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            oos.writeObject("StRRing!");
+
+            GameField gameField = new GameField(11, 11,"computer 1", "computer 2");
+            Fleet fleet1 = new Fleet();
+            Fleet fleet2 = new Fleet();
+            FleetsDisposal fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
+            try {
+                fleetsDisposal.disposeAutoAuto();
+            } catch (BattleShipsException e) {
+                e.printStackTrace();
+            }
+            oos.writeObject(gameField);
             oos.flush();
             oos.close();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }

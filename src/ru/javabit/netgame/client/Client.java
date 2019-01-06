@@ -2,6 +2,7 @@ package ru.javabit.netgame.client;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import ru.javabit.gameField.GameField;
+import ru.javabit.view.GameFieldRenderer;
 
 import java.io.*;
 import java.net.Socket;
@@ -127,7 +128,7 @@ public class Client {
 
     private void takeTurn(){}
 
-    void giveGameField(){
+    void giveGameField() {
         System.out.println("giveGameField()");
         DataOutputStream dos = null;
         ObjectInputStream ois = null;
@@ -140,13 +141,14 @@ public class Client {
             dos.writeInt(clientHandlerId);
             dos.flush();
             ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-            String s = null;
+            GameField g = null;
             try {
-                s = (String) ois.readObject();
+                g = (GameField) ois.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            System.out.println("s=" + s);
+            //GameFieldRenderer gameFieldRenderer = new GameFieldRenderer(g);
+            //gameFieldRenderer.renderGameField();
         } catch (IOException ex){
             ex.printStackTrace();
         } finally {
@@ -160,7 +162,7 @@ public class Client {
         }
     }
 
-    void giveString(){
+    void giveString() {
         System.out.println("giveString()");
         DataOutputStream dos = null;
         ObjectInputStream ois = null;
