@@ -1,8 +1,9 @@
 package ru.javabit.gameField;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameFieldRulers {
+public class GameFieldRulers implements Serializable {
 
     private char[] alphabet = "aabcdefghijklmnopqrstuvwxyz".toCharArray();
     private ArrayList<String> fieldRowsSkins = new ArrayList<>();

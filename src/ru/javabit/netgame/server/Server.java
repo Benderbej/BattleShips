@@ -1,14 +1,18 @@
 package ru.javabit.netgame.server;
 
+import ru.javabit.exceptions.BattleShipsException;
+import ru.javabit.gameField.GameField;
 import ru.javabit.netgame.client.ClientRequestCode;
+import ru.javabit.netgame.client.PrimitiveObj;
+import ru.javabit.ship.Fleet;
+import ru.javabit.ship.FleetDisposer;
+import ru.javabit.ship.FleetsDisposal;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static ru.javabit.netgame.client.ClientRequestCode.Meet;
 
 
 public class Server {
@@ -22,6 +26,7 @@ public class Server {
     public static void main(String[] args) throws IOException {
         server = Server.getInstance();
         server.init();
+        server.run();
     }
 
     private void init() {
@@ -32,16 +37,42 @@ public class Server {
         }
     }
 
-    private void run(){
+    private void run() {
+
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                //socket.getInputStream();
+                InputStream inputStream = socket.getInputStream();
 
+                DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(inputStream));
+                int code = dataInputStream.readInt();
+                System.out.println("code="+code);
+
+                processRequest(code, socket, inputStream);
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+
+
+
+
+        /*
+        while (true) {
+            try {
+                Socket socket = serverSocket.accept();
                 System.out.println("connected");//клиент коннектится
+                //DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                //int code = dataInputStream.readInt();
+                //System.out.println("code"+code);
+                processRequest(0, socket);
+
+
+
+
                 ClientHandler clientHandler = new ClientHandler();
-
-
 
                 clientHandlerMap.put(clientHandler.getClientServantId(), clientHandler);
                 //processNewClientHandler(clientHandler);
@@ -50,21 +81,92 @@ public class Server {
             }
             //clSocket.close();
         }
+        */
+
     }
 
-    private void processRequest(int code){
+
+    private void meet(Socket socket) {
+
+        try {
+            System.out.println("Accepted from: " + socket.getInetAddress());
+            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            try {
+                String a = (String) ois.readObject();
+                System.out.println("a.i=" + a);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+
+//            ClientHandler clientHandler = new ClientHandler();
+//            GameField gameField = new GameField(11, 11,"computer 1", "computer 2");
+//            Fleet fleet1 = new Fleet();
+//            Fleet fleet2 = new Fleet();
+//            FleetsDisposal fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
+//            try {
+//                fleetsDisposal.disposeAutoAuto();
+//            } catch (BattleShipsException e) {
+//                e.printStackTrace();
+//            }
+//            objectOutputStream.writeObject(gameField);
+
+
+    }
+
+    private void giveGameField(Socket socket, InputStream inputStream){
+        System.out.println("giveGameField()");
+        try {
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+            int clientHandlerId = dis.readInt();
+            System.out.println("clientHandlerId" + clientHandlerId);
+            ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            oos.writeObject("StRRing!");
+            oos.flush();
+            oos.close();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void giveString(Socket socket, InputStream inputStream) {
+        System.out.println("giveString()");
+        try {
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+            int clientHandlerId = dis.readInt();
+            System.out.println("clientHandlerId" + clientHandlerId);
+            ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            oos.writeObject("StRRing!");
+            oos.flush();
+            oos.close();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    private void processRequest(int code, Socket socket, InputStream inputStream) {
         switch (code){
             case ClientRequestCode.MEET :
                 System.out.println("client need id");
+                meet(socket);
                 break;
-            case ClientRequestCode.TAKEID :
-                System.out.println("client need identification by id");
+            case ClientRequestCode.GIVESTRING :
+                System.out.println("client need some string");
+                giveString(socket, inputStream);
+                //takeId();
                 break;
             case ClientRequestCode.TAKETURN :
                 System.out.println("client take GameFieldCell");
                 break;
             case ClientRequestCode.GIVEGAMEFIELD :
                 System.out.println("clientNeed GameField");
+                giveGameField(socket, inputStream);
                 break;
         }
     }

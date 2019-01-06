@@ -8,6 +8,7 @@ public class ClientHandler {
 
     ClientHandler (){
         setClientServantId();
+        System.out.println(getClientServantId());
     }
 
     public int getClientServantId() {

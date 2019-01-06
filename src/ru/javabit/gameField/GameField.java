@@ -1,8 +1,9 @@
 package ru.javabit.gameField;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameField {
+public class GameField implements Serializable {
     private int columnNum;
     private int rowNum;
     private Party player;

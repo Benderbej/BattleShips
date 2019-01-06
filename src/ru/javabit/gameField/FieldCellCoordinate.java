@@ -1,6 +1,8 @@
 package ru.javabit.gameField;
 
-public class FieldCellCoordinate {
+import java.io.Serializable;
+
+public class FieldCellCoordinate implements Serializable {
 
     private int x;
     private int y;

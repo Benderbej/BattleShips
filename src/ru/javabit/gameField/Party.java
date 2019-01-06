@@ -1,6 +1,8 @@
 package ru.javabit.gameField;
 
-public class Party {
+import java.io.Serializable;
+
+public class Party implements Serializable{
 
     private String name;
     private GameFieldGrid grid;

@@ -1,5 +1,6 @@
 package ru.javabit.gameField;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * и когда нужно сравнить клетки этих полей, чтобы а4 на одном оле было равно  а4 на другом.
  */
 
-public abstract class FieldCell {
+public abstract class FieldCell implements Serializable {
 
     private FieldCellCoordinate fieldCellCoordinate;
     private String skin;//лучше бы было здесь хранить Enum State и оттуда брать skin, точнее создать класс FieldState и хранить его экземпляр в экземпляре FieldState, а Enum оставить для скинов итд

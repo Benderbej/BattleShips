@@ -1,6 +1,8 @@
 package ru.javabit.gameField;
 
-public class FieldCellFactory {
+import java.io.Serializable;
+
+public class FieldCellFactory implements Serializable {
 
     GameFieldCell createGameFieldCell(int x, int y) {
         GameFieldCell cell = new GameFieldCell(x, y);
