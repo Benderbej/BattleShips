@@ -1,6 +1,7 @@
 package ru.javabit.netgame.server;
 
 import ru.javabit.exceptions.BattleShipsException;
+import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameField;
 import ru.javabit.netgame.client.ClientRequestCode;
 import ru.javabit.netgame.client.PrimitiveObj;
@@ -38,7 +39,6 @@ public class Server {
     }
 
     private void run() {
-
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
@@ -56,9 +56,6 @@ public class Server {
         }
 
 
-
-
-
         /*
         while (true) {
             try {
@@ -68,12 +65,7 @@ public class Server {
                 //int code = dataInputStream.readInt();
                 //System.out.println("code"+code);
                 processRequest(0, socket);
-
-
-
-
                 ClientHandler clientHandler = new ClientHandler();
-
                 clientHandlerMap.put(clientHandler.getClientServantId(), clientHandler);
                 //processNewClientHandler(clientHandler);
             } catch (IOException e) {
@@ -159,6 +151,26 @@ public class Server {
         }
     }
 
+    private FieldCell takeFieldCell(Socket socket) {
+        System.out.println("takeFieldCell()");
+        FieldCell fc = null;
+        try {
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            int clientHandlerId = dis.readInt();
+            System.out.println("clientHandlerId" + clientHandlerId);
+            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            try {
+                fc = (FieldCell) ois.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            ois.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return fc;
+    }
+
 
     private void processRequest(int code, Socket socket) {
         switch (code){
@@ -171,8 +183,9 @@ public class Server {
                 giveString(socket);
                 //takeId();
                 break;
-            case ClientRequestCode.TAKETURN :
+            case ClientRequestCode.TAKEFIELDCELL :
                 System.out.println("client take GameFieldCell");
+                takeFieldCell(socket);
                 break;
             case ClientRequestCode.GIVEGAMEFIELD :
                 System.out.println("clientNeed GameField");
@@ -180,6 +193,8 @@ public class Server {
                 break;
         }
     }
+
+
 
     private Server() throws IOException {
         clientHandlerMap = new HashMap<>();
