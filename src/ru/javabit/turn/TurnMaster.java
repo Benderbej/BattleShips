@@ -18,38 +18,31 @@ import java.util.ListIterator;
 public class TurnMaster implements Runnable {
 
     private static TurnMaster turnMaster;
-    private static LinkedList<TurnActor> turnActors;
-    private static ListIterator<TurnActor> actorIterator;
+    protected static LinkedList<TurnActor> turnActors;
+    protected static ListIterator<TurnActor> actorIterator;
     public GameField gameField;
-    private GameFieldRenderable gameFieldRenderer;
+    protected GameFieldRenderable gameFieldRenderer;
     public static VictoryTrigger victoryTrigger;
     private ConsoleDialogue consoleDialogue;
 
-    private TurnMaster() {
+    public TurnMaster() {
         consoleDialogue = new ConsoleDialogue();
+        turnActors = new LinkedList<TurnActor>();
     }
 
-    public static TurnMaster getInstance() {
-        if(turnMaster == null){
-            turnMaster = new TurnMaster();
-            turnActors = new LinkedList<TurnActor>();
-        }
-        return turnMaster;
-    }
-
-    public void initComputerVsComputer(GameField gameField, String name1, String name2){
+    public void initComputerVsComputer(GameField gameField, String name1, String name2) {
         TurnControlled computer1AI = new PlayerComputerAI(gameField.getEnemyFieldGrid().getCellsArr());
         TurnControlled computer2AI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
-        addTurnActor(new TurnActor(TurnActorType.COMPUTER,name1,computer1AI,1));//0 - is reserved for nowinner
-        addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computer2AI,2));
+        addTurnActor(new TurnActor(TurnActorType.COMPUTER, name1, computer1AI, 1));//0 - is reserved for nowinner
+        addTurnActor(new TurnActor(TurnActorType.COMPUTER, name2, computer2AI, 2));
         this.gameField = gameField;
     }
 
-    public void initHumanVsComputer(GameField gameField, String name1, String name2){
+    public void initHumanVsComputer(GameField gameField, String name1, String name2) {
         TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr(), ((GameFieldSwingRenderer) gameFieldRenderer).getPl2Panel());
         TurnControlled computerAI = new PlayerComputerAI(gameField.getPlayerFieldGrid().getCellsArr());
-        addTurnActor(new TurnActor(TurnActorType.HUMAN,name1,humanAI,1));//0 - is reserved for nowinner
-        addTurnActor(new TurnActor(TurnActorType.COMPUTER,name2,computerAI,2));
+        addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, 1));//0 - is reserved for nowinner
+        addTurnActor(new TurnActor(TurnActorType.COMPUTER, name2, computerAI, 2));
         this.gameField = gameField;
     }
 
@@ -57,52 +50,21 @@ public class TurnMaster implements Runnable {
         turnActors.add(turnActor);
     }
 
-//    public void makeTurn(TurnActor turnActor) {
-//        Thread thread;
-//        switch (turnActor.getTurnActorType()){
-//            case COMPUTER:
-//                thread = new Thread();
-//                thread.start();
-//                makeAutoTurn(turnActor);
-//                thread.interrupt();
-//            case HUMAN:
-//                thread = new Thread();
-//                thread.start();
-//                makeHumanTurn(turnActor);
-//                thread.interrupt();
-//        }
-//        gameFieldRenderer.renderGameField();
-//    }
-//
-//    private void makeAutoTurn (TurnActor turnActor) {
-//        if(turnActor.getTurnControlled().attack()){
-//            victoryTrigger.minusCell(turnActor.getTurnActorId());
-//        }
-//    }
-//
-//    private void makeHumanTurn (TurnActor turnActor) {
-//        if(turnActor.getTurnControlled().attack()){
-//            victoryTrigger.minusCell(turnActor.getTurnActorId());
-//        }
-//    }
-
 
     public void makeTurn(TurnActor turnActor) {
-        Thread thread;
-                //thread = new Thread();
-                //thread.start();
-                if(turnActor.getTurnControlled().attack()){
-                    victoryTrigger.minusCell(turnActor.getTurnActorId());
-                }
-                //thread.interrupt();
+        if (turnActor.getTurnControlled().attack()) {
+            victoryTrigger.minusCell(turnActor.getTurnActorId());
+        }
         gameFieldRenderer.renderGameField();
     }
 
     //private void
 
-    private boolean checkVictory() {
+    protected boolean checkVictory() {
         boolean victory = false;
-        if(victoryTrigger.isFinished()){victory = true;}
+        if (victoryTrigger.isFinished()) {
+            victory = true;
+        }
         return victory;
     }
 
@@ -114,57 +76,44 @@ public class TurnMaster implements Runnable {
         this.victoryTrigger = victoryTrigger;
     }
 
-    private void makeReport(String s) {
+    protected void makeReport(String s) {
         consoleDialogue = new ConsoleDialogue();//TODO ConsoleDialoge maybe singleton with static makeReport
         consoleDialogue.makeReport(s);
     }
 
     @Override
     public void run() {
-            int i=0;
-            TurnActor actor = null;
-            actorIterator = turnActors.listIterator();
-            int turnLimit = (gameField.getColumnNum()+1)*(gameField.getRowNum()+1)*2;
-            //Thread thread = new Thread();
-            //Thread thread2 = new Thread();
+        int i = 0;
+        TurnActor actor = null;
+        actorIterator = turnActors.listIterator();
+        int turnLimit = (gameField.getColumnNum() + 1) * (gameField.getRowNum() + 1) * 2;
+        while (i <= turnLimit) {
+            //Thread.currentThread().wait();
 
-            while (i<=turnLimit){
-                //Thread.currentThread().wait();
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-                if ( i<turnActors.size()){
-                    System.out.println("turnActors.size()="+turnActors.size());
-                }
-
-
-
-
-                if (actorIterator.hasNext()){
-                    if(actor != null){
-                        makeReport("ходит "+actor.getTurnActorName());}
-                    if(actor != null){gameFieldRenderer.setGameStatus("ходит "+actor.getTurnActorName());}
-                    actor = actorIterator.next();
-                    makeTurn(actor);
-                } else {
-                    i--;
-                    actorIterator = turnActors.listIterator();
-                }
-                if(checkVictory()){
-                    victoryTrigger.getWinerPlayerNum();
-                    makeReport("Выиграл "+actor.getTurnActorName());
-                    gameFieldRenderer.setGameStatus("Выиграл "+actor.getTurnActorName());
-                    gameFieldRenderer.showEnemyPositions();
-                    break;
-                }
-                i++;
+            if (i < turnActors.size()) {
+                System.out.println("turnActors.size()=" + turnActors.size());
             }
+
+            if (actorIterator.hasNext()) {
+                if (actor != null) {
+                    makeReport("ходит " + actor.getTurnActorName());
+                    gameFieldRenderer.setGameStatus("ходит " + actor.getTurnActorName());
+                }
+                actor = actorIterator.next();
+                makeTurn(actor);
+            } else {
+                i--;
+                actorIterator = turnActors.listIterator();
+            }
+            if (checkVictory()) {
+                victoryTrigger.getWinerPlayerNum();
+                makeReport("Выиграл " + actor.getTurnActorName());
+                gameFieldRenderer.setGameStatus("Выиграл " + actor.getTurnActorName());
+                gameFieldRenderer.showEnemyPositions();
+                break;
+            }
+            i++;
+        }
         makeReport("КОНЕЦ ИГРЫ");
     }
 }
