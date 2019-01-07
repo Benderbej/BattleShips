@@ -1,5 +1,8 @@
 package ru.javabit.turn;
 
+import ru.javabit.gameField.GameField;
+import ru.javabit.view.GameFieldSwingRenderer;
+
 public class MultiplayerTurnMaster extends TurnMaster {
 
     public void makeTurn(TurnActor turnActor) {
