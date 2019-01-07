@@ -1,11 +1,13 @@
 package ru.javabit.netgame.server;
 
+import ru.javabit.Game;
 import ru.javabit.VictoryTrigger;
 import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.GameField;
 import ru.javabit.report.UserDialogue;
 import ru.javabit.ship.Fleet;
 import ru.javabit.ship.FleetsDisposal;
+import ru.javabit.turn.MultiplayerTurnMaster;
 import ru.javabit.turn.TurnMaster;
 import ru.javabit.view.GameFieldRenderable;
 
