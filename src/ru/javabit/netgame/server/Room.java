@@ -1,5 +1,6 @@
 package ru.javabit.netgame.server;
 
+import ru.javabit.Game;
 import ru.javabit.GameMath;
 import ru.javabit.exceptions.BattleShipsException;
 
