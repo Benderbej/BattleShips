@@ -36,10 +36,8 @@ public class MultiplayerGame implements Game {
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
         System.out.println("2");
-
         //gameFieldRenderer = new GameFieldSwingRenderer(gameField);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //gameFieldRenderer.renderGameField();
-
     }
 
     @Override

@@ -15,7 +15,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class Server {
 
     private static Server server;
@@ -43,29 +42,15 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
                 InputStream inputStream = socket.getInputStream();
-
                 DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(inputStream));
                 int code = dataInputStream.readInt();
                 System.out.println("code="+code);
-
                 processRequest(code, socket);
-
-
-
-
-
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-
-
-
-
-
-
     }
-
 
     private void meet(Socket socket) {
 
@@ -85,9 +70,6 @@ public class Server {
         ClientHandler clientHandler = new ClientHandler();
         clientHandlerMap.put(clientHandler.getClientServantId(), clientHandler);
         //processNewClientHandler(clientHandler);
-
-
-
 
 //            GameField gameField = new GameField(11, 11,"computer 1", "computer 2");
 //            Fleet fleet1 = new Fleet();
@@ -165,7 +147,6 @@ public class Server {
         return fc;
     }
 
-
     private void processRequest(int code, Socket socket) {
         switch (code){
             case ClientRequestCode.MEET :
@@ -188,8 +169,6 @@ public class Server {
         }
     }
 
-
-
     private Server() throws IOException {
         clientHandlerMap = new HashMap<>();
         freeClients = new ArrayList<>();
@@ -206,5 +185,4 @@ public class Server {
 
     private void addRoom(Room room) {
     }
-
 }
