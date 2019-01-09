@@ -8,6 +8,8 @@ import ru.javabit.view.GameFieldRenderer;
 import java.io.*;
 import java.net.Socket;
 
+import static java.lang.Thread.sleep;
+
 /**
  * first connection - meet
  *
@@ -20,6 +22,7 @@ public class Client {
     String site;
     String port;
     int clientHandlerId = 33333333;
+    GameField gameField;
 
     Client(){
         site = "localhost";
@@ -28,22 +31,24 @@ public class Client {
 
     void meet() {
             Socket socket = null;
+        DataOutputStream dataOutputStream = null;
             String site = "localhost";
             String port = "8082";
             try {
                 socket = new Socket(site, Integer.parseInt(port));
-                DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                 dataOutputStream.writeInt(ClientRequestCode.MEET);
                 dataOutputStream.flush();
-                ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                //oos.writeObject("Sstring!");
-                oos.writeObject("stringg");
-                oos.flush();
-                oos.close();
+                DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                clientHandlerId = dis.readInt();
+                System.out.println("clientHandlerId"+clientHandlerId);
+                dataOutputStream.close();
+                dis.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
                 try {
+                    dataOutputStream.close();
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -82,7 +87,7 @@ public class Client {
         }
     }
 
-    GameField giveGameField() {
+    boolean giveGameField() {
         System.out.println("giveGameField()");
         GameField g = null;
         DataOutputStream dos = null;
@@ -97,12 +102,17 @@ public class Client {
             dos.flush();
             ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
             try {
-                g = (GameField) ois.readObject();
+                gameField = (GameField) ois.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            //GameFieldRenderer gameFieldRenderer = new GameFieldRenderer(g);
-            //gameFieldRenderer.renderGameField();
+            if (gameField == null){
+                System.out.println("waiting for another player Game an Gamefield has not inited yet");
+            } else {
+                GameFieldRenderer gameFieldRenderer = new GameFieldRenderer(gameField);
+                gameFieldRenderer.renderGameField();
+                return true;
+            }
         } catch (IOException ex){
             ex.printStackTrace();
         } finally {
@@ -114,7 +124,8 @@ public class Client {
                 e.printStackTrace();
             }
         }
-        return g;
+        System.out.println("giveGameField() end");
+        return false;
     }
 
     void giveString() {
@@ -150,11 +161,30 @@ public class Client {
         }
     }
 
-    private void sendRequestCode(int code){
+    private void sendRequestCode(int code) {
 
     }
 
-    private void sendRequest(int code){
+    private void sendRequest(int code) {
 
+    }
+
+    void getGameField() {
+        GameField gameField = null;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.out.println("try to getGameField...");
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(giveGameField()){return;}
+                }
+            }
+        });
+        t.start();
     }
 }

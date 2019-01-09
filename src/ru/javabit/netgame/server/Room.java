@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class Room {
 
-    Game multiplayerGame;
+    private Game multiplayerGame;
     LinkedList<ClientHandler> handlersList;
     public final int roomSize;
     public static final int roomDefaultSize = 2;
@@ -45,6 +45,10 @@ public class Room {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    public Game getMultiplayerGame() {
+        return multiplayerGame;
     }
 
 }

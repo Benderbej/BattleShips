@@ -29,7 +29,8 @@ public class MultiplayerGame implements Game {
 
     @Override
     public void initGame() throws BattleShipsException {
-        System.out.println("1");
+
+        System.out.println("init Multiplayer Game!");
         gameField = new GameField(11, 11,"computer 1", "computer 2");
         fleet1 = new Fleet();
         fleet2 = new Fleet();
@@ -53,7 +54,7 @@ public class MultiplayerGame implements Game {
 
     @Override
     public GameField getGameField() {
-        return null;
+        return gameField;
     }
 
 //    @Override
