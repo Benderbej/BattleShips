@@ -3,6 +3,7 @@ package ru.javabit.netgame.client;
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameFieldCell;
 import ru.javabit.turn.CellActionListener;
+import ru.javabit.turn.HumanControl;
 import ru.javabit.view.GameFieldRenderable;
 import ru.javabit.view.GameFieldSwingRenderer;
 
@@ -17,6 +18,7 @@ public class ClientGUI extends JFrame {
     JTextArea outTextArea;
     JTextField inTextField;
     GameFieldRenderable gameFieldRenderer;
+    FieldCell choosenCell;
 
     private Thread listen;
     private ArrayList<GameFieldCell> enemyFieldCellsList;
@@ -49,12 +51,75 @@ public class ClientGUI extends JFrame {
         System.out.println(" client.getGameField();");
         gameFieldRenderer = new GameFieldSwingRenderer(client.gameField, client.activeness);
         gameFieldRenderer.renderGameField();
-
-
         //client.giveString();
     }
 
 
+    private void clientStart(){
+
+
+
+
+
+    }
+
+
+
+
+    private class GameProcess implements Runnable {
+        @Override
+        public void run() {
+            int i=0;
+            while(true){// вертим цикл и с периодичностью 20мс проверяем не появилось ли значение в remotePlayersTurns
+
+                client.getCurrentTurnActorId();//отправляем запрос не мы ли текущий пользователь, то есть не наш ли ход
+                if(client.currentTurnActorId == client.clientHandlerId){//если ход наш то скидываем FieldCell который мы выбрали, если не выбрали еще то ждем пока listener JFrame услышит клавишу
+                    if(choosenCell != null) {
+                        if(client.takeFieldCell(choosenCell)){choosenCell = null;}//если удалось успешно закинуть выбранную клетку на сервак, обнуляем ссылку
+                    }
+                }
+                client.getGameField();//обновляем gameField
+
+                    //TODO
+
+                    remotePlayersTurns.put(clientHandlerId, choosenCell);//на серваке в обработке takeFieldCell
+
+
+                    if(client.getGameOver()) {//спецзапрос к серваку на предмет конца игры - ответ 0 1 2 victory trigger
+                        return;//если 1 2 конец игры выходим из цикла
+                    }
+                }
+
+                try {
+                    Thread.sleep(100);//чтобы сервер не затрахать до смерти
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+    private class ListenersInit implements Runnable {//listeners are in different thread
+        @Override
+        public void run() {
+            int i=0; int j=0;
+            for (FieldCell[] arr : fieldCells) {
+                for (FieldCell cell : arr) {
+                    JButton jButton = (JButton) panel.getComponent((i*(fieldCells.length)+j));
+
+                    jButton.addActionListener(new CellActionListener(HumanControl.this, cell));
+                    j++;
+                }
+                j=0;
+                i++;
+            }
+        }
+    }
 
 
 

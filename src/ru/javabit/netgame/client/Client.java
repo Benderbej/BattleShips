@@ -61,7 +61,8 @@ public class Client {
 
     private void takeTurn() {}
 
-    void takeFieldCell(FieldCell fieldCell) {
+    boolean takeFieldCell(FieldCell fieldCell) {
+        boolean result= false;
         System.out.println("giveGameField()");
         FieldCell fc = null;
         DataOutputStream dos = null;
@@ -76,6 +77,7 @@ public class Client {
             dos.flush();
             oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             oos.writeObject(fc);
+            result = true;
         } catch (IOException ex){
             ex.printStackTrace();
         } finally {
@@ -87,6 +89,7 @@ public class Client {
                 e.printStackTrace();
             }
         }
+        return result;
     }
 
     boolean giveGameField() {
