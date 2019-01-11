@@ -2,7 +2,9 @@ package ru.javabit.netgame.server;
 
 import ru.javabit.Game;
 import ru.javabit.GameMath;
+import ru.javabit.VictoryTrigger;
 import ru.javabit.exceptions.BattleShipsException;
+import ru.javabit.turn.TurnMaster;
 
 import java.util.LinkedList;
 
@@ -32,19 +34,15 @@ public class Room {
         } catch (BattleShipsException e) {
             e.printStackTrace();
         }
-//        for (ClientHandler clientHandler : handlersList) {
-//            clientHandler.sendGameFieldToClient(multiplayerGame.getGameField());
-//        }
-        //multiplayerGame.getGameField();
     }
 
     public void startGame() {
         System.out.println("room"+roomId + " startGame() "+ handlersList.get(0).getClientServantId() + " vs "+ handlersList.get(1).getClientServantId());
-//        try {
-//            multiplayerGame.startGame();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            multiplayerGame.startGame();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public Game getMultiplayerGame() {

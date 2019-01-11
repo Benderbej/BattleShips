@@ -10,6 +10,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/*
+преобразование статусов элементов массива fieldCells происходит тут
+
+attack - значит преобразовывать статус выбранной FielCell в fieldCells[][]
+ */
+
 public class HumanControl implements TurnControlled {
     private ArrayList<GameFieldCell> enemyFieldCellsList;
     private FieldCell[][] fieldCells;//enemy's gamefield
@@ -17,12 +23,10 @@ public class HumanControl implements TurnControlled {
     private JPanel panel;
     private Thread listen;
 
+    public FieldCell choosenCell;
+    public boolean cellIsSet;
 
-    public static FieldCell choosenCell;
-    public static boolean cellIsSet;
-
-
-    HumanControl(FieldCell[][] fieldCells) {
+    public HumanControl(FieldCell[][] fieldCells) {
         this.fieldCells = fieldCells;
         fillFieldCellsList();
     }
@@ -32,14 +36,13 @@ public class HumanControl implements TurnControlled {
         this.panel = panel;
         listen = new Thread(new ListenersInit());
         listen.start();
-
         fillFieldCellsList();
     }
 
     private void fillFieldCellsList() {
         enemyFieldCellsList = new ArrayList<GameFieldCell>();
         for (FieldCell[] arr : fieldCells) {
-            for(FieldCell cell : arr){
+            for(FieldCell cell : arr) {
                 if(cell instanceof GameFieldCell){
                     enemyFieldCellsList.add((GameFieldCell) cell);
                 }
@@ -55,7 +58,7 @@ public class HumanControl implements TurnControlled {
         return success;
     }
 
-    private void chooseCellToAttack(){
+    protected void chooseCellToAttack() {
         ChooseCellFromInput c = new ChooseCellFromInput();
         Thread thread = new Thread(c);
         thread.start();
@@ -87,10 +90,6 @@ public class HumanControl implements TurnControlled {
         //enemyFieldCellsList.get()
     }
 
-
-
-
-
     private class ListenersInit implements Runnable {//listeners are in different thread
         @Override
         public void run() {
@@ -99,7 +98,7 @@ public class HumanControl implements TurnControlled {
                 for (FieldCell cell : arr) {
                     JButton jButton = (JButton) panel.getComponent((i*(fieldCells.length)+j));
 
-                    jButton.addActionListener(new CellActionListener(cell));
+                    jButton.addActionListener(new CellActionListener(HumanControl.this, cell));
                     j++;
                 }
                 j=0;
@@ -110,20 +109,17 @@ public class HumanControl implements TurnControlled {
 
     private class ChooseCellFromInput implements Runnable {
 
-        FieldCellCoordinate fieldCellCoordinate;
-
         @Override
         public void run() {
             int i=0;
             while(true){
                 if(cellIsSet){
-                    fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
+                    //FieldCellCoordinate fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
                     //System.out.println("cellis is"+choosenCell.getFieldCellCoordinate());
                     cellIsSet = false;
                     return;
                 }
                 i++;
-
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {

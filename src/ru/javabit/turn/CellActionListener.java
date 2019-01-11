@@ -10,9 +10,11 @@ public class CellActionListener implements ActionListener {
 
     private ActionEvent event;
     private FieldCell cell;
+    private HumanControl humanControl;
 
 
-    CellActionListener(FieldCell cell){
+    CellActionListener(HumanControl humanControl, FieldCell cell){
+        this.humanControl = humanControl;
         this.cell = cell;
     }
 
@@ -20,8 +22,8 @@ public class CellActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         System.out.println("shoot!");
         System.out.println(cell.getFieldCellCoordinate().getX()+" "+cell.getFieldCellCoordinate().getY());
-        HumanControl.cellIsSet = true;
-        HumanControl.choosenCell = cell;
+        humanControl.cellIsSet = true;
+        humanControl.choosenCell = cell;
     }
 
 }

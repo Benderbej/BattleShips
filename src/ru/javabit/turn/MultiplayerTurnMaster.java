@@ -53,11 +53,19 @@ public class MultiplayerTurnMaster extends TurnMaster {
     }
 
     public void initHumanVsHuman(GameField gameField, String name1, String name2) {
-        TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr(), ((GameFieldSwingRenderer) gameFieldRenderer).getPl2Panel());
-        TurnControlled human2AI = new HumanControl(gameField.getPlayerFieldGrid().getCellsArr(), ((GameFieldSwingRenderer) gameFieldRenderer).getPl2Panel());
+
+        TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr());//1 attacker
+        TurnControlled human2AI = new HumanControl(gameField.getPlayerFieldGrid().getCellsArr());//2 - defender
         addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, 1));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.HUMAN, name2, human2AI, 2));
         this.gameField = gameField;
+
+
+//        TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr(), ((GameFieldSwingRenderer) gameFieldRenderer).getPl2Panel());
+//        TurnControlled human2AI = new HumanControl(gameField.getPlayerFieldGrid().getCellsArr(), ((GameFieldSwingRenderer) gameFieldRenderer).getPl2Panel());
+//        addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, 1));//0 - is reserved for nowinner
+//        addTurnActor(new TurnActor(TurnActorType.HUMAN, name2, human2AI, 2));
+//        this.gameField = gameField;
     }
 
     private boolean searchClients(){

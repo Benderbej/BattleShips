@@ -129,12 +129,6 @@ public class Server {
     }
 
     private Game getGameByHandlerId() {//TODO jut one game now
-        if(roomList.get(0) == null){
-            System.out.println("1 = null");
-        }
-        if(roomList.get(0).getMultiplayerGame() == null){
-            System.out.println("2 = null");
-        }
         return roomList.get(0).getMultiplayerGame();
     }
 
@@ -236,8 +230,6 @@ public class Server {
                 System.out.println("h.getClientServantId()="+h.getClientServantId());
             }
             room.initGame();
-
-
         }
     }
 

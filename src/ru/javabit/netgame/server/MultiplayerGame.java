@@ -22,7 +22,7 @@ public class MultiplayerGame implements Game {
     //GameFieldSwingRenderer gameFieldSwingRenderer;
     Fleet fleet1;
     Fleet fleet2;
-    TurnMaster turnMaster;
+    MultiplayerTurnMaster turnMaster;
     VictoryTrigger victoryTrigger;
 
     public MultiplayerGame(){ }
@@ -36,20 +36,16 @@ public class MultiplayerGame implements Game {
         fleet2 = new Fleet();
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
-        System.out.println("2");
-        //gameFieldRenderer = new GameFieldSwingRenderer(gameField);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //gameFieldRenderer.renderGameField();
     }
 
     @Override
     public void startGame() throws InterruptedException {
-        System.out.println("3");
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
         turnMaster = new MultiplayerTurnMaster();
-        turnMaster.initComputerVsComputer(gameField, "human", "computer");
+        //turnMaster.initComputerVsComputer(gameField, "human", "computer");
+        turnMaster.initHumanVsHuman(gameField, "human", "computer");
         turnMaster.setVictoryTrigger(victoryTrigger);
         new Thread(turnMaster).start();
-        System.out.println("4");
     }
 
     @Override

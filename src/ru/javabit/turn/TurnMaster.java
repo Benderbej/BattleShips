@@ -50,7 +50,6 @@ public class TurnMaster implements Runnable {
         turnActors.add(turnActor);
     }
 
-
     public void makeTurn(TurnActor turnActor) {
         if (turnActor.getTurnControlled().attack()) {
             victoryTrigger.minusCell(turnActor.getTurnActorId());
