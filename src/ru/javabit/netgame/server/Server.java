@@ -143,15 +143,7 @@ public class Server {
                 if(activeness == null){
                     System.out.println("activeness IS NULL!");
                 }
-                if(getGameByHandlerId() == null){
-                    System.out.println("game IS NULL!");
-                }
                 dos.writeBoolean(activeness);
-                dos.flush();
-                dos.close();
-            } else {//TODO может лишняя проверка така как gamefiald уже проверялся а он раньше - возможно стоит убрать
-                ObjectOutputStream dos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                dos.writeObject(null);
                 dos.flush();
                 dos.close();
             }
@@ -159,6 +151,31 @@ public class Server {
             ex.printStackTrace();
         }
         System.out.println("giveActiveness() end");
+    }
+
+    private void giveCurrentActorId(Socket socket, DataInputStream dataInputStream) {
+        System.out.println("giveCurrentActorId()");
+        try {
+            int clientHandlerId = dataInputStream.readInt();
+            System.out.println("clientHandlerId=" + clientHandlerId);
+            int currentActorId = 0;
+            if(gameInRoomInited(roomList.get(0))) {
+                DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                currentActorId = getGameByHandlerId().getTurnMaster().getCurrentTurnClientHandlerId();
+                if(currentActorId == 0){
+                    dos.writeInt(0);
+                    dos.flush();
+                    dos.close();
+                    System.out.println("currentActorId IS NULL!");
+                }
+                dos.writeInt(currentActorId);
+                dos.flush();
+                dos.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        System.out.println("giveCurrentActorId() end");
     }
 
     private MultiplayerGame getGameByHandlerId() {//TODO jut one game now
@@ -235,7 +252,11 @@ public class Server {
                 break;
             case ClientRequestCode.GIVEACTIVENESS :
                 System.out.println("clientNeed Activeness");
-                giveActiveness(socket, dataInputStream);//TODO gameField
+                giveActiveness(socket, dataInputStream);
+                break;
+            case ClientRequestCode.GIVECURRENTACTORID :
+                System.out.println("clientNeed Activeness");
+                giveCurrentActorId(socket, dataInputStream);
                 break;
         }
     }

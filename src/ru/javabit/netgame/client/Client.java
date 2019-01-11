@@ -24,6 +24,7 @@ public class Client {
     int clientHandlerId = 33333333;
     GameField gameField;
     Boolean activeness;
+    int currentTurnActorId;
 
     Client(){
         site = "localhost";
@@ -160,9 +161,46 @@ public class Client {
                 e.printStackTrace();
             }
         }
-        System.out.println("giveGameField() end");
+        System.out.println("giveActiveness() end");
         return false;
     }
+
+    private boolean giveCurrentTurnActorId() {
+        System.out.println("giveCurrentTurnActorId()");
+        int i = 0;
+        DataOutputStream dos = null;
+        DataInputStream dis = null;
+        Socket socket = null;
+        try {
+            socket = new Socket(site, Integer.parseInt(port));
+            dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dos.writeInt(ClientRequestCode.GIVECURRENTACTORID);
+            dos.flush();
+            dos.writeInt(clientHandlerId);
+            dos.flush();
+            dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            i = (Integer) dis.readInt();
+            if (i == 0){
+                System.out.println("waiting for another player Game and activeness has not inited yet");
+            } else {
+                currentTurnActorId = i;
+                return true;
+            }
+        } catch (IOException ex){
+            ex.printStackTrace();
+        } finally {
+            try {
+                dos.close();
+                dis.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("giveCurrentTurnActorId() end");
+        return false;
+    }
+
 
     void giveString() {
         System.out.println("giveString()");
@@ -229,7 +267,7 @@ public class Client {
         }
     }
 
-    public Boolean getActiveness() {
+    void getActiveness() {
         Boolean activeness = null;
         Thread t = new Thread(new Runnable() {
             @Override
@@ -251,7 +289,32 @@ public class Client {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        return activeness;
     }
+
+    void getCurrentTurnActorId() {//CurrentTurnActorId is clienthandlerid of client who is able to make turn
+        int currentTurnActorId = 0;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.out.println("try to getActiveness...");
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(giveCurrentTurnActorId()){return;}
+                }
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

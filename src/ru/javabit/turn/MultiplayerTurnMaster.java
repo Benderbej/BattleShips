@@ -18,6 +18,7 @@ public class MultiplayerTurnMaster extends TurnMaster {
     private final ArrayList<Integer> clientsIdsList;
     private HashMap<Integer, Boolean> playerActiveness;//clientIds->true if active
     private HashMap<Integer, FieldCell> remotePlayersTurns;//field cells chosen by remote players (0 -attacker 11-defender)
+    private int currentTurnClientHandlerId;
 
     public MultiplayerTurnMaster(ArrayList<Integer> clientsIdsList, HashMap<Integer, Boolean> playerActiveness) {
         super();
@@ -50,10 +51,8 @@ public class MultiplayerTurnMaster extends TurnMaster {
                 }
 
                 actor = actorIterator.next();
-                Thread thread = new Thread(new ServeClient(actor));
-                thread.start();
+                currentTurnClientHandlerId = actor.getTurnActorId();
                 makeTurn(actor);
-                thread.interrupt();
 
             } else {
                 i--;
@@ -92,30 +91,14 @@ public class MultiplayerTurnMaster extends TurnMaster {
         return false;
     }
 
-    private class ServeClient implements Runnable {
-
-        ServeClient(TurnActor actor){
-
-        }
-
-        @Override
-        public void run() {
-
-        }
-    }
-
     public void setRemotePlayerTurn(Integer clientHandlerId, FieldCell fieldCell){//если в remotePlayersTurns уже есть что-то то запрос просто игнорится
         if(remotePlayersTurns.get(clientHandlerId) == null){
             remotePlayersTurns.put(clientHandlerId, fieldCell);
         }
-
-
-
-
-
-
     }
 
-
+    public int getCurrentTurnClientHandlerId() {
+        return currentTurnClientHandlerId;
+    }
 
 }
