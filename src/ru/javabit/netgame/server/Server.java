@@ -129,7 +129,39 @@ public class Server {
         System.out.println("giveGameField() end");
     }
 
-    private Game getGameByHandlerId() {//TODO jut one game now
+    private void giveActiveness(Socket socket, DataInputStream dataInputStream) {
+        System.out.println("giveActiveness()");
+        try {
+            int clientHandlerId = dataInputStream.readInt();
+            System.out.println("clientHandlerId=" + clientHandlerId);
+
+            Boolean activeness= null;
+            if(gameInRoomInited(roomList.get(0))) {
+
+                DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                activeness = getGameByHandlerId().getPlayerActiveness(clientHandlerId);
+                if(activeness == null){
+                    System.out.println("activeness IS NULL!");
+                }
+                if(getGameByHandlerId() == null){
+                    System.out.println("game IS NULL!");
+                }
+                dos.writeBoolean(activeness);
+                dos.flush();
+                dos.close();
+            } else {//TODO может лишняя проверка така как gamefiald уже проверялся а он раньше - возможно стоит убрать
+                ObjectOutputStream dos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                dos.writeObject(null);
+                dos.flush();
+                dos.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        System.out.println("giveActiveness() end");
+    }
+
+    private MultiplayerGame getGameByHandlerId() {//TODO jut one game now
         return roomList.get(0).getMultiplayerGame();
     }
 
@@ -200,6 +232,10 @@ public class Server {
             case ClientRequestCode.GIVEGAMEFIELD :
                 System.out.println("clientNeed GameField");
                 giveGameField(socket, dataInputStream);//TODO gameField
+                break;
+            case ClientRequestCode.GIVEACTIVENESS :
+                System.out.println("clientNeed Activeness");
+                giveActiveness(socket, dataInputStream);//TODO gameField
                 break;
         }
     }

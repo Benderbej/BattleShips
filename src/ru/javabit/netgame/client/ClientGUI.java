@@ -29,6 +29,7 @@ public class ClientGUI extends JFrame {
         clientInit();
 
 
+
 //        this.fieldCells = fieldCells;
 //        this.panel = panel;
 //        listen = new Thread(new ListenersInit());
@@ -43,8 +44,11 @@ public class ClientGUI extends JFrame {
         client = new Client();
         client.meet();
         client.getGameField();
-//        gameFieldRenderer = new GameFieldSwingRenderer(client.gameField);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //gameFieldRenderer.renderGameField();
+        client.getActiveness();//active-passive atacker defender - needs to render correctly where your field or enemy
+
+        System.out.println(" client.getGameField();");
+        gameFieldRenderer = new GameFieldSwingRenderer(client.gameField, client.activeness);
+        gameFieldRenderer.renderGameField();
 
 
         //client.giveString();

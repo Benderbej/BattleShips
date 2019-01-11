@@ -13,12 +13,14 @@ public class MultiplayerHumanControl extends HumanControl {
 
     private HashMap<Integer, FieldCell> remotePlayersTurns;
     private int clientHandlerId;
+    private boolean activeness;
 
 
-    public MultiplayerHumanControl(FieldCell[][] fieldCells, HashMap<Integer, FieldCell> remotePlayersTurns, int clientHandlerId) {
+    public MultiplayerHumanControl(FieldCell[][] fieldCells, HashMap<Integer, FieldCell> remotePlayersTurns, int clientHandlerId, Boolean activeness) {
         super(fieldCells);
         this.remotePlayersTurns = remotePlayersTurns;
         this.clientHandlerId = clientHandlerId;
+        this.activeness = activeness;
     }
 
     protected void chooseCellToAttack() {

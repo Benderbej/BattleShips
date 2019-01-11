@@ -12,6 +12,7 @@ import ru.javabit.turn.TurnMaster;
 import ru.javabit.view.GameFieldRenderable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MultiplayerGame implements Game {
 
@@ -23,6 +24,7 @@ public class MultiplayerGame implements Game {
     private MultiplayerTurnMaster turnMaster;
     VictoryTrigger victoryTrigger;
     ArrayList<Integer> clientsIdsList;
+    private HashMap<Integer, Boolean> playerActiveness;//clientIds->true if active
 
     public MultiplayerGame(ArrayList<Integer> clientsIdsList){
         this.clientsIdsList = clientsIdsList;
@@ -37,16 +39,27 @@ public class MultiplayerGame implements Game {
         fleet2 = new Fleet();
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
+        setPlayerActiveness();
     }
 
     @Override
     public void startGame() throws InterruptedException {
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
-        turnMaster = new MultiplayerTurnMaster(clientsIdsList);
+        turnMaster = new MultiplayerTurnMaster(clientsIdsList, playerActiveness);
         //turnMaster.initComputerVsComputer(gameField, "human", "computer");
         turnMaster.initHumanVsHuman(gameField, "human", "computer");
         turnMaster.setVictoryTrigger(victoryTrigger);
         new Thread(turnMaster).start();
+    }
+
+    private void setPlayerActiveness(){
+        playerActiveness = new HashMap<Integer, Boolean>();
+        playerActiveness.put(clientsIdsList.get(0), true);
+        playerActiveness.put(clientsIdsList.get(1), false);
+    }
+
+    public Boolean getPlayerActiveness(int clientHandlerId){
+        return playerActiveness.get(clientHandlerId);
     }
 
     @Override

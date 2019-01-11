@@ -27,22 +27,46 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     private JPanel pl2Panel;
     private boolean renderInit;
 
+    private Boolean isActivePlayer = true;//always true in singleplayer, false in multiplayer, means - second player, defender(true-first player,attacker)
 
     public GameFieldSwingRenderer(GameField gameField) {
         this.gameField = gameField;
         jFrameInit();
     }
 
+    public GameFieldSwingRenderer(GameField gameField, Boolean isActivePlayer) {
+        this.gameField = gameField;
+        this.isActivePlayer = isActivePlayer;
+        jFrameInit();
+    }
+
+    private GameFieldGrid getPlayerFieldGrid(){
+        if(isActivePlayer) {
+            return gameField.getPlayerFieldGrid();
+        } else {
+            return gameField.getEnemyFieldGrid();
+        }
+    }
+
+    private GameFieldGrid getEnemyFieldGrid(){
+        if(isActivePlayer) {
+            return gameField.getEnemyFieldGrid();
+        } else {
+            return gameField.getPlayerFieldGrid();
+        }
+    }
+
+
     public void initAddCells() {
         System.out.println("initRenderGameField()");
-        for (FieldCell[] arr : gameField.getPlayerFieldGrid().getCellsArr()) {
+        for (FieldCell[] arr : getPlayerFieldGrid().getCellsArr()) {
             for(FieldCell cell : arr){
                 JButton jButton = new JButton(cell.getSkin());
                 pl1Panel.add(jButton);
                 jButton.setEnabled(false);
             }
         }
-        for (FieldCell[] arr : gameField.getEnemyFieldGrid().getCellsArr()) {
+        for (FieldCell[] arr : getEnemyFieldGrid().getCellsArr()) {
             for(FieldCell cell : arr){
                 JButton jButton = new JButton(cell.getSkin());
                 pl2Panel.add(jButton);
@@ -53,14 +77,14 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     }
 
     public void updateCellsData() {
-        renderGrid(gameField.getPlayerFieldGrid(), pl1Panel);
-        renderHiddenGrid(gameField.getEnemyFieldGrid(), pl2Panel);
+        renderGrid(getPlayerFieldGrid(), pl1Panel);
+        renderHiddenGrid(getEnemyFieldGrid(), pl2Panel);
     }
 
 
     public void showEnemyPositions(){
         int i=0; int j=0;
-        renderGrid(gameField.getEnemyFieldGrid(), pl2Panel);
+        renderGrid(getEnemyFieldGrid(), pl2Panel);
     }
 
     private void renderGrid(GameFieldGrid grid, JPanel panel){

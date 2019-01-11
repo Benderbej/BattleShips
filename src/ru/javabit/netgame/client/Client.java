@@ -23,6 +23,7 @@ public class Client {
     String port;
     int clientHandlerId = 33333333;
     GameField gameField;
+    Boolean activeness;
 
     Client(){
         site = "localhost";
@@ -89,7 +90,6 @@ public class Client {
 
     boolean giveGameField() {
         System.out.println("giveGameField()");
-        GameField g = null;
         DataOutputStream dos = null;
         ObjectInputStream ois = null;
         Socket socket = null;
@@ -119,6 +119,42 @@ public class Client {
             try {
                 dos.close();
                 ois.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("giveGameField() end");
+        return false;
+    }
+
+    boolean giveActiveness() {
+        System.out.println("giveActiveness()");
+        Boolean a = null;
+        DataOutputStream dos = null;
+        DataInputStream dis = null;
+        Socket socket = null;
+        try {
+            socket = new Socket(site, Integer.parseInt(port));
+            dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dos.writeInt(ClientRequestCode.GIVEACTIVENESS);
+            dos.flush();
+            dos.writeInt(clientHandlerId);
+            dos.flush();
+            dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            a = (Boolean) dis.readBoolean();
+            if (a == null){
+                System.out.println("waiting for another player Game and activeness has not inited yet");
+            } else {
+                activeness = a;
+                return true;
+            }
+        } catch (IOException ex){
+            ex.printStackTrace();
+        } finally {
+            try {
+                dos.close();
+                dis.close();
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -186,5 +222,36 @@ public class Client {
             }
         });
         t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Boolean getActiveness() {
+        Boolean activeness = null;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.out.println("try to getActiveness...");
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(giveActiveness()){return;}
+                }
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return activeness;
     }
 }

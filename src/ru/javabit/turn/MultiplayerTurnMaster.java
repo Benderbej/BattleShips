@@ -16,11 +16,13 @@ public class MultiplayerTurnMaster extends TurnMaster {
     TurnControlled humanAI;
     TurnControlled human2AI;
     private final ArrayList<Integer> clientsIdsList;
+    private HashMap<Integer, Boolean> playerActiveness;//clientIds->true if active
     private HashMap<Integer, FieldCell> remotePlayersTurns;//field cells chosen by remote players (0 -attacker 11-defender)
 
-    public MultiplayerTurnMaster(ArrayList<Integer> clientsIdsList) {
+    public MultiplayerTurnMaster(ArrayList<Integer> clientsIdsList, HashMap<Integer, Boolean> playerActiveness) {
         super();
         this.clientsIdsList = clientsIdsList;
+        this.playerActiveness = playerActiveness;
     }
 
     public void makeTurn(TurnActor turnActor) {
@@ -71,9 +73,8 @@ public class MultiplayerTurnMaster extends TurnMaster {
     }
 
     public void initHumanVsHuman(GameField gameField, String name1, String name2) {
-
-        humanAI = new MultiplayerHumanControl(gameField.getEnemyFieldGrid().getCellsArr(), remotePlayersTurns, clientsIdsList.get(0));//1 attacker
-        human2AI = new MultiplayerHumanControl(gameField.getPlayerFieldGrid().getCellsArr(), remotePlayersTurns, clientsIdsList.get(1));//2 - defender
+        humanAI = new MultiplayerHumanControl(gameField.getEnemyFieldGrid().getCellsArr(), remotePlayersTurns, clientsIdsList.get(0), playerActiveness.get(clientsIdsList.get(0)));//1 attacker
+        human2AI = new MultiplayerHumanControl(gameField.getPlayerFieldGrid().getCellsArr(), remotePlayersTurns, clientsIdsList.get(1), playerActiveness.get(clientsIdsList.get(1)));//2 - defender
         addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, clientsIdsList.get(0)));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.HUMAN, name2, human2AI, clientsIdsList.get(1)));
         this.gameField = gameField;
