@@ -23,7 +23,7 @@ public class TurnMaster implements Runnable {
     public GameField gameField;
     protected GameFieldRenderable gameFieldRenderer;
     public static VictoryTrigger victoryTrigger;
-    private ConsoleDialogue consoleDialogue;
+    protected ConsoleDialogue consoleDialogue;
 
     public TurnMaster() {
         consoleDialogue = new ConsoleDialogue();

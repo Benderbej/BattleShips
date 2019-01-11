@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /*
+
+класс связывающий механику ходов на сервере с информацией от клиентов, - ждет поступлений новой информации о ходах игроков
 преобразование статусов элементов массива fieldCells происходит тут
 
 attack - значит преобразовывать статус выбранной FielCell в fieldCells[][]
@@ -117,7 +119,7 @@ public class HumanControl implements TurnControlled {
                     //FieldCellCoordinate fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
                     //System.out.println("cellis is"+choosenCell.getFieldCellCoordinate());
                     cellIsSet = false;
-                    return;
+                    return;//выходим из ожидания когда cellIsSet оказывается true, то есть когда слушатель кнопки нам это сделает
                 }
                 i++;
                 try {

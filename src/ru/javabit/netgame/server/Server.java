@@ -9,6 +9,7 @@ import ru.javabit.netgame.client.PrimitiveObj;
 import ru.javabit.ship.Fleet;
 import ru.javabit.ship.FleetDisposer;
 import ru.javabit.ship.FleetsDisposal;
+import ru.javabit.turn.MultiplayerTurnMaster;
 import ru.javabit.view.GameFieldRenderer;
 
 import java.io.*;
@@ -172,6 +173,12 @@ public class Server {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        //remotePlayersTurns
+        //roomList.get(0).getMultiplayerGame().getTurnMaster();//TODO choose room
+        //roomList.get(0).getMultiplayerGame().
+
+
         return fc;
     }
 

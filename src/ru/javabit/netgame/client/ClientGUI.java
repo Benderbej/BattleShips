@@ -3,6 +3,8 @@ package ru.javabit.netgame.client;
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameFieldCell;
 import ru.javabit.turn.CellActionListener;
+import ru.javabit.view.GameFieldRenderable;
+import ru.javabit.view.GameFieldSwingRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,7 @@ public class ClientGUI extends JFrame {
     Client client;
     JTextArea outTextArea;
     JTextField inTextField;
+    GameFieldRenderable gameFieldRenderer;
 
     private Thread listen;
     private ArrayList<GameFieldCell> enemyFieldCellsList;
@@ -40,10 +43,26 @@ public class ClientGUI extends JFrame {
         client = new Client();
         client.meet();
         client.getGameField();
+//        gameFieldRenderer = new GameFieldSwingRenderer(client.gameField);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //gameFieldRenderer.renderGameField();
 
-        //client.giveGameField();
+
         //client.giveString();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void windowConstruct() {
         setSize(400, 500);
@@ -55,6 +74,11 @@ public class ClientGUI extends JFrame {
         add(BorderLayout.SOUTH, inTextField);
         setVisible(true);
     }
+
+
+
+
+
 
 
 /*

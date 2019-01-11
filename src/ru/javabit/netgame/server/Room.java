@@ -6,15 +6,20 @@ import ru.javabit.VictoryTrigger;
 import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.turn.TurnMaster;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Room {
 
-    private Game multiplayerGame;
+    private MultiplayerGame multiplayerGame;
     LinkedList<ClientHandler> handlersList;
+
+
     public final int roomSize;
     public static final int roomDefaultSize = 2;
     private int roomId;
+
+
 
     Room() {
         roomId = GameMath.getRandomInt(1, Integer.MAX_VALUE);
@@ -28,12 +33,22 @@ public class Room {
 
     public void initGame() {
         System.out.println("room"+roomId + " initGame() "+ handlersList.get(0).getClientServantId() + " vs "+ handlersList.get(1).getClientServantId());
-        multiplayerGame = new MultiplayerGame();
+        ArrayList<Integer> clientIds = new ArrayList<>();
+        clientIds.add(handlersList.get(0).getClientServantId());
+        clientIds.add(handlersList.get(1).getClientServantId());
+        multiplayerGame = new MultiplayerGame(getClientsIdsList());
         try {
             multiplayerGame.initGame();
         } catch (BattleShipsException e) {
             e.printStackTrace();
         }
+    }
+
+    private ArrayList<Integer> getClientsIdsList(){
+        ArrayList<Integer> clientIds = new ArrayList<>();
+        clientIds.add(handlersList.get(0).getClientServantId());
+        clientIds.add(handlersList.get(1).getClientServantId());
+        return clientIds;
     }
 
     public void startGame() {
@@ -45,7 +60,7 @@ public class Room {
         }
     }
 
-    public Game getMultiplayerGame() {
+    public MultiplayerGame getMultiplayerGame() {
         return multiplayerGame;
     }
 

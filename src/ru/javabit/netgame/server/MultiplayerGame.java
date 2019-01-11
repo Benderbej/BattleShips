@@ -11,21 +11,22 @@ import ru.javabit.turn.MultiplayerTurnMaster;
 import ru.javabit.turn.TurnMaster;
 import ru.javabit.view.GameFieldRenderable;
 
+import java.util.ArrayList;
+
 public class MultiplayerGame implements Game {
 
-    private static Game game;
-    UserDialogue dialogue;
     GameField gameField;
     FleetsDisposal fleetsDisposal;
-    GameFieldRenderable gameFieldRenderer;
-    //GameFieldRenderer gameFieldRenderer;
-    //GameFieldSwingRenderer gameFieldSwingRenderer;
     Fleet fleet1;
     Fleet fleet2;
-    MultiplayerTurnMaster turnMaster;
-    VictoryTrigger victoryTrigger;
 
-    public MultiplayerGame(){ }
+    private MultiplayerTurnMaster turnMaster;
+    VictoryTrigger victoryTrigger;
+    ArrayList<Integer> clientsIdsList;
+
+    public MultiplayerGame(ArrayList<Integer> clientsIdsList){
+        this.clientsIdsList = clientsIdsList;
+    }
 
     @Override
     public void initGame() throws BattleShipsException {
@@ -41,7 +42,7 @@ public class MultiplayerGame implements Game {
     @Override
     public void startGame() throws InterruptedException {
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
-        turnMaster = new MultiplayerTurnMaster();
+        turnMaster = new MultiplayerTurnMaster(clientsIdsList);
         //turnMaster.initComputerVsComputer(gameField, "human", "computer");
         turnMaster.initHumanVsHuman(gameField, "human", "computer");
         turnMaster.setVictoryTrigger(victoryTrigger);
@@ -63,4 +64,7 @@ public class MultiplayerGame implements Game {
 //        return fleet2;
 //    }
 
+    public MultiplayerTurnMaster getTurnMaster() {
+        return turnMaster;
+    }
 }

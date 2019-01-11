@@ -2,15 +2,23 @@ package ru.javabit.netgame.client;
 
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.FieldCellCoordinate;
+import ru.javabit.netgame.server.ClientHandler;
+import ru.javabit.turn.CellActionListener;
 import ru.javabit.turn.HumanControl;
+
+import javax.swing.*;
+import java.util.HashMap;
 
 public class MultiplayerHumanControl extends HumanControl {
 
-    public FieldCell choosenCell;
-    public boolean cellIsSet;
+    private HashMap<Integer, FieldCell> remotePlayersTurns;
+    private int clientHandlerId;
 
-    MultiplayerHumanControl(FieldCell[][] fieldCells) {
+
+    public MultiplayerHumanControl(FieldCell[][] fieldCells, HashMap<Integer, FieldCell> remotePlayersTurns, int clientHandlerId) {
         super(fieldCells);
+        this.remotePlayersTurns = remotePlayersTurns;
+        this.clientHandlerId = clientHandlerId;
     }
 
     protected void chooseCellToAttack() {
@@ -35,18 +43,25 @@ public class MultiplayerHumanControl extends HumanControl {
     }
     */
 
+    private boolean cellIsSet(){
+        if (remotePlayersTurns.get(clientHandlerId) != null) {
+            return true;
+        }
+        return false;
+    }
+
     private class ChooseCellFromClient implements Runnable {
         @Override
         public void run() {
             int i=0;
-            while(true){
-                if(cellIsSet){
-                    //FieldCellCoordinate fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
-                    //System.out.println("cellis is"+choosenCell.getFieldCellCoordinate());
-                    cellIsSet = false;
+            while(true){// вертим цикл и с периодичностью 20мс проверяем не появилось ли значение в remotePlayersTurns
+                if(cellIsSet()){
+                        choosenCell = remotePlayersTurns.get(clientHandlerId);
+                        remotePlayersTurns.put(clientHandlerId, null);
+                        //FieldCellCoordinate fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
+                        //System.out.println("cellis is"+choosenCell.getFieldCellCoordinate());
                     return;
                 }
-                i++;
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {
@@ -55,7 +70,4 @@ public class MultiplayerHumanControl extends HumanControl {
             }
         }
     }
-
-
-
 }

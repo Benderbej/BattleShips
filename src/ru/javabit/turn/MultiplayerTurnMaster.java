@@ -1,9 +1,27 @@
 package ru.javabit.turn;
 
+import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameField;
+import ru.javabit.netgame.client.MultiplayerHumanControl;
+import ru.javabit.report.ConsoleDialogue;
 import ru.javabit.view.GameFieldSwingRenderer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 public class MultiplayerTurnMaster extends TurnMaster {
+
+
+    TurnControlled humanAI;
+    TurnControlled human2AI;
+    private final ArrayList<Integer> clientsIdsList;
+    private HashMap<Integer, FieldCell> remotePlayersTurns;//field cells chosen by remote players (0 -attacker 11-defender)
+
+    public MultiplayerTurnMaster(ArrayList<Integer> clientsIdsList) {
+        super();
+        this.clientsIdsList = clientsIdsList;
+    }
 
     public void makeTurn(TurnActor turnActor) {
         if (turnActor.getTurnControlled().attack()) {
@@ -54,10 +72,10 @@ public class MultiplayerTurnMaster extends TurnMaster {
 
     public void initHumanVsHuman(GameField gameField, String name1, String name2) {
 
-        TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr());//1 attacker
-        TurnControlled human2AI = new HumanControl(gameField.getPlayerFieldGrid().getCellsArr());//2 - defender
-        addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, 1));//0 - is reserved for nowinner
-        addTurnActor(new TurnActor(TurnActorType.HUMAN, name2, human2AI, 2));
+        humanAI = new MultiplayerHumanControl(gameField.getEnemyFieldGrid().getCellsArr(), remotePlayersTurns, clientsIdsList.get(0));//1 attacker
+        human2AI = new MultiplayerHumanControl(gameField.getPlayerFieldGrid().getCellsArr(), remotePlayersTurns, clientsIdsList.get(1));//2 - defender
+        addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, clientsIdsList.get(0)));//0 - is reserved for nowinner
+        addTurnActor(new TurnActor(TurnActorType.HUMAN, name2, human2AI, clientsIdsList.get(1)));
         this.gameField = gameField;
 
 
@@ -84,4 +102,19 @@ public class MultiplayerTurnMaster extends TurnMaster {
 
         }
     }
+
+    public void setRemotePlayerTurn(Integer clientHandlerId, FieldCell fieldCell){//если в remotePlayersTurns уже есть что-то то запрос просто игнорится
+        if(remotePlayersTurns.get(clientHandlerId) == null){
+            remotePlayersTurns.put(clientHandlerId, fieldCell);
+        }
+
+
+
+
+
+
+    }
+
+
+
 }
