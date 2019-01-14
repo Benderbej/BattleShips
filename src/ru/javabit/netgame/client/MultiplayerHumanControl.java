@@ -23,6 +23,7 @@ public class MultiplayerHumanControl extends HumanControl {
         this.remotePlayersTurns = remotePlayersTurns;
         this.clientHandlerId = clientHandlerId;
         this.battleSize = battleSize;
+        fillFieldCellsList();
     }
 
     protected void chooseCellToAttack() {
@@ -62,6 +63,8 @@ public class MultiplayerHumanControl extends HumanControl {
                 break;
         }
         enemyFieldCellsList.remove(gameFieldCell);
+        //System.out.println("enemyFieldCellsList.size()="+enemyFieldCellsList.size());
+
         return success;
     }
     //***********************************

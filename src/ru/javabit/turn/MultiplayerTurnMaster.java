@@ -21,6 +21,8 @@ public class MultiplayerTurnMaster extends TurnMaster {
     private HashMap<Integer, FieldCell> remotePlayersTurns;//field cells chosen by remote players (0 -attacker 11-defender)
     private int currentTurnClientHandlerId;
 
+    private int winnerId;
+
     public MultiplayerTurnMaster(ArrayList<Integer> clientsIdsList, HashMap<Integer, Boolean> playerBattleSide) {
         super();
         this.clientsIdsList = clientsIdsList;
@@ -29,6 +31,7 @@ public class MultiplayerTurnMaster extends TurnMaster {
         remotePlayersTurns.put(clientsIdsList.get(0), null);
         remotePlayersTurns.put(clientsIdsList.get(1), null);
         currentTurnClientHandlerId = 0;
+        winnerId = 0;
     }
 
     public void makeTurn(TurnActor turnActor) {
@@ -65,7 +68,10 @@ public class MultiplayerTurnMaster extends TurnMaster {
                 actorIterator = turnActors.listIterator();
             }
             if (checkVictory()) {
-                victoryTrigger.getWinerPlayerNum();
+                //victoryTrigger.getWinerPlayerNum();
+                winnerId = actor.getTurnActorId();
+
+                //System.out.println("actor.getTurnActorId()="+actor.getTurnActorId());
                 makeReport("Выиграл " + actor.getTurnActorName());
                 //gameFieldRenderer.setGameStatus("Выиграл " + actor.getTurnActorName());
                 //gameFieldRenderer.showEnemyPositions();
@@ -74,7 +80,7 @@ public class MultiplayerTurnMaster extends TurnMaster {
             }
             i++;
 
-            r.renderGameField();
+            //r.renderGameField();
         }
         makeReport("КОНЕЦ ИГРЫ");
     }
@@ -108,6 +114,10 @@ public class MultiplayerTurnMaster extends TurnMaster {
 
     public int getCurrentTurnClientHandlerId() {
         return currentTurnClientHandlerId;
+    }
+
+    public int getWinnerId() {
+        return winnerId;
     }
 
 }

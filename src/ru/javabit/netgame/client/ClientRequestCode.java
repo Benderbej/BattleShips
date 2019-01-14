@@ -10,4 +10,5 @@ public class ClientRequestCode {
     public static final int GIVEGAMEFIELD = 3;
     public static final int GIVEBATTLESIDE = 4;
     public static final int GIVECURRENTACTORID = 5;
+    public static final int GIVEWINNERID = 6;
 }

@@ -60,8 +60,14 @@ public class TurnMaster implements Runnable {
     //private void
 
     protected boolean checkVictory() {
+
+        System.out.println("checkVictory()");
+
         boolean victory = false;
         if (victoryTrigger.isFinished()) {
+            System.out.println("*********************");
+            System.out.println("VICTORY");
+            System.out.println("*********************");
             victory = true;
         }
         return victory;

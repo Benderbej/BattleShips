@@ -25,7 +25,7 @@ public class Client {
     private GameField gameField;
     Boolean battleSide;//who attacker true is attacker
     int currentTurnActorId;
-
+    int winnerId;
     Client(){
         site = "localhost";
         port = "8082";
@@ -204,6 +204,38 @@ public class Client {
         return false;
     }
 
+    private boolean giveWinnerId() {
+        System.out.println("giveWinnerId()");
+        int i = 0;
+        DataOutputStream dos = null;
+        DataInputStream dis = null;
+        Socket socket = null;
+        try {
+            socket = new Socket(site, Integer.parseInt(port));
+            dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dos.writeInt(ClientRequestCode.GIVEWINNERID);
+            dos.flush();
+            dos.writeInt(clientHandlerId);
+            dos.flush();
+            dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            i = (Integer) dis.readInt();
+            winnerId = i;
+            return true;
+
+        } catch (IOException ex){
+            ex.printStackTrace();
+        } finally {
+            try {
+                dos.close();
+                dis.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("giveWinnerId() end");
+        return false;
+    }
 
     void giveString() {
         System.out.println("giveString()");
@@ -317,6 +349,31 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    void getWinnerId() {//CurrentTurnActorId is clienthandlerid of client who is able to make turn
+        int winnerId = 0;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.out.println("try to getCurrentTurnActorId...");
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(giveWinnerId()){return;}
+                }
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public GameField getGameField() {
         return gameField;

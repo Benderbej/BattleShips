@@ -19,7 +19,7 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     private final String ENEMYGRID =   "***========ENEMY SHIPS=========***";
     private JTextField playerGridName;
     private JTextField enemyGridName;
-    public JTextField gameStatus;
+    private JTextField gameStatus;
     private JFrame jFrame;
     private JPanel gameFieldPanel;
 
@@ -175,17 +175,7 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
         return pl2Panel;
     }
 
-    public GameFieldGrid getPlayerGrid(GameField gameField){
-        GameFieldGrid gameFieldGrid;
-        if(battleSide){gameFieldGrid=gameField.getPlayerFieldGrid();}else{gameFieldGrid=gameField.getEnemyFieldGrid();}
-        return gameFieldGrid;
-    }
 
-    public GameFieldGrid getEnemyGrid(GameField gameField){
-        GameFieldGrid gameFieldGrid;
-        if(battleSide){gameFieldGrid=gameField.getEnemyFieldGrid();}else {gameFieldGrid=gameField.getPlayerFieldGrid();}
-        return gameFieldGrid;
-    }
 
     public void setGameField(GameField gameField) {
         this.gameField = gameField;

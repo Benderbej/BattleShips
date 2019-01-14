@@ -77,10 +77,22 @@ public class ClientGUI extends JFrame {
             while(true){// вертим цикл и с периодичностью 20мс проверяем не появилось ли значение в remotePlayersTurns
 
 
+
+
                 System.out.println("BattleSide is "+client.battleSide);
 
 
                 client.getCurrentTurnActorId();//отправляем запрос не мы ли текущий пользователь, то есть не наш ли ход
+
+
+                if(client.currentTurnActorId == client.clientHandlerId){
+                    gameFieldRenderer.setGameStatus("ваш ход, выберите клетку для атаки");
+                } else {
+                    gameFieldRenderer.setGameStatus("ход противника...");
+                }
+
+
+
 
                 if(client.currentTurnActorId == client.clientHandlerId){//если ход наш то скидываем FieldCell который мы выбрали, если не выбрали еще то ждем пока listener JFrame услышит клавишу
                     System.out.println("PLAYER TURN: currentTurnActorId = clientHandlerId");
@@ -102,8 +114,21 @@ public class ClientGUI extends JFrame {
                     //remotePlayersTurns.put(clientHandlerId, choosenCell);//на серваке в обработке takeFieldCell
 
 
+                System.out.println("1");
+                client.getWinnerId();
+                if(client.winnerId!=0){
+                    if(client.winnerId == client.clientHandlerId){
+                        gameFieldRenderer.setGameStatus("поздравляем! вы победили!");
+                    } else {
+                        gameFieldRenderer.setGameStatus("победила дружба!");
+                    }
+                    System.out.println("конец игры!!");
+                    return;
+                }
+                System.out.println("2");
 
-                    //if(client.getGameOver()) {//спецзапрос к серваку на предмет конца игры - ответ 0 1 2 victory trigger
+
+                    //if(client.getGameStatus()) {//спецзапрос к серваку на предмет конца игры - ответ 0 1 2 victory trigger
                     //    return;//если 1 2 конец игры выходим из цикла
                     //}
 

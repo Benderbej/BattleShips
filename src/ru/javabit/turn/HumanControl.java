@@ -41,7 +41,7 @@ public class HumanControl implements TurnControlled {
         fillFieldCellsList();
     }
 
-    private void fillFieldCellsList() {
+    protected void fillFieldCellsList() {
         enemyFieldCellsList = new ArrayList<GameFieldCell>();
         for (FieldCell[] arr : fieldCells) {
             for(FieldCell cell : arr) {

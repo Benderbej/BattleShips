@@ -13,30 +13,47 @@ public class VictoryTrigger {
     ArrayList<Ship> shipList1;
     ArrayList<Ship> shipList2;
     private boolean isFinished = false;
+    ArrayList<Integer> clientsIdsList;
+
 
     private int winerPlayerNum = 0;//0 - no winner
 
     public VictoryTrigger(Fleet fleet1, Fleet fleet2) {
         shipCellsCount1 = fleet1.getShipListCellsCount();
         shipCellsCount2 = fleet2.getShipListCellsCount();
+        clientsIdsList = new ArrayList<Integer>();
+        clientsIdsList.add(1);
+        clientsIdsList.add(2);
+    }
+
+    public VictoryTrigger(Fleet fleet1, Fleet fleet2, ArrayList<Integer> clientsIdsList) {
+        this(fleet1, fleet2);
+        this.clientsIdsList = clientsIdsList;
     }
 
     public void minusCell(int turnActorId) {
-        switch (turnActorId){
-            case 1: shipCellsCount1--; break;
-            case 2: shipCellsCount2--; break;
-        }
+        System.err.println("shipCellsCount1="+shipCellsCount1);
+        System.err.println("shipCellsCount2="+shipCellsCount2);
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&turnActorId="+turnActorId);
+
+        if(turnActorId == clientsIdsList.get(0)){shipCellsCount1--;}
+        if(turnActorId == clientsIdsList.get(1)){shipCellsCount2--;}
+
+//        switch (turnActorId){
+//            case 1: shipCellsCount1--; break;
+//            case 2: shipCellsCount2--; break;
+//        }
         winCheck();
     }
 
     private void winCheck() {
         if(conditionCheck(shipCellsCount1)){
             isFinished = true;
-            winerPlayerNum = 1;
+            winerPlayerNum = clientsIdsList.get(0);
         }
         if(conditionCheck(shipCellsCount2)){
             isFinished = true;
-            winerPlayerNum = 2;
+            winerPlayerNum = clientsIdsList.get(1);
         }
     }//TODO interface where this should be main method if win circumstances different
 
