@@ -95,7 +95,7 @@ public class ClientGUI extends JFrame {
 
                 System.out.println("clientGUI recieveGameField");
                 client.recieveGameField();//запрашиваем обновленный gameField
-
+                gameFieldRenderer.setGameField(client.getGameField());//отдаем его рендереру
                 gameFieldRenderer.renderGameField();//обновляем поле
                     //TODO
 

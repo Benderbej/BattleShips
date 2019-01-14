@@ -8,6 +8,7 @@ public class GameField implements Serializable {
     private int rowNum;
     private Party player;
     private Party enemy;
+    private Boolean battleSide;//true if player TODO HERE getPlayerFieldGrid getEnemyFieldGrid
 
     public GameField(int rowNum, int columnNum, String playerName, String enemyName) {
         player = new Party(playerName, rowNum, columnNum);
@@ -17,10 +18,12 @@ public class GameField implements Serializable {
     }
 
     public GameFieldGrid getPlayerFieldGrid() {
+
         return player.getGrid();
     }
 
     public GameFieldGrid getEnemyFieldGrid() {
+
         return enemy.getGrid();
     }
 

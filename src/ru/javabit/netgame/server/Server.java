@@ -26,6 +26,7 @@ public class Server {
     private ArrayList<ClientHandler> freeClients;
     ServerSocket serverSocket;
     HashMap<Integer, ClientHandler> clientHandlerMap;
+    Boolean battleSide;//who attacker true is attacker
 
     public static void main(String[] args) throws IOException {
         server = Server.getInstance();

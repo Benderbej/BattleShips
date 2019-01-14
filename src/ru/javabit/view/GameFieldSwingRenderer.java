@@ -27,6 +27,8 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     private JPanel pl2Panel;
     private boolean renderInit;
 
+    private Boolean battleSide = true;//always true in singleplayer, false in multiplayer, means - second player, defender(true-first player,attacker)
+
     private Boolean isActivePlayer = true;//always true in singleplayer, false in multiplayer, means - second player, defender(true-first player,attacker)
 
     public GameFieldSwingRenderer(GameField gameField) {
@@ -34,14 +36,14 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
         jFrameInit();
     }
 
-    public GameFieldSwingRenderer(GameField gameField, Boolean isActivePlayer) {
+    public GameFieldSwingRenderer(GameField gameField, Boolean battleSide) {
         this.gameField = gameField;
-        this.isActivePlayer = isActivePlayer;
+        this.battleSide = battleSide;
         jFrameInit();
     }
 
     private GameFieldGrid getPlayerFieldGrid(){
-        if(isActivePlayer) {
+        if(battleSide) {
             return gameField.getPlayerFieldGrid();
         } else {
             return gameField.getEnemyFieldGrid();
@@ -49,7 +51,7 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     }
 
     private GameFieldGrid getEnemyFieldGrid(){
-        if(isActivePlayer) {
+        if(battleSide) {
             return gameField.getEnemyFieldGrid();
         } else {
             return gameField.getPlayerFieldGrid();
@@ -166,5 +168,21 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
 
     public JPanel getPl2Panel() {
         return pl2Panel;
+    }
+
+    public GameFieldGrid getPlayerGrid(GameField gameField){
+        GameFieldGrid gameFieldGrid;
+        if(battleSide){gameFieldGrid=gameField.getPlayerFieldGrid();}else{gameFieldGrid=gameField.getEnemyFieldGrid();}
+        return gameFieldGrid;
+    }
+
+    public GameFieldGrid getEnemyGrid(GameField gameField){
+        GameFieldGrid gameFieldGrid;
+        if(battleSide){gameFieldGrid=gameField.getEnemyFieldGrid();}else {gameFieldGrid=gameField.getPlayerFieldGrid();}
+        return gameFieldGrid;
+    }
+
+    public void setGameField(GameField gameField) {
+        this.gameField = gameField;
     }
 }
