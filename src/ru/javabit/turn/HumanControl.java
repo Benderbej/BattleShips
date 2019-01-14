@@ -19,8 +19,8 @@ attack - значит преобразовывать статус выбранн
  */
 
 public class HumanControl implements TurnControlled {
-    private ArrayList<GameFieldCell> enemyFieldCellsList;
-    private FieldCell[][] fieldCells;//enemy's gamefield
+    protected ArrayList<GameFieldCell> enemyFieldCellsList;
+    protected FieldCell[][] fieldCells;//enemy's gamefield
     private GameField gameField;
     private JPanel panel;
     private Thread listen;

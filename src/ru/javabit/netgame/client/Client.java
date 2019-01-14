@@ -22,8 +22,8 @@ public class Client {
     String site;
     String port;
     int clientHandlerId = 33333333;
-    GameField gameField;
-    Boolean activeness;
+    private GameField gameField;
+    Boolean battleSide;//who attacker true is attacker
     int currentTurnActorId;
 
     Client(){
@@ -63,20 +63,20 @@ public class Client {
 
     boolean takeFieldCell(FieldCell fieldCell) {
         boolean result= false;
-        System.out.println("giveGameField()");
-        FieldCell fc = null;
+        System.out.println("takeFieldCell()");
         DataOutputStream dos = null;
         ObjectOutputStream oos = null;
         Socket socket = null;
         try {
             socket = new Socket(site, Integer.parseInt(port));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dos.writeInt(ClientRequestCode.GIVEGAMEFIELD);
+            dos.writeInt(ClientRequestCode.TAKEFIELDCELL);
             dos.flush();
             dos.writeInt(clientHandlerId);
             dos.flush();
             oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            oos.writeObject(fc);
+            oos.writeObject(fieldCell);
+            oos.flush();
             result = true;
         } catch (IOException ex){
             ex.printStackTrace();
@@ -111,7 +111,7 @@ public class Client {
                 e.printStackTrace();
             }
             if (gameField == null){
-                System.out.println("waiting for another player Game an Gamefield has not inited yet");
+                System.out.println("gameField = null)");
             } else {
                 GameFieldRenderer gameFieldRenderer = new GameFieldRenderer(gameField);
                 gameFieldRenderer.renderGameField();
@@ -132,25 +132,25 @@ public class Client {
         return false;
     }
 
-    boolean giveActiveness() {
-        System.out.println("giveActiveness()");
-        Boolean a = null;
+    boolean giveBattleSide() {
+        System.out.println("giveBattleSide()");
+        Boolean b = null;
         DataOutputStream dos = null;
         DataInputStream dis = null;
         Socket socket = null;
         try {
             socket = new Socket(site, Integer.parseInt(port));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dos.writeInt(ClientRequestCode.GIVEACTIVENESS);
+            dos.writeInt(ClientRequestCode.GIVEBATTLESIDE);
             dos.flush();
             dos.writeInt(clientHandlerId);
             dos.flush();
             dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            a = (Boolean) dis.readBoolean();
-            if (a == null){
-                System.out.println("waiting for another player Game and activeness has not inited yet");
+            b = (Boolean) dis.readBoolean();
+            if (b == null){
+                System.out.println("battleSide = null");
             } else {
-                activeness = a;
+                battleSide = b;
                 return true;
             }
         } catch (IOException ex){
@@ -164,7 +164,7 @@ public class Client {
                 e.printStackTrace();
             }
         }
-        System.out.println("giveActiveness() end");
+        System.out.println("giveBattleSide() end");
         return false;
     }
 
@@ -184,7 +184,7 @@ public class Client {
             dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             i = (Integer) dis.readInt();
             if (i == 0){
-                System.out.println("waiting for another player Game and activeness has not inited yet");
+                System.out.println("CurrentTurnActorId = 0");
             } else {
                 currentTurnActorId = i;
                 return true;
@@ -246,7 +246,7 @@ public class Client {
 
     }
 
-    void getGameField() {
+    void recieveGameField() {
         GameField gameField = null;
         Thread t = new Thread(new Runnable() {
             @Override
@@ -270,19 +270,19 @@ public class Client {
         }
     }
 
-    void getActiveness() {
-        Boolean activeness = null;
+    void recieveBattleSide() {
+        Boolean battleSide = null;
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    System.out.println("try to getActiveness...");
+                    System.out.println("try to getBattleSide...");
                     try {
                         sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(giveActiveness()){return;}
+                    if(giveBattleSide()){return;}
                 }
             }
         });
@@ -300,7 +300,7 @@ public class Client {
             @Override
             public void run() {
                 while (true) {
-                    System.out.println("try to getActiveness...");
+                    System.out.println("try to getCurrentTurnActorId...");
                     try {
                         sleep(100);
                     } catch (InterruptedException e) {
@@ -318,6 +318,16 @@ public class Client {
         }
     }
 
+    public GameField getGameField() {
+        return gameField;
+    }
 
+    FieldCell[][] getAllyCellsArr(){
+        if(battleSide){return getGameField().getPlayerFieldGrid().getCellsArr();}else{return getGameField().getEnemyFieldGrid().getCellsArr();}
+    }
+
+    FieldCell[][] getEnemyCellsArr(){
+        if(battleSide){return getGameField().getEnemyFieldGrid().getCellsArr();}else{return getGameField().getPlayerFieldGrid().getCellsArr();}
+    }
 
 }

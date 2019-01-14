@@ -12,7 +12,6 @@ public class CellActionListener implements ActionListener {
     private FieldCell cell;
     private HumanControl humanControl;
 
-
     CellActionListener(HumanControl humanControl, FieldCell cell){
         this.humanControl = humanControl;
         this.cell = cell;

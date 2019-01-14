@@ -129,28 +129,28 @@ public class Server {
         System.out.println("giveGameField() end");
     }
 
-    private void giveActiveness(Socket socket, DataInputStream dataInputStream) {
-        System.out.println("giveActiveness()");
+    private void giveBattleSide(Socket socket, DataInputStream dataInputStream) {
+        System.out.println("giveBattleSide()");
         try {
             int clientHandlerId = dataInputStream.readInt();
             System.out.println("clientHandlerId=" + clientHandlerId);
 
-            Boolean activeness= null;
+            Boolean battleSide= null;
             if(gameInRoomInited(roomList.get(0))) {
 
                 DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                activeness = getGameByHandlerId().getPlayerActiveness(clientHandlerId);
-                if(activeness == null){
-                    System.out.println("activeness IS NULL!");
+                battleSide = getGameByHandlerId().getBattleSide(clientHandlerId);
+                if(battleSide == null){
+                    System.out.println("battleSide IS NULL!");
                 }
-                dos.writeBoolean(activeness);
+                dos.writeBoolean(battleSide);
                 dos.flush();
                 dos.close();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        System.out.println("giveActiveness() end");
+        System.out.println("giveBattleSide() end");
     }
 
     private void giveCurrentActorId(Socket socket, DataInputStream dataInputStream) {
@@ -161,12 +161,19 @@ public class Server {
             int currentActorId = 0;
             if(gameInRoomInited(roomList.get(0))) {
                 DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                currentActorId = getGameByHandlerId().getTurnMaster().getCurrentTurnClientHandlerId();
-                if(currentActorId == 0){
-                    dos.writeInt(0);
-                    dos.flush();
-                    dos.close();
-                    System.out.println("currentActorId IS NULL!");
+
+                if(getGameByHandlerId().getTurnMaster() != null) {
+
+                    currentActorId = getGameByHandlerId().getTurnMaster().getCurrentTurnClientHandlerId();
+                    System.out.println("currentActorId=" + currentActorId);
+                    if (currentActorId == 0) {
+                        dos.writeInt(0);
+                        dos.flush();
+                        dos.close();
+                        System.out.println("currentActorId IS NULL!");
+                    }
+                } else {
+                    System.out.println("TurnMaster = null");
                 }
                 dos.writeInt(currentActorId);
                 dos.flush();
@@ -205,16 +212,23 @@ public class Server {
         }
     }
 
-    private FieldCell takeFieldCell(Socket socket) {
+    private FieldCell takeFieldCell(Socket socket, DataInputStream dataInputStream) {
+        System.out.println("************");
         System.out.println("takeFieldCell()");
+        System.out.println("************");
         FieldCell fc = null;
         try {
-            DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            int clientHandlerId = dis.readInt();
-            System.out.println("clientHandlerId" + clientHandlerId);
-            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            int clientHandlerId = dataInputStream.readInt();
+            System.out.println("clientHandlerId=" + clientHandlerId);
+            //dataInputStream.close();
+            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));//!!!! создаю еще один инпут стрим чтобы прочесть объект
             try {
                 fc = (FieldCell) ois.readObject();
+                System.out.println("***************************");
+                System.out.println("FieldCell is taken x="+fc.getFieldCellCoordinate().getX()+" y="+fc.getFieldCellCoordinate().getY());
+                getGameByHandlerId().getTurnMaster().setRemotePlayerTurn(clientHandlerId, fc);//на серваке в обработке takeFieldCell
+                //remotePlayersTurns.put(clientHandlerId, choosenCell);//на серваке в обработке takeFieldCell
+
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -234,7 +248,7 @@ public class Server {
     private void processRequest(int code, Socket socket, DataInputStream dataInputStream) {
         switch (code) {
             case ClientRequestCode.MEET :
-                System.out.println("client need id");
+                System.out.println("client need id to set");
                 meet(socket);
                 break;
             case ClientRequestCode.GIVESTRING :
@@ -244,18 +258,18 @@ public class Server {
                 break;
             case ClientRequestCode.TAKEFIELDCELL :
                 System.out.println("client take GameFieldCell");
-                takeFieldCell(socket);
+                takeFieldCell(socket, dataInputStream);
                 break;
             case ClientRequestCode.GIVEGAMEFIELD :
                 System.out.println("clientNeed GameField");
                 giveGameField(socket, dataInputStream);//TODO gameField
                 break;
-            case ClientRequestCode.GIVEACTIVENESS :
+            case ClientRequestCode.GIVEBATTLESIDE :
                 System.out.println("clientNeed Activeness");
-                giveActiveness(socket, dataInputStream);
+                giveBattleSide(socket, dataInputStream);
                 break;
             case ClientRequestCode.GIVECURRENTACTORID :
-                System.out.println("clientNeed Activeness");
+                System.out.println("clientNeed CurrentTurnPlayerId");
                 giveCurrentActorId(socket, dataInputStream);
                 break;
         }
@@ -294,7 +308,7 @@ public class Server {
                 System.out.println("h.getClientServantId()="+h.getClientServantId());
             }
             room.initGame();
+            room.startGame();
         }
     }
-
 }

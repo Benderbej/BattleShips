@@ -24,7 +24,7 @@ public class MultiplayerGame implements Game {
     private MultiplayerTurnMaster turnMaster;
     VictoryTrigger victoryTrigger;
     ArrayList<Integer> clientsIdsList;
-    private HashMap<Integer, Boolean> playerActiveness;//clientIds->true if active
+    private HashMap<Integer, Boolean> playerBattleSide;//clientIds->true if active
 
     public MultiplayerGame(ArrayList<Integer> clientsIdsList){
         this.clientsIdsList = clientsIdsList;
@@ -45,7 +45,7 @@ public class MultiplayerGame implements Game {
     @Override
     public void startGame() throws InterruptedException {
         victoryTrigger = new VictoryTrigger(fleet1, fleet2);
-        turnMaster = new MultiplayerTurnMaster(clientsIdsList, playerActiveness);
+        turnMaster = new MultiplayerTurnMaster(clientsIdsList, playerBattleSide);
         //turnMaster.initComputerVsComputer(gameField, "human", "computer");
         turnMaster.initHumanVsHuman(gameField, "human", "computer");
         turnMaster.setVictoryTrigger(victoryTrigger);
@@ -53,13 +53,13 @@ public class MultiplayerGame implements Game {
     }
 
     private void setPlayerActiveness(){
-        playerActiveness = new HashMap<Integer, Boolean>();
-        playerActiveness.put(clientsIdsList.get(0), true);
-        playerActiveness.put(clientsIdsList.get(1), false);
+        playerBattleSide = new HashMap<Integer, Boolean>();
+        playerBattleSide.put(clientsIdsList.get(0), true);
+        playerBattleSide.put(clientsIdsList.get(1), false);
     }
 
-    public Boolean getPlayerActiveness(int clientHandlerId){
-        return playerActiveness.get(clientHandlerId);
+    public Boolean getBattleSide(int clientHandlerId){
+        return playerBattleSide.get(clientHandlerId);
     }
 
     @Override
