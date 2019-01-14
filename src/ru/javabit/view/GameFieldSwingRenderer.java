@@ -30,6 +30,7 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     private Boolean battleSide = true;//always true in singleplayer, false in multiplayer, means - second player, defender(true-first player,attacker)
 
     private Boolean isActivePlayer = true;//always true in singleplayer, false in multiplayer, means - second player, defender(true-first player,attacker)
+    private Boolean isRenderedOnce = false;
 
     public GameFieldSwingRenderer(GameField gameField) {
         this.gameField = gameField;
@@ -39,6 +40,7 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     public GameFieldSwingRenderer(GameField gameField, Boolean battleSide) {
         this.gameField = gameField;
         this.battleSide = battleSide;
+        isRenderedOnce = false;
         jFrameInit();
     }
 
@@ -121,7 +123,10 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
         if(renderInit == true){
             updateCellsData();
         }
-        jFrame.setVisible(true);
+        if(isRenderedOnce == false) {
+            jFrame.setVisible(true);
+            isRenderedOnce = true;
+        }
     }
 
     private void componentsInit(){

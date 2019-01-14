@@ -110,7 +110,7 @@ public class ClientGUI extends JFrame {
 
 
                 try {
-                    Thread.sleep(100);//чтобы сервер не затрахать до смерти
+                    Thread.sleep(10);//чтобы сервер не затрахать до смерти
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
