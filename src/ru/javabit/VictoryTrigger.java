@@ -14,11 +14,9 @@ public class VictoryTrigger {
     ArrayList<Ship> shipList2;
     private boolean isFinished = false;
     ArrayList<Integer> clientsIdsList;
-
-
     private int winerPlayerNum = 0;//0 - no winner
 
-    public VictoryTrigger(Fleet fleet1, Fleet fleet2) {
+    public VictoryTrigger(Fleet fleet1, Fleet fleet2) {//SingleGame
         shipCellsCount1 = fleet1.getShipListCellsCount();
         shipCellsCount2 = fleet2.getShipListCellsCount();
         clientsIdsList = new ArrayList<Integer>();
@@ -32,17 +30,8 @@ public class VictoryTrigger {
     }
 
     public void minusCell(int turnActorId) {
-        System.err.println("shipCellsCount1="+shipCellsCount1);
-        System.err.println("shipCellsCount2="+shipCellsCount2);
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&turnActorId="+turnActorId);
-
         if(turnActorId == clientsIdsList.get(0)){shipCellsCount1--;}
         if(turnActorId == clientsIdsList.get(1)){shipCellsCount2--;}
-
-//        switch (turnActorId){
-//            case 1: shipCellsCount1--; break;
-//            case 2: shipCellsCount2--; break;
-//        }
         winCheck();
     }
 

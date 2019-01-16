@@ -22,7 +22,6 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     private JTextField gameStatus;
     private JFrame jFrame;
     private JPanel gameFieldPanel;
-
     private JPanel pl1Panel;
     private JPanel pl2Panel;
     private boolean renderInit;
@@ -59,7 +58,6 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
             return gameField.getPlayerFieldGrid();
         }
     }
-
 
     public void initAddCells() {
         System.out.println("initRenderGameField()");
@@ -174,8 +172,6 @@ public class GameFieldSwingRenderer implements GameFieldRenderable {
     public JPanel getPl2Panel() {
         return pl2Panel;
     }
-
-
 
     public void setGameField(GameField gameField) {
         this.gameField = gameField;

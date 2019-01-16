@@ -68,9 +68,7 @@ public class MultiplayerTurnMaster extends TurnMaster {
                 actorIterator = turnActors.listIterator();
             }
             if (checkVictory()) {
-                //victoryTrigger.getWinerPlayerNum();
                 winnerId = actor.getTurnActorId();
-
                 //System.out.println("actor.getTurnActorId()="+actor.getTurnActorId());
                 makeReport("Выиграл " + actor.getTurnActorName());
                 //gameFieldRenderer.setGameStatus("Выиграл " + actor.getTurnActorName());
@@ -119,5 +117,4 @@ public class MultiplayerTurnMaster extends TurnMaster {
     public int getWinnerId() {
         return winnerId;
     }
-
 }

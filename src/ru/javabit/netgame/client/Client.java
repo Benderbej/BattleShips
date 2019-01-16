@@ -70,10 +70,14 @@ public class Client {
         try {
             socket = new Socket(site, Integer.parseInt(port));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dos.writeInt(ClientRequestCode.TAKEFIELDCELL);
-            dos.flush();
-            dos.writeInt(clientHandlerId);
-            dos.flush();
+
+            sendRequestCode(dos, ClientRequestCode.TAKEFIELDCELL);
+            //dos.writeInt(ClientRequestCode.TAKEFIELDCELL);
+            //dos.flush();
+            //dos.writeInt(clientHandlerId);
+            //dos.flush();
+
+
             oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             oos.writeObject(fieldCell);
             oos.flush();
@@ -100,10 +104,13 @@ public class Client {
         try {
             socket = new Socket(site, Integer.parseInt(port));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dos.writeInt(ClientRequestCode.GIVEGAMEFIELD);
-            dos.flush();
-            dos.writeInt(clientHandlerId);
-            dos.flush();
+
+            sendRequestCode(dos, ClientRequestCode.GIVEGAMEFIELD);
+            //dos.writeInt(ClientRequestCode.GIVEGAMEFIELD);
+            //dos.flush();
+            //dos.writeInt(clientHandlerId);
+            //dos.flush();
+
             ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
             try {
                 gameField = (GameField) ois.readObject();
@@ -139,12 +146,15 @@ public class Client {
         DataInputStream dis = null;
         Socket socket = null;
         try {
+
+
             socket = new Socket(site, Integer.parseInt(port));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dos.writeInt(ClientRequestCode.GIVEBATTLESIDE);
-            dos.flush();
-            dos.writeInt(clientHandlerId);
-            dos.flush();
+            sendRequestCode(dos, ClientRequestCode.GIVEBATTLESIDE);
+            //dos.writeInt(ClientRequestCode.GIVEBATTLESIDE);
+            //dos.flush();
+            //dos.writeInt(clientHandlerId);
+            //dos.flush();
             dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             b = (Boolean) dis.readBoolean();
             if (b == null){
@@ -177,10 +187,13 @@ public class Client {
         try {
             socket = new Socket(site, Integer.parseInt(port));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dos.writeInt(ClientRequestCode.GIVECURRENTACTORID);
-            dos.flush();
-            dos.writeInt(clientHandlerId);
-            dos.flush();
+
+            sendRequestCode(dos, ClientRequestCode.GIVECURRENTACTORID);
+            //dos.writeInt(ClientRequestCode.GIVECURRENTACTORID);
+            //dos.flush();
+            //dos.writeInt(clientHandlerId);
+            //dos.flush();
+
             dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             i = (Integer) dis.readInt();
             if (i == 0){
@@ -213,10 +226,14 @@ public class Client {
         try {
             socket = new Socket(site, Integer.parseInt(port));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dos.writeInt(ClientRequestCode.GIVEWINNERID);
-            dos.flush();
-            dos.writeInt(clientHandlerId);
-            dos.flush();
+
+            sendRequestCode(dos, ClientRequestCode.GIVEWINNERID);
+            //dos.writeInt(ClientRequestCode.GIVEWINNERID);
+            //dos.flush();
+            //dos.writeInt(clientHandlerId);
+            //dos.flush();
+
+
             dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             i = (Integer) dis.readInt();
             winnerId = i;
@@ -237,6 +254,7 @@ public class Client {
         return false;
     }
 
+    /*
     void giveString() {
         System.out.println("giveString()");
         DataOutputStream dos = null;
@@ -269,8 +287,55 @@ public class Client {
             }
         }
     }
+    */
 
-    private void sendRequestCode(int code) {
+    private void sendRequestCode(DataOutputStream dataOutputStream, int code) {
+        try {
+            dataOutputStream.writeInt(code);
+            dataOutputStream.flush();
+            dataOutputStream.writeInt(clientHandlerId);
+            dataOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    private Object recieveDataVar(DataInputStream dataInputStream, Class<?> cls, int code) {
+        try {
+            if (cls == Integer.class) {
+                Integer i = (Integer) dataInputStream.readInt();
+            } else if (cls == Boolean.class) {
+                Boolean i = (Boolean) dataInputStream.readBoolean();
+            }
+            return i;
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    */
+
+    private Object recieveObjectVar(ObjectInputStream objectInputStream, Class<?> cls) {
+        Object o = null;
+        try {
+            if (cls == GameField.class) {
+                o = objectInputStream.readObject();
+            } else if (cls == String.class) {
+                o = objectInputStream.readBoolean();
+            }
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
+
+//    private void bar() {
+//        foo(String.class);
+//    }
+
+    private void sendFirstRequest(int code) {
 
     }
 

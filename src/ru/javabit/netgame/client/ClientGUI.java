@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class ClientGUI extends JFrame {
 
     Client client;
-    JTextArea outTextArea;
-    JTextField inTextField;
+    //JTextArea outTextArea;
+    //JTextField inTextField;
     GameFieldSwingRenderer gameFieldRenderer;
     FieldCell choosenCell;
 
@@ -30,10 +30,7 @@ public class ClientGUI extends JFrame {
 
     ClientGUI() {
         clientInit();
-
         clientStart();
-
-
     }
 
     private void clientInit() {
@@ -41,99 +38,28 @@ public class ClientGUI extends JFrame {
         client.meet();
         client.recieveGameField();
         client.recieveBattleSide();//active-passive atacker defender - needs to render correctly where your field or enemy
-
         System.out.println(" client.getGameField();");
         gameFieldRenderer = new GameFieldSwingRenderer(client.getGameField(), client.battleSide);
         gameFieldRenderer.renderGameField();
-        ////listener
-
-        //client.giveString();
-
-
-
-
-
     }
 
-    private void clientStart(){
-
+    private void clientStart() {
         listen = new Thread(new ListenersInit());
         listen.start();
-
         Thread p = new Thread(new GameProcess());
         p.start();
-
     }
-
-
-
-
-
 
     private class GameProcess implements Runnable {
         @Override
         public void run() {
             int i=0;
             while(true){// вертим цикл и с периодичностью 20мс проверяем не появилось ли значение в remotePlayersTurns
-
-
-
-
-                System.out.println("BattleSide is "+client.battleSide);
-
-
-                client.getCurrentTurnActorId();//отправляем запрос не мы ли текущий пользователь, то есть не наш ли ход
-
-
-                if(client.currentTurnActorId == client.clientHandlerId){
-                    gameFieldRenderer.setGameStatus("ваш ход, выберите клетку для атаки");
-                } else {
-                    gameFieldRenderer.setGameStatus("ход противника...");
-                }
-
-
-
-
-                if(client.currentTurnActorId == client.clientHandlerId){//если ход наш то скидываем FieldCell который мы выбрали, если не выбрали еще то ждем пока listener JFrame услышит клавишу
-                    System.out.println("PLAYER TURN: currentTurnActorId = clientHandlerId");
-                    if(choosenCell != null) {
-                        System.out.println("CELL IS CHOOSEN!");
-                        if(client.takeFieldCell(choosenCell)){
-                            choosenCell = null;//если удалось успешно закинуть выбранную клетку на сервак, обнуляем ссылку
-                            System.out.println();
-                        }
-                    }
-                }
-
-                System.out.println("clientGUI recieveGameField");
-                client.recieveGameField();//запрашиваем обновленный gameField
-                gameFieldRenderer.setGameField(client.getGameField());//отдаем его рендереру
-                gameFieldRenderer.renderGameField();//обновляем поле
-                    //TODO
-
-                    //remotePlayersTurns.put(clientHandlerId, choosenCell);//на серваке в обработке takeFieldCell
-
-
-                System.out.println("1");
-                client.getWinnerId();
-                if(client.winnerId!=0){
-                    if(client.winnerId == client.clientHandlerId){
-                        gameFieldRenderer.setGameStatus("поздравляем! вы победили!");
-                    } else {
-                        gameFieldRenderer.setGameStatus("победила дружба!");
-                    }
-                    System.out.println("конец игры!!");
-                    return;
-                }
-                System.out.println("2");
-
-
-                    //if(client.getGameStatus()) {//спецзапрос к серваку на предмет конца игры - ответ 0 1 2 victory trigger
-                    //    return;//если 1 2 конец игры выходим из цикла
-                    //}
-
-
-
+                //System.out.println("BattleSide is "+client.battleSide);
+                updateStatus();
+                ifOurTurnMakeIt();
+                updateGameField();
+                if(isGameOver()){return;}
                 try {
                     Thread.sleep(10);//чтобы сервер не затрахать до смерти
                 } catch (InterruptedException e) {
@@ -143,11 +69,6 @@ public class ClientGUI extends JFrame {
             }
         }
     }
-
-
-
-
-
 
     private class ListenersInit implements Runnable {//listeners are in different thread
 
@@ -165,168 +86,47 @@ public class ClientGUI extends JFrame {
                 i++;
             }
         }
-
     }
 
-
-
-
-
-
-
-
-/*
-    private void windowConstruct() {
-        setSize(400, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        outTextArea = new JTextArea();
-        add(outTextArea);
-        inTextField = new JTextField();
-        add(BorderLayout.SOUTH, inTextField);
-        setVisible(true);
+    private Boolean isGameOver() {
+        client.getWinnerId();
+        if(client.winnerId!=0){
+            if(client.winnerId == client.clientHandlerId){
+                gameFieldRenderer.setGameStatus("поздравляем! вы победили!");
+            } else {
+                gameFieldRenderer.setGameStatus("победила дружба!");
+            }
+            System.out.println("конец игры!!");
+            return true;
+        }
+        return false;
     }
-*/
 
+    private void updateStatus() {
+        client.getCurrentTurnActorId();//отправляем запрос не мы ли текущий пользователь, то есть не наш ли ход
+        if(client.currentTurnActorId == client.clientHandlerId){
+            gameFieldRenderer.setGameStatus("ваш ход, выберите клетку для атаки");
+        } else {
+            gameFieldRenderer.setGameStatus("ход противника...");
+        }
+    }
 
+    private void ifOurTurnMakeIt() {
+        if(client.currentTurnActorId == client.clientHandlerId){//если ход наш то скидываем FieldCell который мы выбрали, если не выбрали еще то ждем пока listener JFrame услышит клавишу
+            if(choosenCell != null) {
+                //System.out.println("CELL IS CHOOSEN!");
+                if(client.takeFieldCell(choosenCell)){
+                    choosenCell = null;//если удалось успешно закинуть выбранную клетку на сервак, обнуляем ссылку
+                    System.out.println();
+                }
+            }
+        }
+    }
 
-
+    private void updateGameField() {
+        System.out.println("clientGUI recieveGameField");
+        client.recieveGameField();//запрашиваем обновленный gameField
+        gameFieldRenderer.setGameField(client.getGameField());//отдаем его рендереру
+        gameFieldRenderer.renderGameField();//обновляем поле
+    }
 }
-
-
-
-/*
-
-
-
-
-    private ArrayList<GameFieldCell> enemyFieldCellsList;
-    private FieldCell[][] fieldCells;//enemy's gamefield
-    private GameField gameField;
-    private JPanel panel;
-    private Thread listen;
-
-    public static FieldCell choosenCell;
-    public static boolean cellIsSet;
-
-
-    HumanControl(FieldCell[][] fieldCells, JPanel panel) {
-        this.fieldCells = fieldCells;
-        this.panel = panel;
-        listen = new Thread(new ListenersInit());
-        listen.start();
-        fillFieldCellsList();
-    }
-
-    private void fillFieldCellsList() {
-        enemyFieldCellsList = new ArrayList<GameFieldCell>();
-        for (FieldCell[] arr : fieldCells) {
-            for(FieldCell cell : arr) {
-                if(cell instanceof GameFieldCell){
-                    enemyFieldCellsList.add((GameFieldCell) cell);
-                }
-            }
-        }
-        System.out.println(enemyFieldCellsList.size());
-    }
-
-    public boolean attack() {
-        boolean success = false;
-        chooseCellToAttack();
-        if(attackCell(choosenCell.getFieldCellCoordinate())){ success = true;}
-        return success;
-    }
-
-    private void chooseCellToAttack() {
-        ChooseCellFromInput c = new ChooseCellFromInput();
-        Thread thread = new Thread(c);
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private boolean attackCell(FieldCellCoordinate coordinate) {
-        boolean success = false;
-        GameFieldCell gameFieldCell = (GameFieldCell) fieldCells[coordinate.getX()][coordinate.getY()];
-        switch (gameFieldCell.getState()){
-            case FreeWater:
-                gameFieldCell.setState(CellState.WaterAttacked);
-                success = false;
-                break;
-            case ShipPart:
-                gameFieldCell.setState(CellState.ShipDamaged);
-                success = true;
-                break;
-        }
-        enemyFieldCellsList.remove(gameFieldCell);
-        return success;
-    }
-
-    private void moveFromFieldCellsList(int x, int y){
-        //enemyFieldCellsList.get()
-    }
-
-    private class ListenersInit implements Runnable {//listeners are in different thread
-        @Override
-        public void run() {
-            int i=0; int j=0;
-            for (FieldCell[] arr : fieldCells) {
-                for (FieldCell cell : arr) {
-                    JButton jButton = (JButton) panel.getComponent((i*(fieldCells.length)+j));
-
-                    jButton.addActionListener(new CellActionListener(cell));
-                    j++;
-                }
-                j=0;
-                i++;
-            }
-        }
-    }
-
-    private class ChooseCellFromInput implements Runnable {
-
-        FieldCellCoordinate fieldCellCoordinate;
-
-        @Override
-        public void run() {
-            int i=0;
-            while(true){
-                if(cellIsSet){
-                    fieldCellCoordinate = choosenCell.getFieldCellCoordinate();
-                    //System.out.println("cellis is"+choosenCell.getFieldCellCoordinate());
-                    cellIsSet = false;
-                    return;
-                }
-                i++;
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- */
-
-
