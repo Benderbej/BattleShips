@@ -26,7 +26,6 @@ public class Server {
     private ArrayList<ClientHandler> freeClients;
     ServerSocket serverSocket;
     HashMap<Integer, ClientHandler> clientHandlerMap;
-    Boolean battleSide;//who attacker true is attacker
 
     public static void main(String[] args) throws IOException {
         server = Server.getInstance();
@@ -50,7 +49,6 @@ public class Server {
                 InputStream inputStream = socket.getInputStream();
                 DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(inputStream));
                 int code = dataInputStream.readInt();
-                //System.out.println("code="+code);
                 processRequest(code, socket, dataInputStream);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -84,26 +82,14 @@ public class Server {
     }
 
     private void giveGameField(Socket socket, DataInputStream dataInputStream) {
-        //System.out.println("giveGameField()");
         try {
             int clientHandlerId = dataInputStream.readInt();
-            //System.out.println("clientHandlerId=" + clientHandlerId);
-
-
             GameField gameField= null;
             if(gameInRoomInited(roomList.get(0))) {
-
                 ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                 gameField = getGameByHandlerId().getGameField();
-                if(gameField == null){
-                    //System.out.println("gameField IS NULL!");
-                }
-                if(getGameByHandlerId() == null){
-                    //System.out.println("game IS NULL!");
-                }
                 GameFieldRenderer gameFieldRenderer = new GameFieldRenderer(gameField);
                 gameFieldRenderer.renderGameField();
-
                 oos.writeObject(gameField);
                 oos.flush();
                 oos.close();
@@ -116,23 +102,15 @@ public class Server {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        //System.out.println("giveGameField() end");
     }
 
     private void giveBattleSide(Socket socket, DataInputStream dataInputStream) {
-        //System.out.println("giveBattleSide()");
         try {
             int clientHandlerId = dataInputStream.readInt();
-            //System.out.println("clientHandlerId=" + clientHandlerId);
-
             Boolean battleSide= null;
             if(gameInRoomInited(roomList.get(0))) {
-
                 DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                 battleSide = getGameByHandlerId().getBattleSide(clientHandlerId);
-                if(battleSide == null){
-                    //System.out.println("battleSide IS NULL!");
-                }
                 dos.writeBoolean(battleSide);
                 dos.flush();
                 dos.close();
@@ -140,30 +118,21 @@ public class Server {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        //System.out.println("giveBattleSide() end");
     }
 
     private void giveCurrentActorId(Socket socket, DataInputStream dataInputStream) {
-        //System.out.println("giveCurrentActorId()");
         try {
             int clientHandlerId = dataInputStream.readInt();
-            //System.out.println("clientHandlerId=" + clientHandlerId);
             int currentActorId = 0;
             if(gameInRoomInited(roomList.get(0))) {
                 DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-
                 if(getGameByHandlerId().getTurnMaster() != null) {
-
                     currentActorId = getGameByHandlerId().getTurnMaster().getCurrentTurnClientHandlerId();
-                    //System.out.println("currentActorId=" + currentActorId);
                     if (currentActorId == 0) {
                         dos.writeInt(0);
                         dos.flush();
                         dos.close();
-                        //System.out.println("currentActorId IS NULL!");
                     }
-                } else {
-                    //System.out.println("TurnMaster = null");
                 }
                 dos.writeInt(currentActorId);
                 dos.flush();
@@ -172,14 +141,11 @@ public class Server {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        //System.out.println("giveCurrentActorId() end");
     }
 
     private void giveWinnerId(Socket socket, DataInputStream dataInputStream) {
-        //System.out.println("giveCurrentActorId()");
         try {
             int clientHandlerId = dataInputStream.readInt();
-            //System.out.println("clientHandlerId=" + clientHandlerId);
             int winnerId = 0;
             if(gameInRoomInited(roomList.get(0))) {
                 DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -192,13 +158,10 @@ public class Server {
                 dos.writeInt(winnerId);
                 dos.flush();
                 dos.close();
-                //System.out.println("currentActorId IS NULL!");
-
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        //System.out.println("giveCurrentActorId() end");
     }
 
     private MultiplayerGame getGameByHandlerId() {//TODO jut one game now
@@ -213,13 +176,10 @@ public class Server {
     }
 
     private void giveString(Socket socket) {
-        //System.out.println("giveString()");
         try {
             DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             int clientHandlerId = dis.readInt();
-            //System.out.println("clientHandlerId" + clientHandlerId);
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            //oos.writeObject("StRRing!");
             oos.flush();
             oos.close();
 
@@ -232,15 +192,12 @@ public class Server {
         FieldCell fc = null;
         try {
             int clientHandlerId = dataInputStream.readInt();
-            //System.out.println("clientHandlerId=" + clientHandlerId);
             ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));//!!!! создаю еще один инпут стрим чтобы прочесть объект
             try {
                 fc = (FieldCell) ois.readObject();
-                System.out.println("***************************");
-                System.out.println("FieldCell is taken x="+fc.getFieldCellCoordinate().getX()+" y="+fc.getFieldCellCoordinate().getY());
+                //System.out.println("FieldCell is taken x="+fc.getFieldCellCoordinate().getX()+" y="+fc.getFieldCellCoordinate().getY());
                 getGameByHandlerId().getTurnMaster().setRemotePlayerTurn(clientHandlerId, fc);//на серваке в обработке takeFieldCell
                 //remotePlayersTurns.put(clientHandlerId, choosenCell);//на серваке в обработке takeFieldCell
-
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -248,12 +205,6 @@ public class Server {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-        //remotePlayersTurns
-        //roomList.get(0).getMultiplayerGame().getTurnMaster();//TODO choose room
-        //roomList.get(0).getMultiplayerGame().
-
-
         return fc;
     }
 

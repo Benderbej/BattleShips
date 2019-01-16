@@ -17,7 +17,6 @@ public class MultiplayerHumanControl extends HumanControl {
     private int clientHandlerId;
     private boolean battleSize;
 
-
     public MultiplayerHumanControl(FieldCell[][] fieldCells, HashMap<Integer, FieldCell> remotePlayersTurns, int clientHandlerId, Boolean battleSize) {
         super(fieldCells);
         this.remotePlayersTurns = remotePlayersTurns;
@@ -27,9 +26,7 @@ public class MultiplayerHumanControl extends HumanControl {
     }
 
     protected void chooseCellToAttack() {
-
         ChooseCellFromClient c = new ChooseCellFromClient();
-
         Thread thread = new Thread(c);
         thread.start();
         try {
@@ -39,9 +36,6 @@ public class MultiplayerHumanControl extends HumanControl {
         }
     }
 
-
-
-    //***************************
     public boolean attack() {
         boolean success = false;
         chooseCellToAttack();
@@ -64,11 +58,8 @@ public class MultiplayerHumanControl extends HumanControl {
         }
         enemyFieldCellsList.remove(gameFieldCell);
         //System.out.println("enemyFieldCellsList.size()="+enemyFieldCellsList.size());
-
         return success;
     }
-    //***********************************
-
 
     private boolean cellIsSet(){
         if (remotePlayersTurns.get(clientHandlerId) != null) {

@@ -20,7 +20,6 @@ public class MultiplayerGame implements Game {
     FleetsDisposal fleetsDisposal;
     Fleet fleet1;
     Fleet fleet2;
-
     private MultiplayerTurnMaster turnMaster;
     VictoryTrigger victoryTrigger;
     ArrayList<Integer> clientsIdsList;
@@ -32,15 +31,10 @@ public class MultiplayerGame implements Game {
 
     @Override
     public void initGame() throws BattleShipsException {
-
         System.out.println("init Multiplayer Game!");
-        //gameField = new GameField(11, 11,"computer 1", "computer 2");
-        //fleet1 = new Fleet();
-        //fleet2 = new Fleet();
         gameField = new GameField(5, 5,"computer 1", "computer 2");
         fleet1 = new Fleet(0,0,1,0);
         fleet2 = new Fleet(0,0,1,0);
-
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
         setPlayerActiveness();
@@ -70,16 +64,6 @@ public class MultiplayerGame implements Game {
     public GameField getGameField() {
         return gameField;
     }
-
-//    @Override
-//    public Fleet getFleet1() {
-//        return fleet1;
-//    }
-//
-//    @Override
-//    public Fleet getFleet2() {
-//        return fleet2;
-//    }
 
     public MultiplayerTurnMaster getTurnMaster() {
         return turnMaster;

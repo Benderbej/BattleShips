@@ -13,14 +13,12 @@ import java.util.LinkedList;
 
 public class MultiplayerTurnMaster extends TurnMaster {
 
-
     TurnControlled humanAI;
     TurnControlled human2AI;
     private final ArrayList<Integer> clientsIdsList;
     private HashMap<Integer, Boolean> playerBattleSide;//clientIds->true if active
     private HashMap<Integer, FieldCell> remotePlayersTurns;//field cells chosen by remote players (0 -attacker 11-defender)
     private int currentTurnClientHandlerId;
-
     private int winnerId;
 
     public MultiplayerTurnMaster(ArrayList<Integer> clientsIdsList, HashMap<Integer, Boolean> playerBattleSide) {
@@ -45,15 +43,12 @@ public class MultiplayerTurnMaster extends TurnMaster {
     public void run() {
 
         GameFieldRenderer r = new GameFieldRenderer(gameField);
-
         int i = 0;
         TurnActor actor = null;
         actorIterator = turnActors.listIterator();
         int turnLimit = (gameField.getColumnNum() + 1) * (gameField.getRowNum() + 1) * 2;
-
         while (i <= turnLimit) {
             if (actorIterator.hasNext()) {
-
                 if (actor != null) {
                     makeReport("ходит " + actor.getTurnActorName());
                     //gameFieldRenderer.setGameStatus("ходит " + actor.getTurnActorName());
@@ -62,7 +57,6 @@ public class MultiplayerTurnMaster extends TurnMaster {
                 actor = actorIterator.next();
                 currentTurnClientHandlerId = actor.getTurnActorId();
                 makeTurn(actor);
-
             } else {
                 i--;
                 actorIterator = turnActors.listIterator();
@@ -77,7 +71,6 @@ public class MultiplayerTurnMaster extends TurnMaster {
                 break;
             }
             i++;
-
             //r.renderGameField();
         }
         makeReport("КОНЕЦ ИГРЫ");
@@ -89,17 +82,9 @@ public class MultiplayerTurnMaster extends TurnMaster {
         addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, clientsIdsList.get(0)));//0 - is reserved for nowinner
         addTurnActor(new TurnActor(TurnActorType.HUMAN, name2, human2AI, clientsIdsList.get(1)));
         this.gameField = gameField;
-
-
-//        TurnControlled humanAI = new HumanControl(gameField.getEnemyFieldGrid().getCellsArr(), ((GameFieldSwingRenderer) gameFieldRenderer).getPl2Panel());
-//        TurnControlled human2AI = new HumanControl(gameField.getPlayerFieldGrid().getCellsArr(), ((GameFieldSwingRenderer) gameFieldRenderer).getPl2Panel());
-//        addTurnActor(new TurnActor(TurnActorType.HUMAN, name1, humanAI, 1));//0 - is reserved for nowinner
-//        addTurnActor(new TurnActor(TurnActorType.HUMAN, name2, human2AI, 2));
-//        this.gameField = gameField;
     }
 
     private boolean searchClients(){
-
         return false;
     }
 
