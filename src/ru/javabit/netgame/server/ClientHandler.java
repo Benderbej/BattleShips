@@ -19,11 +19,3 @@ public class ClientHandler {
         clientServantId = GameMath.getRandomInt(1, Integer.MAX_VALUE);
     }
 }
-
-
-
-
-
-
-
-

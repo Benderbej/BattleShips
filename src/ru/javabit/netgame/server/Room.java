@@ -13,13 +13,9 @@ public class Room {
 
     private MultiplayerGame multiplayerGame;
     LinkedList<ClientHandler> handlersList;
-
-
     public final int roomSize;
     public static final int roomDefaultSize = 2;
     private int roomId;
-
-
 
     Room() {
         roomId = GameMath.getRandomInt(1, Integer.MAX_VALUE);
@@ -32,7 +28,6 @@ public class Room {
     }
 
     public void initGame() {
-        System.out.println("room"+roomId + " initGame() "+ handlersList.get(0).getClientServantId() + " vs "+ handlersList.get(1).getClientServantId());
         ArrayList<Integer> clientIds = new ArrayList<>();
         clientIds.add(handlersList.get(0).getClientServantId());
         clientIds.add(handlersList.get(1).getClientServantId());
@@ -44,7 +39,7 @@ public class Room {
         }
     }
 
-    private ArrayList<Integer> getClientsIdsList(){
+    private ArrayList<Integer> getClientsIdsList() {
         ArrayList<Integer> clientIds = new ArrayList<>();
         clientIds.add(handlersList.get(0).getClientServantId());
         clientIds.add(handlersList.get(1).getClientServantId());
@@ -52,7 +47,6 @@ public class Room {
     }
 
     public void startGame() {
-        System.out.println("room"+roomId + " startGame() "+ handlersList.get(0).getClientServantId() + " vs "+ handlersList.get(1).getClientServantId());
         try {
             multiplayerGame.startGame();
         } catch (InterruptedException e) {
@@ -63,5 +57,4 @@ public class Room {
     public MultiplayerGame getMultiplayerGame() {
         return multiplayerGame;
     }
-
 }

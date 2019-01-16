@@ -1,15 +1,8 @@
 package ru.javabit.netgame.server;
 
-import ru.javabit.Game;
-import ru.javabit.exceptions.BattleShipsException;
 import ru.javabit.gameField.FieldCell;
 import ru.javabit.gameField.GameField;
 import ru.javabit.netgame.client.ClientRequestCode;
-import ru.javabit.netgame.client.PrimitiveObj;
-import ru.javabit.ship.Fleet;
-import ru.javabit.ship.FleetDisposer;
-import ru.javabit.ship.FleetsDisposal;
-import ru.javabit.turn.MultiplayerTurnMaster;
 import ru.javabit.view.GameFieldRenderer;
 
 import java.io.*;
