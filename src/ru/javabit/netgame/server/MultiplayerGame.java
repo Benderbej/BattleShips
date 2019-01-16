@@ -32,9 +32,9 @@ public class MultiplayerGame implements Game {
     @Override
     public void initGame() throws BattleShipsException {
         System.out.println("init Multiplayer Game!");
-        gameField = new GameField(5, 5,"computer 1", "computer 2");
-        fleet1 = new Fleet(0,0,1,0);
-        fleet2 = new Fleet(0,0,1,0);
+        gameField = new GameField(11, 11,"computer 1", "computer 2");
+        fleet1 = new Fleet();
+        fleet2 = new Fleet();
         fleetsDisposal = new FleetsDisposal(gameField, fleet1, fleet2);
         fleetsDisposal.disposeAutoAuto();
         setPlayerActiveness();

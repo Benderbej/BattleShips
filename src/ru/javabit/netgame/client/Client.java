@@ -101,8 +101,8 @@ public class Client {
                 e.printStackTrace();
             }
             if (gameField != null){
-                GameFieldRenderer gameFieldRenderer = new GameFieldRenderer(gameField);
-                gameFieldRenderer.renderGameField();
+                //GameFieldRenderer gameFieldRenderer = new GameFieldRenderer(gameField);
+                //gameFieldRenderer.renderGameField();
                 return true;
             }
         } catch (IOException ex){
